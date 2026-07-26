@@ -65,7 +65,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 .activity{display:grid;gap:7px}.activity-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.activity-item b{font-size:11px}.activity-item small{display:block;color:var(--muted);margin-top:2px}
 
 
-/* v0.3.2 kalori & kişisel porsiyon */
+/* v0.3.3 kalori & kişisel porsiyon */
 .nutrition-details{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
 .nutrition-details summary{cursor:pointer;font-size:11px;font-weight:900;color:var(--green2);list-style:none;display:flex;justify-content:space-between;align-items:center}
 .nutrition-details summary::-webkit-details-marker{display:none}
@@ -85,8 +85,18 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 .nutrition-warning{margin-top:8px;padding:8px 9px;border-radius:12px;background:#fff7df;border:1px solid #eedca7;color:#655735;font-size:9px;line-height:1.4}
 .energy-tag{display:inline-flex;margin-top:4px;padding:3px 7px;border-radius:999px;background:#eef6ef;color:var(--green2);font-size:9px;font-weight:850}
 
+
+.food-list{display:grid;gap:6px;margin-top:7px}
+.food-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 9px;border:1px solid var(--line);border-radius:12px;background:#fbfdfb}
+.food-row b{display:block;font-size:11px}
+.food-row small{display:block;color:var(--muted);font-size:8px;margin-top:2px;line-height:1.35}
+.food-amount{text-align:right;min-width:105px}
+.food-amount strong{display:block;font-size:12px}
+.food-amount span{display:block;color:var(--green2);font-size:9px;font-weight:800;margin-top:2px}
+.child-guide{display:inline-block;margin-top:3px;font-size:8px;color:#755c21;background:#fff4cf;border-radius:999px;padding:3px 6px}
+.person-kcal-total{margin-top:7px;text-align:right;font-size:9px;color:var(--green2);font-weight:850}
 </style>
-<title>Aile Sofrası v0.3.2</title>
+<title>Aile Sofrası v0.3.3</title>
 </head>
 <body>
 
@@ -156,7 +166,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.2 · KALORİ & PORSİYON</div>
+    <div class="mini">AİLE SOFRASI · v0.3.3 · YİYECEK BAZLI PORSİYON</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -442,65 +452,189 @@ function ingredientCookedGrams(i){
  const raw=ingredientRawGrams(i);
  return raw*(COOK_YIELD[i.name] ?? 1);
 }
-function recipeExtraWater(r){
- const t=r.title.toLocaleLowerCase('tr-TR');
- if(t.includes('çorba'))return 900;
- if(t.includes('cacık'))return 250;
- if(t.includes('sulu')||t.includes('türlü'))return 300;
- return 0;
-}
 function recipeCalories(r){return r.ingredients.reduce((s,i)=>s+ingredientCalories(i),0)}
-function recipeYieldGrams(r){return Math.max(1,r.ingredients.reduce((s,i)=>s+ingredientCookedGrams(i),0)+recipeExtraWater(r))}
-function recipeKcal100(r){return recipeCalories(r)/recipeYieldGrams(r)*100}
-function spoonText(r,grams){
- const t=r.title.toLocaleLowerCase('tr-TR');
- if(t.includes('çorba'))return `~${Math.max(.5,grams/150).toFixed(1)} kepçe`;
- if(/pilav|bulgur|mercimek|nohut|fasulye|barbunya|yoğurt|cacık|sebze yemeği|türlü/.test(t))
-   return `~${Math.max(1,Math.round(grams/20))} yemek kaşığı`;
- return '';
-}
 function activeFactorTotal(){return state.people.filter(p=>p.active).reduce((s,p)=>s+Number(p.portionFactor||0),0)||1}
-function personPortion(r,p,type){
- const batchScale=factor(), cooked=recipeYieldGrams(r)*batchScale, kcal=recipeCalories(r)*batchScale;
- const defaultShare=Number(p.portionFactor||1)/activeFactorTotal();
- let grams=cooked*defaultShare, mode='porsiyon katsayısına göre';
 
+const SEASONING_NAMES=new Set(['Zeytinyağı','Kuru soğan','Sarımsak','Limon','Domates salçası']);
+const PROTEIN_NAMES=new Set(['Balık fileto','Somon / uskumru / sardalya fileto','Tavuk göğüs','Tavuk göğüs / but eti','Hindi / tavuk kıyma','Yağsız dana kuşbaşı','Yağsız dana kıyma']);
+const PULSE_NAMES=new Set(['Kırmızı mercimek','Yeşil mercimek','Kuru nohut','Kuru fasulye','Kuru barbunya']);
+const GRAIN_NAMES=new Set(['Bulgur','İnce bulgur','Pirinç']);
+const VEG_NAMES=new Set(['Domates','Havuç','Karışık sebze','Karışık yeşillik','Karışık çorbalık sebze','Mevsim sebzesi','Patates','Salata malzemesi','Salatalık','Taze fasulye','Yeşil biber','Yeşillik','Haşlanmış mısır']);
+
+function makeComponent(label,kind,items=[],extraWater=0){
+ return {
+   label,kind,items:[...items],extraWater,
+   grams:items.reduce((s,i)=>s+ingredientCookedGrams(i),0)+extraWater,
+   calories:items.reduce((s,i)=>s+ingredientCalories(i),0)
+ };
+}
+function takeItems(pool,predicate){
+ const out=[];
+ for(let i=pool.length-1;i>=0;i--){
+   if(predicate(pool[i]))out.unshift(...pool.splice(i,1));
+ }
+ return out;
+}
+function plateComponents(r){
+ const title=r.title.toLocaleLowerCase('tr-TR');
+ const pool=r.ingredients.map(i=>({...i}));
+ const comps=[];
+ const add=(label,kind,pred,water=0)=>{
+   const items=takeItems(pool,pred);
+   if(items.length)comps.push(makeComponent(label,kind,items,water));
+ };
+
+ // Birden fazla yiyecek içeren tariflerde gerçek tabak bileşenlerini ayır.
+ if(title.includes('çorba')){
+   const soupLabel=(r.title.split('+')[0]||'Çorba').trim();
+   add(soupLabel,'soup',i =>
+     !['Yoğurt','Ayran','Salata malzemesi','Karışık yeşillik','Tam buğday / çavdar ekmeği','Mevsim meyvesi','Ceviz içi','Çiğ badem/fındık/ceviz'].includes(i.name),
+     900
+   );
+ }
+ if(title.includes('menemen')){
+   add('Menemen','mixed',i=>['Yumurta','Domates','Yeşil biber','Kuru soğan','Zeytinyağı'].includes(i.name));
+ }
+ if(title.includes('taze fasulye')){
+   add('Zeytinyağlı taze fasulye','veg',i=>['Taze fasulye','Domates','Kuru soğan','Zeytinyağı'].includes(i.name));
+ }
+ if(/\bnohut\b/.test(title)){
+   add('Nohut yemeği','pulse',i=>['Kuru nohut','Domates','Kuru soğan','Zeytinyağı','Domates salçası'].includes(i.name));
+ }
+ if(title.includes('kuru fasulye')){
+   add('Kuru fasulye yemeği','pulse',i=>['Kuru fasulye','Domates','Kuru soğan','Zeytinyağı','Domates salçası'].includes(i.name));
+ }
+ if(title.includes('barbunya')){
+   add('Barbunya yemeği','pulse',i=>['Kuru barbunya','Domates','Kuru soğan','Zeytinyağı','Domates salçası'].includes(i.name));
+ }
+ if(title.includes('köfte')){
+   add('Ev yapımı köfte','protein',i=>['Yağsız dana kıyma','Yumurta','Kuru soğan','Tam buğday galeta / ekmek içi'].includes(i.name));
+ }
+ if(title.includes('cacık')){
+   add('Yoğurt / cacık','yogurt',i=>['Yoğurt','Salatalık','Sarımsak'].includes(i.name), title.includes('cacık')?120:0);
+ }
+
+ // Geri kalan ana yiyecekler.
+ add('Balık', 'protein', i=>['Balık fileto','Somon / uskumru / sardalya fileto'].includes(i.name));
+ add('Tavuk / hindi', 'protein', i=>['Tavuk göğüs','Tavuk göğüs / but eti','Hindi / tavuk kıyma'].includes(i.name));
+ add('Dana eti', 'protein', i=>['Yağsız dana kuşbaşı','Yağsız dana kıyma'].includes(i.name));
+ add('Yumurta', 'egg', i=>i.name==='Yumurta');
+ add('Bulgur', 'grain', i=>['Bulgur','İnce bulgur'].includes(i.name));
+ add('Pirinç', 'grain', i=>i.name==='Pirinç');
+ add('Mercimek', 'pulse', i=>['Kırmızı mercimek','Yeşil mercimek'].includes(i.name));
+ add('Nohut', 'pulse', i=>i.name==='Kuru nohut');
+ add('Kuru fasulye', 'pulse', i=>i.name==='Kuru fasulye');
+ add('Barbunya', 'pulse', i=>i.name==='Kuru barbunya');
+ add('Patates', 'potato', i=>i.name==='Patates');
+
+ // Salata/sebze: aromatikleri değil, yenilen sebze bölümünü tek tabak bileşeni yap.
+ const vegItems=takeItems(pool,i=>VEG_NAMES.has(i.name));
+ if(vegItems.length){
+   const label=title.includes('salata')?'Salata / söğüş sebze':'Sebze';
+   comps.push(makeComponent(label,'veg',vegItems));
+ }
+
+ add('Yoğurt', 'yogurt', i=>i.name==='Yoğurt');
+ add('Ayran', 'drink', i=>i.name==='Ayran');
+ add('Peynir / lor', 'cheese', i=>['Beyaz peynir / lor','Kaşar / beyaz peynir','Lor / labne'].includes(i.name));
+ add('Tam tahıllı ekmek', 'bread', i=>i.name==='Tam buğday / çavdar ekmeği');
+ add('Meyve', 'fruit', i=>i.name==='Mevsim meyvesi');
+ add('Kuruyemiş', 'nuts', i=>['Ceviz içi','Çiğ badem/fındık/ceviz'].includes(i.name));
+ add('Zeytin', 'olives', i=>i.name==='Zeytin');
+
+ // Görünür yiyeceğe dönüşmeyen yağ/soğan/sos gibi malzemelerin kalorisi
+ // ayrı porsiyon olarak gösterilmez; yemeğin ilk ana bileşenine eklenir.
+ const seasonings=takeItems(pool,i=>SEASONING_NAMES.has(i.name));
+ const seasoningCalories=seasonings.reduce((s,i)=>s+ingredientCalories(i),0);
+ if(seasoningCalories && comps.length)comps[0].calories+=seasoningCalories;
+
+ // Beklenmedik kalan yenilebilir malzeme varsa kaybolmasın.
+ pool.filter(i=>!SEASONING_NAMES.has(i.name)).forEach(i=>{
+   comps.push(makeComponent(i.name,'other',[i]));
+ });
+
+ return comps.filter(c=>c.grams>0 || c.calories>0);
+}
+function personShare(r,p,type){
+ const defaultShare=Number(p.portionFactor||1)/activeFactorTotal();
  if(Number(p.age)>=18 && Number(p.calorieTarget)>0){
    const mealTarget=Number(p.calorieTarget)*(MEAL_ENERGY_SHARE[type]??.25);
-   const density=kcal/cooked;
-   if(density>0){grams=mealTarget/density;mode='günlük kcal hedefine göre'}
+   const batchCalories=recipeCalories(r)*factor();
+   if(batchCalories>0)return {share:mealTarget/batchCalories,mode:'kcal hedefine göre'};
  }
- grams=Math.max(1,grams);
- const density=kcal/cooked;
- const portionKcal=density*grams;
- return {grams,portionKcal,mode,spoon:spoonText(r,grams)};
+ return {share:defaultShare,mode:'porsiyon katsayısına göre'};
+}
+function niceNumber(n,dec=1){
+ const rounded=Math.round(n*10**dec)/10**dec;
+ return Number.isInteger(rounded)?String(rounded):rounded.toFixed(dec);
+}
+function componentAmountText(c,grams){
+ const g=Math.max(0,grams);
+ if(c.kind==='soup')return {main:`${niceNumber(g/150)} kepçe`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='yogurt')return {main:`${niceNumber(g/30)} yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='veg')return {main:`${niceNumber(g/27)} dolu yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='pulse')return {main:`${niceNumber(g/27)} dolu yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='potato')return {main:`${niceNumber(g/28)} yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='grain')return {main:`${niceNumber(g/25)} yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='mixed')return {main:`${niceNumber(g/25)} yemek kaşığı`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='protein')return {main:`~${Math.round(g)} g`,sub:`doğranmışsa ~${niceNumber(g/25)} yemek kaşığı`};
+ if(c.kind==='egg')return {main:`~${niceNumber(g/50)} adet`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='bread')return {main:`~${niceNumber(g/40)} dilim`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='drink')return {main:`~${Math.round(g)} ml`,sub:`~${niceNumber(g/150)} su bardağı`};
+ if(c.kind==='fruit')return {main:`~${Math.round(g)} g`,sub:g>=70?`yaklaşık ${niceNumber(g/100)} orta porsiyon`:''};
+ if(c.kind==='nuts')return {main:`~${Math.round(g)} g`,sub:''};
+ if(c.kind==='cheese')return {main:`~${Math.round(g)} g`,sub:''};
+ if(c.kind==='olives')return {main:`~${Math.round(g)} g`,sub:''};
+ return {main:`~${Math.round(g)} g`,sub:''};
+}
+function childGuide(c,p){
+ const age=Number(p.age);
+ if(age<3||age>5)return '';
+ if(c.kind==='protein')return '3–5 yaş rehberi: 40–80 g / 2–3 yemek kaşığı';
+ if(c.kind==='potato')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
+ if(c.kind==='veg')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
+ if(c.kind==='yogurt')return '3–5 yaş rehberi: yaklaşık 120 g / 4 yemek kaşığı';
+ if(c.kind==='bread')return '3–5 yaş rehberi: 40–80 g / 1–2 dilim';
+ return '';
 }
 function nutritionPanel(r,type){
- const totalKcal=recipeCalories(r)*factor(), cooked=recipeYieldGrams(r)*factor(), k100=totalKcal/cooked*100;
- const people=state.people.filter(p=>p.active);
+ const comps=plateComponents(r), batchScale=factor(), people=state.people.filter(p=>p.active);
+ const totalKcal=recipeCalories(r)*batchScale;
  return `<details class="nutrition-details">
-   <summary>Kalori & kişi porsiyonları</summary>
+   <summary>Kalori & yiyecek yiyecek porsiyon</summary>
    <div class="nutrition-overview">
-     <div><small>Tarif toplamı</small><strong>${Math.round(totalKcal)} kcal</strong></div>
-     <div><small>Tahmini pişmiş</small><strong>${Math.round(cooked)} g</strong></div>
-     <div><small>Enerji</small><strong>${Math.round(k100)} kcal/100g</strong></div>
+     <div><small>Öğün toplam enerji</small><strong>${Math.round(totalKcal)} kcal</strong></div>
+     <div><small>Tabak bileşeni</small><strong>${comps.length}</strong></div>
+     <div><small>Gösterim</small><strong>kaşık + gram</strong></div>
    </div>
    <div class="portion-grid">${people.map(p=>{
-      const x=personPortion(r,p,type), child=Number(p.age)<18;
-      const target=(Number(p.age)>=18&&Number(p.calorieTarget)>0)?`<span class="energy-tag">günlük hedef ${Math.round(p.calorieTarget)} kcal</span>`:'';
-      const note=child
-        ? 'Başlangıç porsiyonu. Çocukta zorlamadan, açlık ve tokluk sinyallerine göre artırıp azaltın.'
-        : (x.mode==='günlük kcal hedefine göre'
-            ? 'Girilen günlük enerji hedefinin bu öğüne ayrılan payına göre hesaplandı.'
-            : 'Kalori hedefi girilmediği için aile porsiyon katsayısı kullanıldı.');
-      return `<div class="portion-card">
-        <div class="portion-head"><div><b>${p.name}</b>${target}</div>
-        <div class="portion-main"><strong>~${Math.round(x.grams)} g</strong><small>${x.spoon||'gram porsiyonu'}</small></div></div>
-        <div class="portion-kcal">~${Math.round(x.portionKcal)} kcal · ${x.mode}</div>
-        <div class="portion-note">${note}</div>
-      </div>`;
+     const ps=personShare(r,p,type), child=Number(p.age)<18;
+     let personKcal=0;
+     const rows=comps.map(c=>{
+       const grams=c.grams*batchScale*ps.share;
+       const kcal=c.calories*batchScale*ps.share;
+       personKcal+=kcal;
+       const a=componentAmountText(c,grams), guide=childGuide(c,p);
+       return `<div class="food-row">
+         <div><b>${c.label}</b><small>~${Math.round(kcal)} kcal${guide?`<br><span class="child-guide">${guide}</span>`:''}</small></div>
+         <div class="food-amount"><strong>${a.main}</strong>${a.sub?`<span>${a.sub}</span>`:''}</div>
+       </div>`;
+     }).join('');
+     const target=(Number(p.age)>=18&&Number(p.calorieTarget)>0)
+       ? `<span class="energy-tag">günlük hedef ${Math.round(p.calorieTarget)} kcal</span>`:'';
+     const note=child
+       ? 'Çocuk porsiyonları başlangıç miktarıdır; bitirme hedefi değildir. Açlık ve tokluk sinyallerine göre artırıp azaltın.'
+       : (ps.mode==='kcal hedefine göre'
+          ? 'Her yiyeceğin miktarı, girilen günlük enerji hedefinin bu öğüne düşen payı korunarak ayrı ayrı hesaplandı.'
+          : 'Her yiyecek, ailedeki kişisel porsiyon katsayısına göre ayrı ayrı hesaplandı.');
+     return `<div class="portion-card">
+       <div class="portion-head"><div><b>${p.name}</b>${target}</div><div class="portion-main"><small>${ps.mode}</small></div></div>
+       <div class="food-list">${rows}</div>
+       <div class="person-kcal-total">Bu öğün yaklaşık ${Math.round(personKcal)} kcal</div>
+       <div class="portion-note">${note}</div>
+     </div>`;
    }).join('')}</div>
-   <div class="nutrition-warning">Yaklaşık hesap: marka, tarifteki gerçek yağ miktarı, su kaybı/çekimi ve pişirme yöntemi sonucu değiştirebilir. 3–5 yaş çocuklarda rakam “bitirilmesi gereken miktar” değildir; küçük başlangıç porsiyonu ve çocuğun açlık-tokluk sinyalleri esas alınır.</div>
+   <div class="nutrition-warning">Artık birleşik “toplam tabak gramı” kullanılmıyor. Çorba, et/tavuk/balık, bulgur/pirinç, sebze/salata, yoğurt, ekmek gibi yiyecekler ayrı ayrı porsiyonlanıyor. Kaşık karşılıkları mutfak tipi yaklaşık ölçüdür; yemeğin kıvamı ve kaşığın doluluğu sonucu değiştirir.</div>
  </details>`;
 }
 
