@@ -1,4 +1,4 @@
-const CACHE='aile-sofrasi-v043-catalog-live-prices';
+const CACHE='aile-sofrasi-v045-mediterranean-portions';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js','./appcheck-config.js','./prices.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
