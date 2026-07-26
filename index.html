@@ -30,7 +30,7 @@ main{max-width:760px;margin:0 auto;padding:14px}.screen{display:none}.screen.act
 .day-picker-wrap{padding:12px 0 6px}.control{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:11px 12px}.control.wide,.wide{width:100%}.control.compact{max-width:210px}
 .mealstack{display:grid;gap:10px}.mealcard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}
 .meal-top{display:flex;justify-content:space-between;gap:12px}.mealcard h3{margin:3px 0 6px;font-size:17px}.mealtype{font-size:11px;color:var(--green2);font-weight:900;letter-spacing:.05em}.mealprice{font-size:17px;font-weight:900;white-space:nowrap}
-.ingredients{font-size:12px;line-height:1.45;color:var(--muted);margin:8px 0 10px}.mealcard select{width:100%}
+.ingredients{font-size:12px;line-height:1.45;color:var(--muted);margin:8px 0 10px}.mealcard select{width:100%}.mealcard.optional-meal{border-style:dashed;background:#fbfcf8}.mealcard.optional-meal .mealprice{font-size:12px;color:var(--green2)}
 .title-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 13px}.title-row h2{margin:2px 0 0;font-size:25px}
 .shop-costs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.shop-costs>div{background:#fff;border:1px solid var(--line);padding:13px;border-radius:17px}.shop-costs small{display:block;color:var(--muted)}.shop-costs strong{font-size:20px}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:#e5ece6;border-radius:14px;padding:4px;margin:12px 0 8px}.segbtn,.scopebtn{border:0;background:transparent;border-radius:11px;padding:10px;color:var(--green);font-weight:800}.segbtn.active,.scopebtn.active{background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.07)}.shop-scope{margin-top:10px;margin-bottom:8px}
@@ -198,7 +198,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 .price-pref{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800}.price-pref input{width:18px;height:18px;accent-color:var(--green)}
 
 </style>
-<title>Aile Sofrası v0.4.4</title>
+<title>Aile Sofrası v0.4.5</title>
 </head>
 <body>
 
@@ -268,7 +268,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.4.4 · ŞOK GÜNCEL FİYAT</div>
+    <div class="mini">AİLE SOFRASI · v0.4.5 · ŞOK GÜNCEL FİYAT</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -281,7 +281,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <section id="home" class="screen active">
   <div class="hero">
     <div>
-      <span class="pill">Sağlıklı plan</span>
+      <span class="pill">Akdeniz tipi plan</span>
       <h2 id="dayTitle">Gün 1</h2>
       <p id="priceState">Fiyatlar hazırlanıyor…</p>
     </div>
@@ -291,6 +291,7 @@ dialog.wide-dialog{width:min(96%,620px)}
     <div><small>Bu ay tahmini bütçe</small><strong id="monthBudget">—</strong></div>
     <div><small>Haftalık ortalama</small><strong id="avgWeekBudget">—</strong></div>
   </div>
+  <div class="hint mediterranean-note"><b>Haftalık düzen:</b> 1 gün kırmızı et · 1 gün beyaz et · 1 gün balık · diğer akşamlar bakliyat/sebze. Öğle isteğe bağlıdır. Ekmek seçimi tam buğday, çavdar veya başka tam tahıllı ekmek olmalıdır.</div>
   <div id="homeExpiryAlert" class="expiry-home hidden"></div>
   <div id="homeEventBanner" class="event-home hidden"></div>
   <div class="day-picker-wrap"><select id="daySelect" class="control"></select></div>
@@ -685,7 +686,7 @@ const KEY='aile-sofrasi-v02';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const money=new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],mealHistory:[],specialEvents:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,pricePreferences:{retailer:'ŞOK'},monthlyBudgetTarget:null,calendarMonth:null}}
+function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],mealHistory:[],specialEvents:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,pricePreferences:{retailer:'ŞOK'},monthlyBudgetTarget:null,calendarMonth:null,mealPolicyVersion:null}}
 let state=(()=>{try{return {...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return initial()}})();
 
 function applyV039BreakfastMigration(){
@@ -741,7 +742,7 @@ const cloud={
   familyId:null, family:null, member:null, unsubscribeState:null, unsubscribeActivity:null, ai:null, aiModel:null, recipeModel:null, eventModel:null, appCheck:null,
   applyingRemote:false, saveTimer:null, localOnly:false
 };
-const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','mealHistory','specialEvents','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
+const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','mealHistory','specialEvents','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth','mealPolicyVersion'];
 function sharedPayload(){const p={};sharedKeys.forEach(k=>p[k]=clone(state[k]));return p}
 function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state))}
 function save(){
@@ -769,15 +770,84 @@ function weekNumberForDay(dn){
   return Math.floor((mondayOffset+(dn-1))/7)+1;
 }
 function calendarDayLabel(dn){return `${weekNumberForDay(dn)}. Hafta · ${calendarLabel(dn)}`}
+
+const V045_MEAL_POLICY='mediterranean-v0.4.5';
+const V045_OPTIONAL_LUNCH_ID='v045_optional_lunch';
+
+function ensureV045OptionalLunchRecipe(){
+  state.recipes ||= clone(seed.recipes);
+  let r=state.recipes.find(x=>x.id===V045_OPTIONAL_LUNCH_ID);
+  if(!r){
+    state.recipes.push({
+      id:V045_OPTIONAL_LUNCH_ID,
+      mealType:'Öğle',
+      title:'Öğle isteğe bağlı · boş geç / alternatif seç',
+      ingredients:[],
+      steps:'Öğlen açlık yoksa bu öğünü boş geç. Açlık varsa aşağıdaki seçim kutusundan sağlıklı bir öğle alternatifi seç.',
+      childNote:'Alparslan için düzenli öğün/ara öğün ihtiyacı yetişkinle aynı değildir; onun açlık-tokluk sinyallerine göre küçük bir öğün sun.',
+      healthy:true,
+      optionalSkip:true,
+      source:'Aile Sofrası v0.4.5'
+    });
+  }else{
+    r.mealType='Öğle';r.healthy=true;r.optionalSkip=true;
+    r.title='Öğle isteğe bağlı · boş geç / alternatif seç';
+    r.ingredients=[];
+  }
+}
+
+function cyclePick(arr,dn){
+  const w=Math.max(0,weekNumberForDay(dn)-1);
+  return arr[w%arr.length];
+}
+
+function mediterraneanMealsForDate(dn){
+  const dow=dateForDay(dn).getDay(); // 0 Pazar ... 6 Cumartesi
+  const breakfast=cyclePick(
+    ['2dfe844a45','41a6d46b0a','8fe6c6ffb2','24cefc0300','9d8a43e883','281ad498bb'],
+    dn
+  );
+  const snack=cyclePick(['f7cd2d2fe8','a3bed5c1bb','a1d33c303e'],dn);
+
+  // Akdeniz tipi haftalık ana akşam düzeni:
+  // Salı beyaz et, Perşembe kırmızı et, Cuma balık.
+  // Diğer günler bakliyat / zeytinyağlı / sebze.
+  const dinnerByDow={
+    1:cyclePick(['529ee62815','37d6906cf2','824226da92','3cd4d5c291'],dn), // Pazartesi bakliyat
+    2:cyclePick(['1203901b6e','f2bd12d50d','1127c9f1ac','4770546bf0'],dn), // Salı beyaz et
+    3:cyclePick(['0ddfd78a73','20ffded42f','55fd77696f','37d6906cf2'],dn), // Çarşamba sebze/bakliyat
+    4:cyclePick(['092cb0b0f9','f7e286ee86'],dn),                         // Perşembe kırmızı et
+    5:cyclePick(['e9c94e0023','b4a89add15','89504a48d2'],dn),            // Cuma balık
+    6:cyclePick(['3cd4d5c291','824226da92','37d6906cf2','0ddfd78a73'],dn),// Cumartesi bakliyat
+    0:cyclePick(['20ffded42f','0ddfd78a73','55fd77696f','d77a4e9cd0'],dn) // Pazar sebze
+  };
+
+  return {
+    'Kahvaltı':breakfast,
+    'Öğle':V045_OPTIONAL_LUNCH_ID,
+    'Akşam':dinnerByDow[dow],
+    'Ara Öğün':snack
+  };
+}
+
+function applyV045MealPolicy({force=false}={}){
+  ensureV045OptionalLunchRecipe();
+  if(!force && state.mealPolicyVersion===V045_MEAL_POLICY)return false;
+  (state.days||[]).forEach(d=>{d.meals=mediterraneanMealsForDate(Number(d.day))});
+  state.mealPolicyVersion=V045_MEAL_POLICY;
+  state.appDataVersion='0.4.5';
+  return true;
+}
+
 function buildCalendarDays(existing=[]){
   const count=daysInCalendarMonth();
   const byDay=new Map((existing||[]).map(d=>[Number(d.day),d]));
   return Array.from({length:count},(_,i)=>{
-    const dn=i+1, old=byDay.get(dn), tpl=seed.days[i % seed.days.length];
+    const dn=i+1, old=byDay.get(dn);
     return {
       day:dn,
       label:calendarDayLabel(dn),
-      meals:clone(old?.meals || tpl.meals)
+      meals:clone(old?.meals || mediterraneanMealsForDate(dn))
     };
   });
 }
@@ -1082,21 +1152,44 @@ function soupServingTarget(p){
  if(age>=13 && age<18)return 250;
  return 300;
 }
+function portionCeiling(c,p){
+ const age=Number(p?.age||0);
+ const child=age>0&&age<=5;
+ const teen=age>=6&&age<18;
+
+ if(c.kind==='soup')return soupServingTarget(p);
+
+ const adult={
+   protein:180, grain:180, pulse:280, veg:300, potato:200, mixed:300,
+   yogurt:200, bread:80, drink:300, fruit:200, nuts:30, cheese:60,
+   olives:30, egg:75, other:40
+ };
+ const child35={
+   protein:80, grain:90, pulse:120, veg:120, potato:90, mixed:150,
+   yogurt:120, bread:40, drink:150, fruit:120, nuts:12, cheese:30,
+   olives:12, egg:50, other:20
+ };
+ const youth={
+   protein:140, grain:150, pulse:220, veg:250, potato:160, mixed:250,
+   yogurt:180, bread:70, drink:250, fruit:180, nuts:25, cheese:50,
+   olives:25, egg:75, other:35
+ };
+ let cap=(child?child35:teen?youth:adult)[c.kind] ?? (child?150:teen?250:300);
+
+ // Cacık daha hacimli bir yoğurt servisi olduğundan üst sınırı biraz daha geniştir.
+ if(c.kind==='yogurt' && /cacık/i.test(c.label))cap=child?150:teen?220:250;
+ return cap;
+}
 function componentPortionForPerson(c,p,batchScale,share){
  const totalGrams=Math.max(0,c.grams*batchScale);
  const totalKcal=Math.max(0,c.calories*batchScale);
- let grams=totalGrams*share;
+ const rawGrams=totalGrams*share;
+ const grams=Math.min(rawGrams,portionCeiling(c,p));
 
- // Çorbanın tamamını kişiye paylaştırmak yerine gerçek servis miktarını sınırla.
- // Yetişkin: ~300 g (1 kase), 3–5 yaş: ~180 g (küçük kase).
- if(c.kind==='soup'){
-   grams=Math.min(grams,soupServingTarget(p));
- }
-
- // Porsiyon gramı sınırlandıysa kaloriyi de aynı bileşen oranında hesapla.
+ // Üst sınır uygulanınca kaloriyi de gerçekten servis edilen gramla orantıla.
  const ratio=totalGrams>0?Math.min(1,grams/totalGrams):0;
  const kcal=totalKcal*ratio;
- return {grams,kcal};
+ return {grams,kcal,rawGrams,ceiling:portionCeiling(c,p)};
 }
 function niceNumber(n,dec=1){
  const rounded=Math.round(n*10**dec)/10**dec;
@@ -1128,11 +1221,14 @@ function childGuide(c,p){
  const age=Number(p.age);
  if(age<3||age>5)return '';
  if(c.kind==='soup')return '3–5 yaş rehberi: yaklaşık 150–180 g / küçük kase';
- if(c.kind==='protein')return '3–5 yaş rehberi: 40–80 g / 2–3 yemek kaşığı';
- if(c.kind==='potato')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
- if(c.kind==='veg')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
- if(c.kind==='yogurt')return '3–5 yaş rehberi: yaklaşık 120 g / 4 yemek kaşığı';
- if(c.kind==='bread')return '3–5 yaş rehberi: 40–80 g / 1–2 dilim';
+ if(c.kind==='protein')return '3–5 yaş rehberi: yaklaşık 40–80 g';
+ if(c.kind==='grain')return '3–5 yaş rehberi: pişmiş yaklaşık 60–90 g';
+ if(c.kind==='pulse')return '3–5 yaş rehberi: yaklaşık 80–120 g';
+ if(c.kind==='potato')return '3–5 yaş rehberi: yaklaşık 60–90 g';
+ if(c.kind==='veg')return '3–5 yaş rehberi: yaklaşık 60–120 g';
+ if(c.kind==='yogurt')return /cacık/i.test(c.label)?'3–5 yaş rehberi: yaklaşık 120–150 g':'3–5 yaş rehberi: yaklaşık 120 g';
+ if(c.kind==='bread')return '3–5 yaş rehberi: yaklaşık 1 küçük dilim / 30–40 g';
+ if(c.kind==='nuts')return '3–5 yaş: bütün sert kuruyemiş yerine ince kıyılmış/öğütülmüş, küçük porsiyon';
  return '';
 }
 function nutritionPanel(r,type){
@@ -1162,8 +1258,8 @@ function nutritionPanel(r,type){
      const target=(Number(p.age)>=18&&Number(p.calorieTarget)>0)
        ? `<span class="energy-tag">günlük hedef ${Math.round(p.calorieTarget)} kcal</span>`:'';
      const note=child
-       ? 'Çocuk porsiyonları başlangıç miktarıdır; bitirme hedefi değildir. Çorbada 3–5 yaş için küçük kase yaklaşık 150–180 g kabul edilir.'
-       : 'Yiyecek miktarı ailedeki kişisel porsiyon katsayısına göre hesaplanır. Girilen kalori hedefi gerçek porsiyonu büyütmez; yalnızca referanstır.';
+       ? 'Çocuk porsiyonları başlangıç miktarıdır; bitirme hedefi değildir. Her yiyecek türünde yaşa uygun servis tavanı uygulanır.'
+       : 'Kişisel porsiyon katsayısı kullanılır; ardından çorba, protein, bakliyat, tahıl, sebze, yoğurt ve diğer gruplarda gerçekçi servis tavanı uygulanır. Bunlar hedef değil üst sınırdır.';
      return `<div class="portion-card">
        <div class="portion-head"><div><b>${p.name}</b>${target}</div><div class="portion-main"><small>${ps.mode}</small></div></div>
        <div class="food-list">${rows}</div>
@@ -1171,7 +1267,7 @@ function nutritionPanel(r,type){
        <div class="portion-note">${note}</div>
      </div>`;
    }).join('')}</div>
-   <div class="nutrition-warning">Çorba servisinde tencerenin toplam ağırlığı kişi porsiyonu gibi gösterilmez. Referans: yetişkin için yaklaşık 300 g = 1 kase; 3–5 yaş için yaklaşık 150–180 g = küçük kase. Kalori hedefi porsiyon gramını şişirmez. Diğer kaşık/gram karşılıkları mutfak tipi yaklaşık ölçüdür.</div>
+   <div class="nutrition-warning">Porsiyon güvenliği: tencere/tepsi toplamı kişi porsiyonu sayılmaz. Yetişkin için örnek üst sınırlar: çorba 300 g, protein 180 g, pişmiş tahıl 180 g, bakliyat yemeği 280 g, sebze 300 g, yoğurt 200 g. Bunlar zorunlu hedef değil servis tavanıdır; açlık-tokluk durumuna göre daha az yenebilir.</div>
  </details>`;
 }
 
@@ -1742,6 +1838,7 @@ ${recentFeedbackText()}
 
 Kurallar:
 - Türk ev mutfağına uygun, sağlıklı ve gerçekçi bir sofra oluştur.
+- Genel çizgi Akdeniz tipi olsun; sebze, zeytinyağı, bakliyat ve tam tahılları öne çıkar. Ekmek varsa tam buğday/çavdar/tam tahıllı seç.
 - Toplam kişi sayısını tarif porsiyonlarında esas al.
 - Çocuk, yaşlı, vejetaryen ve alerji sayılarını gerçekten dikkate al.
 - Alerji alanında yazan ürünü veya açık türevini tariflere koyma.
@@ -1896,12 +1993,14 @@ async function completeEvent(){
 function renderHome(){
  const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=calendarLabel(d.day);$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
  $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{
-   const r=recipe(id),done=currentMealHistory(d.day,type,id);
-   const ingredients=r.ingredients.slice(0,6).map(i=>`<span><b>${esc(i.name)}</b> <span class="kitchen-measure">${esc(recipeMeasure(i))}</span></span>`).join(' · ');
-   const action=done
+   const r=recipe(id),isSkip=!!r?.optionalSkip,done=isSkip?null:currentMealHistory(d.day,type,id);
+   const ingredients=isSkip
+     ? '<span>Öğlen aç değilsen boş geç. Açsan aşağıdan sağlıklı bir alternatif seç.</span>'
+     : r.ingredients.slice(0,6).map(i=>`<span><b>${esc(i.name)}</b> <span class="kitchen-measure">${esc(recipeMeasure(i))}</span></span>`).join(' · ');
+   const action=isSkip?'':(done
      ? `<div class="meal-actions"><button class="feedback-btn meal-feedback-open" data-history="${done.id}">${done.feedback?'★ Geri bildirimi düzenle':'★ Geri bildirim ver'}</button><button class="cooked-btn done undo-meal-cook" data-history="${done.id}">✓ Yapıldı · geri al</button></div><div class="history-done">${esc(deductionSummary(done))}${done.unmatched?.length?`<br><span style="color:#8a621e">Kontrol: ${esc(done.unmatched.slice(0,2).join(' · '))}</span>`:''}</div>`
-     : `<div class="meal-actions"><button class="cooked-btn mark-meal-cooked" data-day="${d.day}" data-type="${esc(type)}" data-recipe="${id}">✓ Bu öğün yapıldı</button></div>`;
-   return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${ingredients}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}" ${done?'disabled':''}>${mealOptions(type,id)}</select>${nutritionPanel(r,type)}${action}</article>`
+     : `<div class="meal-actions"><button class="cooked-btn mark-meal-cooked" data-day="${d.day}" data-type="${esc(type)}" data-recipe="${id}">✓ Bu öğün yapıldı</button></div>`);
+   return `<article class="mealcard ${isSkip?'optional-meal':''}"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${isSkip?'İsteğe bağlı':money.format(recipeCost(r))}</div></div><div class="ingredients">${ingredients}${!isSkip&&r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}" ${done?'disabled':''}>${mealOptions(type,id)}</select>${isSkip?'':nutritionPanel(r,type)}${action}</article>`
  }).join('');
  $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()});
  $$('.mark-meal-cooked').forEach(b=>b.onclick=()=>cookPlannedMeal(Number(b.dataset.day),b.dataset.type,b.dataset.recipe));
@@ -2449,6 +2548,9 @@ ${recentFeedbackText()}
 
 Kurallar:
 - Tam 3 sağlıklı, pratik, ailece yenebilecek TÜRK MUTFAĞI yemeği öner.
+- Akdeniz tipi beslenme çizgisini koru: sebze, bakliyat, zeytinyağı, yoğurt ve tam tahıllara öncelik ver.
+- Ekmek gerekiyorsa yalnız tam buğday, çavdar veya başka tam tahıllı ekmek öner; beyaz ekmek önerme.
+- Günlük planda öğle öğünü yetişkin için isteğe bağlı olabilir; öğle atlandı diye akşam porsiyonunu büyütme.
 - Türk ev mutfağı karakterini koru: çorba, zeytinyağlı, sulu yemek, sebze yemeği, menemen, pilav, cacık, fırın/ızgara, bakliyat gibi doğal seçeneklere öncelik ver.
 - Kahvaltı önerilerinde kilerde varsa peynir, zeytin, kaymak, bal, reçel/pekmez gibi geleneksel kahvaltılıkları da hesaba kat; bal/reçel/kaymak porsiyonunu küçük eşlikçi miktarda tut. Uygun olmayan malzemeye sırf Türk yemeği olsun diye zorlama.
 - Tarif ölçülerinde her gıdanın Türk mutfağında gerçekten kullanılan doğal birimini seç.
@@ -2607,9 +2709,10 @@ async function connectFamily(familyId, memberData=null){
       cloud.applyingRemote=true;
       sharedKeys.forEach(k=>{if(payload[k]!==undefined)state[k]=clone(payload[k])});
       const calendarMigrated=ensureCalendarState();
+      const mealPolicyMigrated=applyV045MealPolicy({force:payload?.mealPolicyVersion!==V045_MEAL_POLICY});
       saveLocal(); renderAll();
       cloud.applyingRemote=false;
-      if(calendarMigrated) save();
+      if(calendarMigrated||mealPolicyMigrated) save();
     }
     cloudStatus(snap.metadata.fromCache?'Çevrimdışı':'Senkron',!snap.metadata.fromCache);
   },e=>cloudStatus('Senkron hatası',false));
@@ -2963,7 +3066,7 @@ $('#shareInviteBtn').onclick=async()=>{
   if(navigator.share)await navigator.share({title:'Aile Sofrası daveti',text});else{try{await navigator.clipboard.writeText(text);alert('Davet bağlantısı kopyalandı.')}catch{alert(text)}}
 };
 
-ensureCalendarState({forceToday:true});saveLocal();renderAll();initCloud();openFeedbackFromUrl();setTimeout(()=>{if(location.protocol!=='file:')syncPrices({silent:true})},1200);
+ensureCalendarState({forceToday:true});applyV045MealPolicy();saveLocal();renderAll();initCloud();openFeedbackFromUrl();setTimeout(()=>{if(location.protocol!=='file:')syncPrices({silent:true})},1200);
 </script>
 
 <script>
