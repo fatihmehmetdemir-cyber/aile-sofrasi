@@ -1,0 +1,52 @@
+name: ŞOK fiyatlarını güncelle
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 23,3,7,11,15,19 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sok-price-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-price.txt
+
+      - name: Bağımlılıkları kur
+        run: pip install -r requirements-price.txt
+
+      - name: ŞOK fiyat scriptini hazırla
+        run: |
+          mkdir -p scripts
+          cp update_sok_prices.py scripts/update_sok_prices.py
+
+      - name: Cepte ŞOK fiyatlarını doğrula
+        run: python scripts/update_sok_prices.py
+
+      - name: Değişiklik varsa kaydet
+        run: |
+          if git diff --quiet -- prices.json; then
+            echo "Fiyat dosyasında değişiklik yok."
+            exit 0
+          fi
+          git config user.name "aile-sofrasi-price-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add prices.json
+          git commit -m "chore: ŞOK fiyatlarını güncelle"
+          git push
