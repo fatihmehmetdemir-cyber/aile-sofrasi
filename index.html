@@ -198,7 +198,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 .price-pref{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800}.price-pref input{width:18px;height:18px;accent-color:var(--green)}
 
 </style>
-<title>Aile Sofrası v0.4.1</title>
+<title>Aile Sofrası v0.4.3</title>
 </head>
 <body>
 
@@ -268,7 +268,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.4.1 · ŞOK GÜNCEL FİYAT</div>
+    <div class="mini">AİLE SOFRASI · v0.4.3 · ŞOK GÜNCEL FİYAT</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -2679,7 +2679,8 @@ function mergeStaticQuote(q,feedTime){
  state.priceBook ||= [];
  const idx=state.priceBook.findIndex(p=>p.ingredient===q.ingredient&&p.unit===q.unit);
  const old=idx>=0?state.priceBook[idx]:{};
- const observed=q.observedAt||feedTime||new Date().toISOString();
+ const observed=q.observedAt||q.updatedAt||feedTime||new Date().toISOString();
+ const incomingStatus=q.status||'estimate';
  const merged={
    ...old,...q,
    provider:'ŞOK / Cepte ŞOK',retailer:'ŞOK',
@@ -2689,7 +2690,8 @@ function mergeStaticQuote(q,feedTime){
    basisAmount:Number(q.packageAmount||q.basisAmount||old.basisAmount||1),
    basisUnit:q.packageUnit||q.basisUnit||old.basisUnit||q.unit,
    observedAt:observed,updatedAt:observed,
-   status:'live',locationScope:'cepte-sok-online'
+   status:incomingStatus,
+   locationScope:q.locationScope||'cepte-sok-online'
  };
  if(idx>=0)state.priceBook[idx]=merged;else state.priceBook.push(merged);
  return true;
@@ -2706,24 +2708,39 @@ async function syncPrices({silent=false}={}){
    if(!res.ok)throw new Error(`HTTP ${res.status}`);
    const data=await res.json();
    const quotes=Array.isArray(data.quotes)?data.quotes:[];
-   let updated=0;
-   quotes.forEach(q=>{if(mergeStaticQuote(q,data.generatedAt))updated++});
-   state.lastSync=data.generatedAt||new Date().toISOString();
+   let merged=0;
+   quotes.forEach(q=>{if(mergeStaticQuote(q,data.generatedAt))merged++});
+   const liveCount=quotes.filter(q=>q.status==='live').length;
+   const estimatedLiveCount=quotes.filter(q=>q.status==='live-estimate').length;
+   const snapshotCount=quotes.filter(q=>q.status==='online-snapshot').length;
+   const failedCount=Array.isArray(data.failed)?data.failed.length:Number(data.failedCount||0);
+   state.lastSync=data.lastSuccessfulAt||state.lastSync||null;
    state.lastPriceFeedCheck=new Date().toISOString();
    save();renderAll();
-   const age=Date.now()-Date.parse(state.lastSync);
-   const stale=!Number.isFinite(age)||age>PRICE_FRESH_MS;
+
+   const lastGood=Date.parse(data.lastSuccessfulAt||'');
+   const stale=!Number.isFinite(lastGood)||Date.now()-lastGood>PRICE_FRESH_MS;
+   const parts=[
+     `${liveCount} canlı doğrulandı`,
+     estimatedLiveCount?`${estimatedLiveCount} canlı + ölçü dönüşümlü`:null,
+     snapshotCount?`${snapshotCount} eski kayıt korundu`:null,
+     failedCount?`${failedCount} güvenle eşleşmedi`:null
+   ].filter(Boolean);
+
    setPriceSyncUI(
-     stale
-       ? `${updated} ŞOK fiyatı yüklendi; fiyat dosyası eski, yeni GitHub Actions çalışması bekleniyor.`
-       : `${updated} ŞOK fiyatı yüklendi · son doğrulama ${new Date(state.lastSync).toLocaleString('tr-TR')}.`,
-     stale?'error':'ok'
+     parts.join(' · ') + (data.lastSuccessfulAt?` · son canlı doğrulama ${new Date(data.lastSuccessfulAt).toLocaleString('tr-TR')}`:''),
+     liveCount||estimatedLiveCount ? (stale?'error':'ok') : 'error'
    );
-   if(!silent && !updated)alert('Fiyat dosyasında eşleşen ŞOK ürünü bulunamadı.');
+   if(!silent && !(liveCount||estimatedLiveCount)){
+     alert('ŞOK dosyası alındı ancak yeni canlı eşleşme doğrulanamadı. Eski güvenli fiyatlar korunuyor.');
+   }
+   return {merged,liveCount,estimatedLiveCount,snapshotCount,failedCount};
  }catch(e){
-   state.lastPriceFeedCheck=new Date().toISOString();saveLocal();
-   setPriceSyncUI('ŞOK fiyat dosyası alınamadı. Eski fiyatların doğrulama zamanı görünmeye devam edecek.','error');
-   if(!silent)alert(`Fiyat dosyası alınamadı: ${e?.message||'bağlantı hatası'}`);
+   state.lastPriceFeedCheck=new Date().toISOString();
+   save();
+   setPriceSyncUI(`ŞOK fiyat dosyası alınamadı: ${e.message}`,'error');
+   if(!silent)alert('Fiyat dosyası alınamadı. Uygulama son güvenli fiyatlarla devam ediyor.');
+   return null;
  }
 }
 function pricesNeedAutoRefresh(){
