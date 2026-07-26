@@ -1,0 +1,19 @@
+{
+  "name": "Aile Sofrası",
+  "short_name": "Aile Sofrası",
+  "description": "Sağlıklı aile menüsü, kiler kontrolü, alışveriş ve yaklaşık bütçe planı",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f3",
+  "theme_color": "#173f2d",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

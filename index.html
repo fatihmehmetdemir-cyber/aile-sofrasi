@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg">
+<meta name="theme-color" content="#173f2d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173f2d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+<style>:root{
+--bg:#f4f7f3;--card:#fff;--ink:#153326;--muted:#718077;--green:#173f2d;--green2:#286749;
+--mint:#e8f4eb;--line:#dfe8e1;--warm:#fff5de;--danger:#a53d3d;--shadow:0 12px 35px rgba(17,54,35,.09)
+}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+button,input,select{font:inherit}.hidden{display:none!important}
+.appbar{position:sticky;top:0;z-index:20;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;display:flex;align-items:center;justify-content:space-between;background:rgba(23,63,45,.96);color:#fff;backdrop-filter:blur(16px)}
+.appbar h1{font-size:20px;margin:2px 0 0}.mini{font-size:10px;letter-spacing:.16em;font-weight:800;opacity:.75}.mini.dark{color:var(--muted);opacity:1}
+.iconbtn{width:42px;height:42px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.11);color:#fff;border-radius:14px;font-size:23px}
+main{max-width:760px;margin:0 auto;padding:14px}.screen{display:none}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,#173f2d,#347357);color:#fff;border-radius:25px;padding:20px;display:flex;justify-content:space-between;gap:16px;align-items:flex-end;box-shadow:0 18px 45px rgba(23,63,45,.22)}
+.hero h2{font-size:28px;margin:8px 0 4px}.hero p{margin:0;opacity:.76;font-size:12px}.pill{display:inline-flex;background:rgba(255,255,255,.14);padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.hero-cost{text-align:right;min-width:145px}.hero-cost small{display:block;opacity:.75;font-size:11px}.hero-cost strong{display:block;font-size:27px;margin-top:5px}
+.budget-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.budget-strip>div{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px}.budget-strip small{display:block;color:var(--muted);font-size:10px}.budget-strip strong{display:block;font-size:18px;margin-top:4px;color:var(--green)}.month-budget-card{background:linear-gradient(135deg,#173f2d,#347357);color:#fff;border-radius:18px;padding:13px;margin:9px 0}.month-budget-card span,.month-budget-card small{display:block}.month-budget-card span{font-size:11px;opacity:.82}.month-budget-card strong{display:block;font-size:24px;margin:4px 0}.month-budget-card small{font-size:10px;opacity:.7}
+.day-picker-wrap{padding:12px 0 6px}.control{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:11px 12px}.control.wide,.wide{width:100%}.control.compact{max-width:210px}
+.mealstack{display:grid;gap:10px}.mealcard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px;box-shadow:var(--shadow)}
+.meal-top{display:flex;justify-content:space-between;gap:12px}.mealcard h3{margin:3px 0 6px;font-size:17px}.mealtype{font-size:11px;color:var(--green2);font-weight:900;letter-spacing:.05em}.mealprice{font-size:17px;font-weight:900;white-space:nowrap}
+.ingredients{font-size:12px;line-height:1.45;color:var(--muted);margin:8px 0 10px}.mealcard select{width:100%}
+.title-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 13px}.title-row h2{margin:2px 0 0;font-size:25px}
+.shop-costs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.shop-costs>div{background:#fff;border:1px solid var(--line);padding:13px;border-radius:17px}.shop-costs small{display:block;color:var(--muted)}.shop-costs strong{font-size:20px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#e5ece6;border-radius:14px;padding:4px;margin:12px 0 8px}.segbtn,.scopebtn{border:0;background:transparent;border-radius:11px;padding:10px;color:var(--green);font-weight:800}.segbtn.active,.scopebtn.active{background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.07)}.shop-scope{margin-top:10px;margin-bottom:8px}
+.hint{background:var(--warm);border:1px solid #eedcb2;border-radius:15px;padding:11px 12px;color:#695b38;font-size:12px;line-height:1.45;margin-bottom:10px}
+.checklist{display:grid;gap:8px}.shopitem{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.shopitem.inpantry{background:#f7faf7}.shopitem.inpantry .itemname{text-decoration:line-through;color:#78847d}.itemname{font-weight:800}.itemmeta{color:var(--muted);font-size:11px;margin-top:3px}.itemqty{text-align:right;font-weight:900}.pantrycheck{display:flex;align-items:center;gap:7px;color:var(--green2);font-size:12px;margin-top:7px}.pantrycheck input{width:18px;height:18px;accent-color:var(--green2)}
+.softbtn.undo-mode{background:#fff0dc;color:#8a5318;border:1px solid #ebc68f}.primary,.softbtn,.dangerbtn{border:0;border-radius:14px;padding:11px 14px;font-weight:850}.primary{background:var(--green);color:#fff}.softbtn{background:var(--mint);color:var(--green)}.dangerbtn{background:#f7e4e4;color:var(--danger)}.primary.wide,.softbtn.wide,.dangerbtn.wide{margin-top:10px}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.market-grid button{background:#fff;border:1px solid var(--line);color:var(--green);border-radius:15px;padding:11px;font-weight:800}
+.month-menu{display:grid;gap:9px}.daycard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}.daycard h3{margin:0 0 8px}.mealrow{display:grid;grid-template-columns:72px 1fr auto;gap:8px;padding:6px 0;border-top:1px dashed var(--line);font-size:12px}.mealrow:first-of-type{border-top:0}.mealrow b{color:var(--green2)}
+.people{display:grid;gap:9px}.person{background:#fff;border:1px solid var(--line);border-radius:18px;padding:13px;display:flex;justify-content:space-between;gap:12px}.person h3{margin:0}.person p{margin:4px 0 0;color:var(--muted);font-size:12px}.person-actions{display:flex;gap:7px;align-items:center}.person-actions button{padding:8px 10px}
+.settings-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:10px}.settings-card h3{margin:0 0 5px}.settings-card p{color:var(--muted);font-size:12px;line-height:1.45}.setting-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}.setting-line strong{text-align:right}
+.footnote{font-size:11px!important}.bottomnav{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:0;width:min(760px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:7px 6px calc(7px + env(safe-area-inset-bottom));backdrop-filter:blur(18px)}
+.navbtn{border:0;background:transparent;color:#77847c;display:grid;justify-items:center;gap:2px;padding:5px 0}.navbtn span{font-size:20px;line-height:1}.navbtn small{font-size:10px;font-weight:800}.navbtn.active{color:var(--green)}
+dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:0 30px 80px rgba(0,0,0,.23)}dialog::backdrop{background:rgba(0,0,0,.32)}dialog h3{margin-top:0}dialog label{display:block;font-size:12px;font-weight:700;margin:10px 0}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+@media(min-width:720px){.mealstack{grid-template-columns:1fr 1fr}.month-menu{grid-template-columns:1fr 1fr}.market-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+<title>Aile Sofrası v0.2.3</title>
+</head>
+<body>
+<div id="app">
+<header class="appbar">
+  <div>
+    <div class="mini">AİLE SOFRASI · v0.2.3</div>
+    <h1 id="hello">Bugün ne pişiriyoruz?</h1>
+  </div>
+  <button id="syncBtn" class="iconbtn" aria-label="Fiyatları yenile">↻</button>
+</header>
+
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div>
+      <span class="pill">Sağlıklı plan</span>
+      <h2 id="dayTitle">Gün 1</h2>
+      <p id="priceState">Fiyatlar hazırlanıyor…</p>
+    </div>
+    <div class="hero-cost"><small>Bugünün yaklaşık maliyeti</small><strong id="dayCost">—</strong></div>
+  </div>
+  <div class="budget-strip">
+    <div><small>30 günlük tahmini bütçe</small><strong id="monthBudget">—</strong></div>
+    <div><small>Haftalık ortalama</small><strong id="avgWeekBudget">—</strong></div>
+  </div>
+  <div class="day-picker-wrap"><select id="daySelect" class="control"></select></div>
+  <div class="mealstack" id="mealStack"></div>
+</section>
+
+<section id="shop" class="screen">
+  <div class="title-row">
+    <div><div class="mini dark">GÜNLÜK ALIŞVERİŞ</div><h2>Kiler kontrolü</h2></div>
+    <select id="shopDaySelect" class="control compact"></select>
+  </div>
+
+  <div class="seg shop-scope">
+    <button class="scopebtn active" data-scope="day">Günlük</button>
+    <button class="scopebtn" data-scope="week">Haftalık</button>
+  </div>
+
+  <div class="shop-costs">
+    <div><small id="needLabel">Tüm ihtiyaç</small><strong id="needCost">—</strong></div>
+    <div><small id="buyLabel">Marketten alınacak</small><strong id="buyCost">—</strong></div>
+  </div>
+
+  <div class="month-budget-card">
+    <span>30 günlük plan için tahmini ayrılacak bütçe</span>
+    <strong id="shopMonthBudget">—</strong>
+    <small>Kiler düşülmeden, mevcut aile ve seçili menülere göre hesaplanır.</small>
+  </div>
+
+  <div class="seg">
+    <button class="segbtn active" data-list="all">Tüm ihtiyaçlar</button>
+    <button class="segbtn" data-list="buy">Marketten alınacaklar <span id="buyCount"></span></button>
+  </div>
+
+  <div id="shopHint" class="hint">
+    “Kilerde var” dediğin ürün <b>marketten alınacaklar</b> listesinden çıkar. Ama bu günlük kontrol listesinde görünmeye devam eder.
+    Ertesi gün aynı ürün yeniden kontrol edilir.
+  </div>
+  <div id="shoppingList" class="checklist"></div>
+
+  <button id="shareShopBtn" class="primary wide">Alışveriş listesini paylaş</button>
+  <div class="market-grid" id="marketGrid"></div>
+</section>
+
+<section id="menu" class="screen">
+  <div class="title-row">
+    <div><div class="mini dark">30 GÜNLÜK PLAN</div><h2>Menü</h2></div>
+    <button id="cheapWeekBtn" class="softbtn">Haftayı ekonomikleştir</button>
+  </div>
+  <div id="monthMenu" class="month-menu"></div>
+</section>
+
+<section id="family" class="screen">
+  <div class="title-row">
+    <div><div class="mini dark">PORSİYONLAR</div><h2>Aile</h2></div>
+    <button id="addPersonBtn" class="softbtn">+ Kişi</button>
+  </div>
+  <div id="people" class="people"></div>
+  <div class="hint">Katsayılar mutfak gramajını ölçekler; tıbbi kalori reçetesi değildir.</div>
+</section>
+
+<section id="settings" class="screen">
+  <div class="title-row"><div><div class="mini dark">OTOMATİK VERİ</div><h2>Fiyat & ayarlar</h2></div></div>
+  <div class="settings-card">
+    <h3>İnternet fiyatları</h3>
+    <p>Uygulama fiyatı otomatik yeniler. Manuel fiyat girişi yok.</p>
+    <div class="setting-line"><span>Kaynak</span><strong>CarrefourSA çevrimiçi + önbellek</strong></div>
+    <div class="setting-line"><span>Varsayılan şehir</span><strong>Denizli</strong></div>
+    <div class="setting-line"><span>Son yenileme</span><strong id="lastSync">—</strong></div>
+    <button id="syncSettingsBtn" class="primary wide">Fiyatları şimdi yenile</button>
+    <p class="footnote">Marketler fiyat ve stoklarını teslimat bölgesine göre değiştirebilir. Uygulama kaynağı ve güncelleme zamanını gösterir.</p>
+  </div>
+  <div class="settings-card">
+    <h3>Veri</h3>
+    <button id="resetPantryBtn" class="softbtn wide">Tüm kiler işaretlerini temizle</button>
+    <button id="resetAllBtn" class="dangerbtn wide">Uygulamayı ilk haline döndür</button>
+  </div>
+  <div class="settings-card">
+    <h3>Kurulum</h3>
+    <button id="installBtn" class="primary wide hidden">Telefona kur</button>
+    <p id="installHelp" class="footnote">HTTPS altında açıldığında Android/Chrome “Uygulamayı yükle”, iPhone/Safari “Ana Ekrana Ekle” ile kurulabilir.</p>
+  </div>
+</section>
+</main>
+
+<nav class="bottomnav">
+<button class="navbtn active" data-screen="home"><span>⌂</span><small>Bugün</small></button>
+<button class="navbtn" data-screen="shop"><span>✓</span><small>Alışveriş</small></button>
+<button class="navbtn" data-screen="menu"><span>▦</span><small>Menü</small></button>
+<button class="navbtn" data-screen="family"><span>♙</span><small>Aile</small></button>
+<button class="navbtn" data-screen="settings"><span>⚙</span><small>Ayarlar</small></button>
+</nav>
+</div>
+
+<dialog id="personDialog">
+<form id="personForm" method="dialog">
+<h3>Kişi ekle / düzenle</h3>
+<label>Ad<input id="pName" class="control wide" required></label>
+<label>Yaş<input id="pAge" class="control wide" type="number" min="1" max="110" required></label>
+<label>Kilo<input id="pWeight" class="control wide" type="number" min="1" step=".1"></label>
+<label>Porsiyon katsayısı<input id="pFactor" class="control wide" type="number" min=".2" max="2" step=".05" required></label>
+<div class="dialog-actions"><button value="cancel" class="softbtn">Vazgeç</button><button value="default" class="primary">Kaydet</button></div>
+</form>
+</dialog>
+
+<script type="module">const seed={"appName": "Aile Sofrası", "currency": "TRY", "currencyLocale": "tr-TR", "basePortionUnits": 2.3, "people": [{"id": "baba", "name": "Baba", "age": 40, "weight": 83, "role": "Baba", "portionFactor": 1.0, "active": true}, {"id": "anne", "name": "Anne / Ev Kraliçesi", "age": 28, "weight": 55, "role": "Anne", "portionFactor": 0.85, "active": true}, {"id": "alparslan", "name": "Prens Alparslan", "age": 3, "weight": null, "role": "Çocuk", "portionFactor": 0.45, "active": true}], "days": [{"day": 1, "label": "1. Hafta Pazartesi", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "ec4a7512cd", "Akşam": "e9c94e0023", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 2, "label": "1. Hafta Salı", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "55fd77696f", "Akşam": "1203901b6e", "Ara Öğün": "a1d33c303e"}}, {"day": 3, "label": "1. Hafta Çarşamba", "meals": {"Kahvaltı": "8fe6c6ffb2", "Öğle": "1cda7c4ccd", "Akşam": "529ee62815", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 4, "label": "1. Hafta Perşembe", "meals": {"Kahvaltı": "24cefc0300", "Öğle": "bf9e8c15d5", "Akşam": "092cb0b0f9", "Ara Öğün": "a3bed5c1bb"}}, {"day": 5, "label": "1. Hafta Cuma", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "2a883f4c9c", "Akşam": "b4a89add15", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 6, "label": "1. Hafta Cumartesi", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "3cd4d5c291", "Akşam": "f2bd12d50d", "Ara Öğün": "a1d33c303e"}}, {"day": 7, "label": "1. Hafta Pazar", "meals": {"Kahvaltı": "281ad498bb", "Öğle": "6e5f5451eb", "Akşam": "f7e286ee86", "Ara Öğün": "a3bed5c1bb"}}, {"day": 8, "label": "2. Hafta Pazartesi", "meals": {"Kahvaltı": "9d8a43e883", "Öğle": "824226da92", "Akşam": "1203901b6e", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 9, "label": "2. Hafta Salı", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "20ffded42f", "Akşam": "e9c94e0023", "Ara Öğün": "a1d33c303e"}}, {"day": 10, "label": "2. Hafta Çarşamba", "meals": {"Kahvaltı": "8fe6c6ffb2", "Öğle": "ec4a7512cd", "Akşam": "1127c9f1ac", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 11, "label": "2. Hafta Perşembe", "meals": {"Kahvaltı": "24cefc0300", "Öğle": "d296290315", "Akşam": "f7e286ee86", "Ara Öğün": "a3bed5c1bb"}}, {"day": 12, "label": "2. Hafta Cuma", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "d77a4e9cd0", "Akşam": "e9c94e0023", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 13, "label": "2. Hafta Cumartesi", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "3cd4d5c291", "Akşam": "4770546bf0", "Ara Öğün": "a1d33c303e"}}, {"day": 14, "label": "2. Hafta Pazar", "meals": {"Kahvaltı": "281ad498bb", "Öğle": "6e5f5451eb", "Akşam": "f7e286ee86", "Ara Öğün": "a3bed5c1bb"}}, {"day": 15, "label": "3. Hafta Pazartesi", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "37d6906cf2", "Akşam": "1203901b6e", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 16, "label": "3. Hafta Salı", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "bf9e8c15d5", "Akşam": "0ddfd78a73", "Ara Öğün": "a1d33c303e"}}, {"day": 17, "label": "3. Hafta Çarşamba", "meals": {"Kahvaltı": "8fe6c6ffb2", "Öğle": "d296290315", "Akşam": "89504a48d2", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 18, "label": "3. Hafta Perşembe", "meals": {"Kahvaltı": "24cefc0300", "Öğle": "ec4a7512cd", "Akşam": "092cb0b0f9", "Ara Öğün": "a3bed5c1bb"}}, {"day": 19, "label": "3. Hafta Cuma", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "55fd77696f", "Akşam": "f2bd12d50d", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 20, "label": "3. Hafta Cumartesi", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "1cda7c4ccd", "Akşam": "e9c94e0023", "Ara Öğün": "a1d33c303e"}}, {"day": 21, "label": "3. Hafta Pazar", "meals": {"Kahvaltı": "281ad498bb", "Öğle": "6e5f5451eb", "Akşam": "529ee62815", "Ara Öğün": "a3bed5c1bb"}}, {"day": 22, "label": "4. Hafta Pazartesi", "meals": {"Kahvaltı": "9d8a43e883", "Öğle": "37d6906cf2", "Akşam": "1203901b6e", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 23, "label": "4. Hafta Salı", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "20ffded42f", "Akşam": "e9c94e0023", "Ara Öğün": "a1d33c303e"}}, {"day": 24, "label": "4. Hafta Çarşamba", "meals": {"Kahvaltı": "8fe6c6ffb2", "Öğle": "d296290315", "Akşam": "f7e286ee86", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 25, "label": "4. Hafta Perşembe", "meals": {"Kahvaltı": "24cefc0300", "Öğle": "6e5f5451eb", "Akşam": "1127c9f1ac", "Ara Öğün": "a3bed5c1bb"}}, {"day": 26, "label": "4. Hafta Cuma", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "3cd4d5c291", "Akşam": "89504a48d2", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 27, "label": "4. Hafta Cumartesi", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "ec4a7512cd", "Akşam": "f2bd12d50d", "Ara Öğün": "a1d33c303e"}}, {"day": 28, "label": "4. Hafta Pazar", "meals": {"Kahvaltı": "281ad498bb", "Öğle": "6e5f5451eb", "Akşam": "0ddfd78a73", "Ara Öğün": "a3bed5c1bb"}}, {"day": 29, "label": "5. Hafta Pazartesi", "meals": {"Kahvaltı": "2dfe844a45", "Öğle": "37d6906cf2", "Akşam": "e9c94e0023", "Ara Öğün": "f7cd2d2fe8"}}, {"day": 30, "label": "5. Hafta Salı", "meals": {"Kahvaltı": "41a6d46b0a", "Öğle": "20ffded42f", "Akşam": "1203901b6e", "Ara Öğün": "a1d33c303e"}}], "recipes": [{"id": "2dfe844a45", "mealType": "Kahvaltı", "title": "Yumurta + peynir + söğüş sebze + tam tahıllı ekmek", "ingredients": [{"name": "Yumurta", "amount": 3.0, "unit": "adet"}, {"name": "Beyaz peynir / lor", "amount": 100.0, "unit": "g"}, {"name": "Domates", "amount": 300.0, "unit": "g"}, {"name": "Salatalık", "amount": 250.0, "unit": "g"}, {"name": "Yeşillik", "amount": 1.0, "unit": "demet"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 150.0, "unit": "g"}, {"name": "Zeytin", "amount": 45.0, "unit": "g"}], "steps": "Yumurtaları haşlayın veya az yağlı tavada pişirin. Sebzeleri doğrayın. Peynir, zeytin ve ekmekle birlikte servis edin.", "childNote": "Başlangıç porsiyonu: kişi başı 1 yumurta. Alparslan'ın tabağı küçük olsun; isterse artırın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "ec4a7512cd", "mealType": "Öğle", "title": "Mercimek çorbası + yoğurt/cacık + salata", "ingredients": [{"name": "Kırmızı mercimek", "amount": 170.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Havuç", "amount": 150.0, "unit": "g"}, {"name": "Patates", "amount": 150.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 450.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 500.0, "unit": "g"}, {"name": "Limon", "amount": 1.0, "unit": "adet"}], "steps": "Mercimek, soğan, havuç ve patatesi suyla yumuşayana kadar pişirip blenderdan geçirin. Zeytinyağını ekleyin. Yoğurt/cacık ve salatayla servis edin.", "childNote": "Çorbaya ekstra tuz eklemek yerine yetişkinler sofrada gerekirse çok az eklesin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "e9c94e0023", "mealType": "Akşam", "title": "Fırında balık + bulgur + salata", "ingredients": [{"name": "Balık fileto", "amount": 450.0, "unit": "g"}, {"name": "Bulgur", "amount": 150.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 600.0, "unit": "g"}, {"name": "Limon", "amount": 2.0, "unit": "adet"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Balığı limonla fırında tamamen pişirin. Bulguru az yağla pilav yapın. Büyük salatayla servis edin.", "childNote": "Balık fileto yerine bütün balık alınacaksa temizlenmiş yaklaşık 700–800 g alın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "f7cd2d2fe8", "mealType": "Ara Öğün", "title": "Meyve + küçük kuruyemiş porsiyonu", "ingredients": [{"name": "Mevsim meyvesi", "amount": 400.0, "unit": "g"}, {"name": "Çiğ badem/fındık/ceviz", "amount": 30.0, "unit": "g"}], "steps": "Meyveyi ailece paylaşın. Kuruyemişi Alparslan için ince kıyılmış/öğütülmüş verin.", "childNote": "Aç değilseniz ara öğün şart değil.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "41a6d46b0a", "mealType": "Kahvaltı", "title": "Yoğurt/kefir + meyve + ceviz + tam tahıllı ekmek", "ingredients": [{"name": "Yoğurt", "amount": 450.0, "unit": "g"}, {"name": "Mevsim meyvesi", "amount": 400.0, "unit": "g"}, {"name": "Ceviz içi", "amount": 30.0, "unit": "g"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 120.0, "unit": "g"}], "steps": "Yoğurdu kaselere paylaştırın. Meyveyi doğrayıp ekleyin. Cevizi yetişkinler için iri, Alparslan için ince kıyılmış/öğütülmüş verin. Ekmeği yanında servis edin.", "childNote": "3 yaş için bütün sert kuruyemiş vermeyin; ince kıyılmış/öğütülmüş kullanın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "55fd77696f", "mealType": "Öğle", "title": "Zeytinyağlı taze fasulye + cacık", "ingredients": [{"name": "Taze fasulye", "amount": 750.0, "unit": "g"}, {"name": "Domates", "amount": 350.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 500.0, "unit": "g"}, {"name": "Salatalık", "amount": 250.0, "unit": "g"}, {"name": "Sarımsak", "amount": 1.0, "unit": "diş"}], "steps": "Soğanı zeytinyağında hafifçe çevirin; fasulye ve domatesi ekleyip kısık ateşte pişirin. Yoğurt-salatalıkla cacık hazırlayın.", "childNote": "Alparslan için fasulyeyi küçük parçalara bölün.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "1203901b6e", "mealType": "Akşam", "title": "Fırın/ızgara tavuk + sebze + bulgur", "ingredients": [{"name": "Tavuk göğüs / but eti", "amount": 450.0, "unit": "g"}, {"name": "Bulgur", "amount": 150.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 750.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Tavuğu ve sebzeleri fırında tamamen pişirin. Bulguru ayrı hazırlayın.", "childNote": "Alparslan için tavukları küçük ve yumuşak parçalara ayırın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "a1d33c303e", "mealType": "Ara Öğün", "title": "Ara öğün gerekmeyebilir", "ingredients": [], "steps": "Açlık yoksa ara öğün eklemeyin; su ana içecek olsun.", "childNote": "Alparslan için gün içinde ihtiyaca göre 1–2 küçük sağlıklı ara öğün sunulabilir.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "8fe6c6ffb2", "mealType": "Kahvaltı", "title": "Menemen + peynir + tam tahıllı ekmek", "ingredients": [{"name": "Yumurta", "amount": 3.0, "unit": "adet"}, {"name": "Domates", "amount": 450.0, "unit": "g"}, {"name": "Yeşil biber", "amount": 120.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 80.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 15.0, "unit": "ml"}, {"name": "Beyaz peynir / lor", "amount": 70.0, "unit": "g"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 150.0, "unit": "g"}], "steps": "Soğan ve biberi zeytinyağında kısa süre çevirin. Domatesi ekleyip suyunu biraz çektirin. Yumurtaları kırıp tamamen pişirin. Peynir ve ekmekle servis edin.", "childNote": "Alparslan'ın porsiyonuna ekstra tuz eklemeyin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "1cda7c4ccd", "mealType": "Öğle", "title": "Sebze çorbası + yoğurt + küçük salata", "ingredients": [{"name": "Karışık çorbalık sebze", "amount": 750.0, "unit": "g"}, {"name": "Kırmızı mercimek", "amount": 70.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 400.0, "unit": "g"}], "steps": "Sebzeleri mercimekle birlikte pişirin. İsterseniz pürüzsüz hale getirin. Zeytinyağını son aşamada ekleyin. Yoğurt ve salatayla tamamlayın.", "childNote": "Karın şişkinliği varsa çiğ salatayı azaltıp pişmiş sebzeyi artırın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "529ee62815", "mealType": "Akşam", "title": "Nohut + bulgur + yoğurt", "ingredients": [{"name": "Kuru nohut", "amount": 230.0, "unit": "g"}, {"name": "Bulgur", "amount": 130.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Yoğurt", "amount": 450.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Nohudu ıslatıp haşlayın; soğan-domatesle pişirin. Bulgur ve yoğurtla servis edin.", "childNote": "Gaz eğilimi varsa nohut porsiyonunu küçültüp yoğurdu artırabilirsiniz.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "24cefc0300", "mealType": "Kahvaltı", "title": "Peynirli tam tahıllı tost + ayran + söğüş sebze", "ingredients": [{"name": "Tam buğday / çavdar ekmeği", "amount": 180.0, "unit": "g"}, {"name": "Kaşar / beyaz peynir", "amount": 110.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Salatalık", "amount": 220.0, "unit": "g"}, {"name": "Ayran", "amount": 600.0, "unit": "ml"}], "steps": "Ekmeğin arasına peyniri koyup tost yapın. Domates-salatalık ve ayranla servis edin.", "childNote": "Şarküteri eklemeyin; sade peynirli tutun.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "bf9e8c15d5", "mealType": "Öğle", "title": "Tavuklu büyük salata + tam tahıllı ekmek", "ingredients": [{"name": "Tavuk göğüs", "amount": 350.0, "unit": "g"}, {"name": "Karışık yeşillik", "amount": 300.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Salatalık", "amount": 220.0, "unit": "g"}, {"name": "Haşlanmış mısır", "amount": 100.0, "unit": "g"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 150.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Limon", "amount": 1.0, "unit": "adet"}], "steps": "Tavuğu ızgara/fırında tamamen pişirip dilimleyin. Sebzelerle karıştırın. Zeytinyağı-limon ekleyin; ekmekle servis edin.", "childNote": "Alparslan için tavuk ve sebzeleri küçük doğrayın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "092cb0b0f9", "mealType": "Akşam", "title": "Ev yapımı köfte + fırın sebze + yoğurt", "ingredients": [{"name": "Yağsız dana kıyma", "amount": 360.0, "unit": "g"}, {"name": "Yumurta", "amount": 1.0, "unit": "adet"}, {"name": "Kuru soğan", "amount": 100.0, "unit": "g"}, {"name": "Tam buğday galeta / ekmek içi", "amount": 30.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 850.0, "unit": "g"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}], "steps": "Kıyma, yumurta, soğan ve ekmek içini yoğurup küçük köfteler yapın. Sebzelerle birlikte fırında pişirin. Yoğurtla servis edin.", "childNote": "Alparslan'a küçük, iyi pişmiş köfte verin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "a3bed5c1bb", "mealType": "Ara Öğün", "title": "Yoğurt + meyve", "ingredients": [{"name": "Yoğurt", "amount": 350.0, "unit": "g"}, {"name": "Mevsim meyvesi", "amount": 350.0, "unit": "g"}], "steps": "Yoğurt ve meyveyi küçük kaselerde servis edin.", "childNote": "Şeker eklemeyin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "2a883f4c9c", "mealType": "Öğle", "title": "Ezogelin + ayran + salata", "ingredients": [{"name": "Kırmızı mercimek", "amount": 120.0, "unit": "g"}, {"name": "İnce bulgur", "amount": 50.0, "unit": "g"}, {"name": "Pirinç", "amount": 30.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 100.0, "unit": "g"}, {"name": "Domates salçası", "amount": 20.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Ayran", "amount": 600.0, "unit": "ml"}, {"name": "Salata malzemesi", "amount": 450.0, "unit": "g"}], "steps": "Soğanı kısa süre çevirin; mercimek, bulgur, pirinç ve salçayı ekleyip bol suyla pişirin. Ayran ve salatayla servis edin.", "childNote": "Acı pul biberi Alparslan'ın porsiyonuna koymayın; senin mesane hassasiyetin sürüyorsa da azalt.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "b4a89add15", "mealType": "Akşam", "title": "Yağlı balık + fırın patates + sebze", "ingredients": [{"name": "Somon / uskumru / sardalya fileto", "amount": 450.0, "unit": "g"}, {"name": "Patates", "amount": 650.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 550.0, "unit": "g"}, {"name": "Limon", "amount": 2.0, "unit": "adet"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}], "steps": "Patates ve sebzeyi fırına alın; son bölümde balığı ekleyip tamamen pişirin. Limonla servis edin.", "childNote": "Balığın kılçıklarını Alparslan için çok dikkatli kontrol edin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "3cd4d5c291", "mealType": "Öğle", "title": "Zeytinyağlı barbunya + cacık", "ingredients": [{"name": "Kuru barbunya", "amount": 230.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Havuç", "amount": 150.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 500.0, "unit": "g"}, {"name": "Salatalık", "amount": 250.0, "unit": "g"}], "steps": "Barbunyayı önceden ıslatın ve haşlayın. Soğan, havuç ve domatesle kısık ateşte pişirin. Cacıkla servis edin.", "childNote": "Gaz yaparsa porsiyonu küçük başlatın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "f2bd12d50d", "mealType": "Akşam", "title": "Tavuk sote + bol sebze + bulgur", "ingredients": [{"name": "Tavuk göğüs / but eti", "amount": 450.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 750.0, "unit": "g"}, {"name": "Bulgur", "amount": 130.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Tavuğu küçük doğrayıp tamamen pişirin. Sebzeleri ekleyip kısa süre soteleyin. Bulguru ayrı pişirin.", "childNote": "Çok acı baharat kullanmayın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "281ad498bb", "mealType": "Kahvaltı", "title": "Dengeli aile kahvaltısı", "ingredients": [{"name": "Yumurta", "amount": 3.0, "unit": "adet"}, {"name": "Beyaz peynir / lor", "amount": 110.0, "unit": "g"}, {"name": "Zeytin", "amount": 50.0, "unit": "g"}, {"name": "Domates", "amount": 350.0, "unit": "g"}, {"name": "Salatalık", "amount": 300.0, "unit": "g"}, {"name": "Yeşillik", "amount": 1.0, "unit": "demet"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 180.0, "unit": "g"}], "steps": "Yumurtaları haşlayın veya az yağla pişirin. Peynir, zeytin, bol söğüş sebze ve ekmekle aile sofrası hazırlayın.", "childNote": "Hamur işi olacaksa küçük porsiyon; tabağın geri kalanı normal kahvaltı olsun.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "6e5f5451eb", "mealType": "Öğle", "title": "Hafif çorba + yoğurt", "ingredients": [{"name": "Karışık çorbalık sebze", "amount": 700.0, "unit": "g"}, {"name": "Kırmızı mercimek", "amount": 60.0, "unit": "g"}, {"name": "Yoğurt", "amount": 450.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 15.0, "unit": "ml"}], "steps": "Sebze ve mercimeği pişirip çorba haline getirin. Yoğurtla servis edin.", "childNote": "Özellikle ağır bir kahvaltı/akşam yemeği olan günlerde hafif öğün.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "f7e286ee86", "mealType": "Akşam", "title": "Etli sebze yemeği + yoğurt", "ingredients": [{"name": "Yağsız dana kuşbaşı", "amount": 320.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 900.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}], "steps": "Eti tencerede mühürleyip soğan, domates ve sebzelerle yumuşayana kadar pişirin. Yoğurtla servis edin.", "childNote": "Et porsiyonu küçük, sebze miktarı yüksek tutuldu.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "9d8a43e883", "mealType": "Kahvaltı", "title": "Lor/labne + ceviz + sebze + tam tahıllı ekmek", "ingredients": [{"name": "Lor / labne", "amount": 130.0, "unit": "g"}, {"name": "Ceviz içi", "amount": 30.0, "unit": "g"}, {"name": "Domates", "amount": 300.0, "unit": "g"}, {"name": "Salatalık", "amount": 250.0, "unit": "g"}, {"name": "Yeşillik", "amount": 1.0, "unit": "demet"}, {"name": "Tam buğday / çavdar ekmeği", "amount": 150.0, "unit": "g"}], "steps": "Lor/labneyi tabağa alın. Sebze ve ekmekle servis edin. Cevizi Alparslan için ince kıyın.", "childNote": "Yulaf yerine pratik ana alternatiflerden biri.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "824226da92", "mealType": "Öğle", "title": "Kuru fasulye + yoğurt + salata", "ingredients": [{"name": "Kuru fasulye", "amount": 230.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Domates salçası", "amount": 20.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 450.0, "unit": "g"}], "steps": "Fasulyeyi geceden ıslatıp haşlayın. Soğan, domates ve salçayla pişirin. Yoğurt ve salatayla servis edin.", "childNote": "Gaz için ıslatma suyunu döküp temiz suyla pişirin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "20ffded42f", "mealType": "Öğle", "title": "Zeytinyağlı sebze + yoğurt", "ingredients": [{"name": "Mevsim sebzesi", "amount": 850.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 450.0, "unit": "g"}], "steps": "Sebzeleri soğan ve domatesle kısık ateşte pişirin. Yoğurtla servis edin.", "childNote": "Mevsime göre kabak, pırasa, enginar, bamya veya fasulye kullanılabilir.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "1127c9f1ac", "mealType": "Akşam", "title": "Hindi/tavuk köfte + sebze + yoğurt", "ingredients": [{"name": "Hindi / tavuk kıyma", "amount": 400.0, "unit": "g"}, {"name": "Yumurta", "amount": 1.0, "unit": "adet"}, {"name": "Kuru soğan", "amount": 100.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 750.0, "unit": "g"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}], "steps": "Kıymayı yumurta ve soğanla yoğurun. Küçük köfteler yapıp sebzelerle fırında pişirin. Yoğurtla servis edin.", "childNote": "İşlenmiş hazır köfte yerine ev yapımı.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "d296290315", "mealType": "Öğle", "title": "Nohutlu büyük salata + yoğurt", "ingredients": [{"name": "Kuru nohut", "amount": 190.0, "unit": "g"}, {"name": "Karışık yeşillik", "amount": 300.0, "unit": "g"}, {"name": "Domates", "amount": 250.0, "unit": "g"}, {"name": "Salatalık", "amount": 220.0, "unit": "g"}, {"name": "Yoğurt", "amount": 300.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Limon", "amount": 1.0, "unit": "adet"}], "steps": "Nohudu ıslatıp haşlayın. Sebzelerle karıştırın, zeytinyağı-limon ekleyin. Yoğurtla tamamlayın.", "childNote": "Alparslan için nohutları hafifçe ezebilirsiniz.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "d77a4e9cd0", "mealType": "Öğle", "title": "Sebze çorbası + peynirli salata", "ingredients": [{"name": "Karışık çorbalık sebze", "amount": 700.0, "unit": "g"}, {"name": "Beyaz peynir / lor", "amount": 120.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 500.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Limon", "amount": 1.0, "unit": "adet"}], "steps": "Sebzelerden çorba hazırlayın. Salataya peyniri ufalayın, zeytinyağı-limon ekleyin.", "childNote": "Çocuğun salatasını küçük doğrayın.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "4770546bf0", "mealType": "Akşam", "title": "Tavuk şiş + bulgur + salata", "ingredients": [{"name": "Tavuk göğüs / but eti", "amount": 450.0, "unit": "g"}, {"name": "Bulgur", "amount": 150.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 550.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Limon", "amount": 1.0, "unit": "adet"}], "steps": "Tavuğu şişe dizip ızgara/fırında tamamen pişirin. Bulguru ve salatayı hazırlayın.", "childNote": "Çocuk porsiyonunda şiş çubuğunu sofraya getirmeyin; eti çıkarıp küçük parçalar halinde verin.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "37d6906cf2", "mealType": "Öğle", "title": "Yeşil mercimek yemeği + yoğurt + salata", "ingredients": [{"name": "Yeşil mercimek", "amount": 210.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Havuç", "amount": 120.0, "unit": "g"}, {"name": "Domates", "amount": 200.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 20.0, "unit": "ml"}, {"name": "Yoğurt", "amount": 400.0, "unit": "g"}, {"name": "Salata malzemesi", "amount": 400.0, "unit": "g"}], "steps": "Mercimeği haşlayın. Soğan, havuç ve domatesle tencerede pişirin. Yoğurt ve salatayla servis edin.", "childNote": "Yumuşak kıvam Alparslan için daha kolay olur.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "0ddfd78a73", "mealType": "Akşam", "title": "Zeytinyağlı sebze + bulgur + cacık", "ingredients": [{"name": "Mevsim sebzesi", "amount": 850.0, "unit": "g"}, {"name": "Bulgur", "amount": 150.0, "unit": "g"}, {"name": "Yoğurt", "amount": 500.0, "unit": "g"}, {"name": "Salatalık", "amount": 250.0, "unit": "g"}, {"name": "Kuru soğan", "amount": 120.0, "unit": "g"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Sebzeyi zeytinyağı-soğanla pişirin. Bulguru hazırlayın. Yoğurt ve salatalıkla cacık yapın.", "childNote": "Et olmayan dengeli bir akşam seçeneği.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}, {"id": "89504a48d2", "mealType": "Akşam", "title": "Fırında balık + sebze", "ingredients": [{"name": "Balık fileto", "amount": 450.0, "unit": "g"}, {"name": "Karışık sebze", "amount": 800.0, "unit": "g"}, {"name": "Limon", "amount": 2.0, "unit": "adet"}, {"name": "Zeytinyağı", "amount": 25.0, "unit": "ml"}], "steps": "Sebzeleri fırına alın; balığı ekleyip tamamen pişirin. Limonla servis edin.", "childNote": "Yanında ekmek gerekiyorsa aile için toplam 100–120 g tam tahıllı ekmek eklenebilir.", "healthy": true, "source": "Aile Sofrası 30 Günlük Plan"}], "priceBook": [{"ingredient": "Ayran", "unit": "ml", "price": 57.95, "basisAmount": 1000, "basisUnit": "ml", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/icim-sise-ayran-1-litre-p-30071696", "note": "İçim 1 L online visible price."}, {"ingredient": "Balık fileto", "unit": "g", "price": 399.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/levrek-400-600-g-p-30171652", "note": "Levrek proxy, price/kg."}, {"ingredient": "Beyaz peynir / lor", "unit": "g", "price": 389.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/icim-kutu-beyaz-peynir-500-gr-p-30039414", "note": "Regular 500 g price normalized to kg; loyalty price may be lower."}, {"ingredient": "Bulgur", "unit": "g", "price": 33.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/bulgur/c/1142", "note": "Carrefour pilavlık bulgur 1 kg."}, {"ingredient": "Ceviz içi", "unit": "g", "price": 500, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Domates", "unit": "g", "price": 49.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/domates-salkim-kg-p-30097558", "note": "Regular visible price; location may vary."}, {"ingredient": "Domates salçası", "unit": "g", "price": 55, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Havuç", "unit": "g", "price": 35, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Haşlanmış mısır", "unit": "g", "price": 100, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Hindi / tavuk kıyma", "unit": "g", "price": 190, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Karışık sebze", "unit": "g", "price": 65, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Karışık yeşillik", "unit": "g", "price": 25, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Karışık çorbalık sebze", "unit": "g", "price": 420, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Kaşar / beyaz peynir", "unit": "g", "price": 389.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/icim-kutu-beyaz-peynir-500-gr-p-30039414", "note": "White-cheese proxy normalized to kg."}, {"ingredient": "Kuru barbunya", "unit": "g", "price": 125, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Kuru fasulye", "unit": "g", "price": 77.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/kuru-fasulye/c/1155", "note": "Carrefour kuru fasulye 1 kg."}, {"ingredient": "Kuru nohut", "unit": "g", "price": 62.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/nohut/c/1154", "note": "Carrefour nohut 1 kg regular visible price."}, {"ingredient": "Kuru soğan", "unit": "g", "price": 33.3, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/file-sogan-kg-p-30134112", "note": "3 kg file price normalized to kg."}, {"ingredient": "Kırmızı mercimek", "unit": "g", "price": 49.5, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/kirmizi-mercimek/c/1147", "note": "Carrefour kırmızı mercimek 1 kg."}, {"ingredient": "Limon", "unit": "adet", "price": 12, "basisAmount": 1, "basisUnit": "adet", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Lor / labne", "unit": "g", "price": 180, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Mevsim meyvesi", "unit": "g", "price": 65, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Mevsim sebzesi", "unit": "g", "price": 65, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Patates", "unit": "g", "price": 44.95, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/patates-taze-kg-p-30062131", "note": "Taze patates online price."}, {"ingredient": "Pirinç", "unit": "g", "price": 90, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Salata malzemesi", "unit": "g", "price": 75, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Salatalık", "unit": "g", "price": 59.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/salatalik-kg-p-30007782", "note": "Regular visible price; CarrefourSA Kart price may be lower."}, {"ingredient": "Sarımsak", "unit": "diş", "price": 2.5, "basisAmount": 1, "basisUnit": "diş", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Somon / uskumru / sardalya fileto", "unit": "g", "price": 599.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/somon-butun-kg-p-30170513", "note": "Whole salmon proxy, price/kg."}, {"ingredient": "Tam buğday / çavdar ekmeği", "unit": "g", "price": 130.0, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/eksi-mayali-tam-bugdayli-ekmek-500-g-p-20000268", "note": "Regular 500 g price normalized to kg."}, {"ingredient": "Tam buğday galeta / ekmek içi", "unit": "g", "price": 85, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Tavuk göğüs", "unit": "g", "price": 245.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/lezita/pilic/b/1061", "note": "Lezita tabaklı bonfile regular online price/kg."}, {"ingredient": "Tavuk göğüs / but eti", "unit": "g", "price": 245.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/lezita/pilic/b/1061", "note": "Lezita tabaklı bonfile regular online price/kg."}, {"ingredient": "Taze fasulye", "unit": "g", "price": 115, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Yağsız dana kuşbaşı", "unit": "g", "price": 959.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/dana/c/1046", "note": "Dana kuşbaşı regular category price/kg."}, {"ingredient": "Yağsız dana kıyma", "unit": "g", "price": 879.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/dana-kiyma-14-20-yag-kg-p-30054577", "note": "Regular visible price/kg."}, {"ingredient": "Yeşil biber", "unit": "g", "price": 85, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Yeşil mercimek", "unit": "g", "price": 67.5, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/yesil-mercimek/c/1146", "note": "Carrefour yeşil mercimek 1 kg."}, {"ingredient": "Yeşillik", "unit": "demet", "price": 25, "basisAmount": 1, "basisUnit": "demet", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Yoğurt", "unit": "g", "price": 90, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Yumurta", "unit": "adet", "price": 4.3, "basisAmount": 1, "basisUnit": "adet", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/carrefour-yumurta-30-lu-m-boy-p-30257426", "note": "30'lu paket regular unit price; campaigns may be lower."}, {"ingredient": "Zeytin", "unit": "g", "price": 230, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Zeytinyağı", "unit": "ml", "price": 230, "basisAmount": 1000, "basisUnit": "ml", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "Çiğ badem/fındık/ceviz", "unit": "g", "price": 500, "basisAmount": 1000, "basisUnit": "g", "provider": "Otomatik tahmin", "updatedAt": "2026-07-26", "isDemo": false, "status": "estimate", "note": "Canlı market eşleşmesi bulunana kadar otomatik maliyet tahmini."}, {"ingredient": "İnce bulgur", "unit": "g", "price": 33.9, "basisAmount": 1000, "basisUnit": "g", "provider": "CarrefourSA", "status": "online-snapshot", "updatedAt": "2026-07-26", "sourceUrl": "https://www.carrefoursa.com/bulgur/c/1142", "note": "Bulgur category proxy."}], "marketProviders": [{"id": "migros", "name": "Migros Sanal Market", "url": "https://www.migros.com.tr/", "mode": "handoff"}, {"id": "getir", "name": "GetirBüyük", "url": "https://getir.com/buyuk/", "mode": "handoff"}, {"id": "yemeksepeti", "name": "Yemeksepeti", "url": "https://www.yemeksepeti.com/", "mode": "handoff"}, {"id": "trendyol", "name": "Trendyol", "url": "https://www.trendyol.com/", "mode": "handoff"}], "blockedHealthyTerms": ["sucuk", "salam", "sosis", "kola", "enerji içeceği", "cips", "şekerleme", "kızartma"], "version": "0.2", "defaultCity": "Denizli", "pricePolicy": "automatic-only"};
+const KEY='aile-sofrasi-v02';
+const clone=x=>JSON.parse(JSON.stringify(x));
+const money=new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null}}
+let state=(()=>{try{return {...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return initial()}})();
+const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+const recipe=id=>state.recipes.find(r=>r.id===id);
+const day=n=>state.days.find(d=>d.day===Number(n));
+const factor=()=>state.people.filter(p=>p.active).reduce((s,p)=>s+Number(p.portionFactor||0),0)/(seed.basePortionUnits||2.3);
+const pkey=(n,u)=>`${n}|${u}`;
+function priceOf(name,unit){return state.priceBook.find(p=>p.ingredient===name&&p.unit===unit)}
+function itemCost(i){const p=priceOf(i.name,i.unit);return p?i.amount*factor()/Number(p.basisAmount||1)*Number(p.price||0):0}
+function recipeCost(r){return r.ingredients.reduce((s,i)=>s+itemCost(i),0)}
+function dayCost(d){return Object.values(d.meals).reduce((s,id)=>{const r=recipe(id);return s+(r?recipeCost(r):0)},0)}
+function monthCost(){return state.days.reduce((s,d)=>s+dayCost(d),0)}
+function qty(x,u){x*=factor();if(['g','ml'].includes(u))return `${Math.round(x/10)*10} ${u}`;if(['adet','demet','diş'].includes(u))return `${Math.max(1,Math.ceil(x))} ${u}`;return `${x.toFixed(1)} ${u}`}
+function aggregateDay(dn){
+ const m=new Map();Object.values(day(dn).meals).forEach(id=>{const r=recipe(id);r?.ingredients.forEach(i=>{const k=pkey(i.name,i.unit),v=m.get(k)||{name:i.name,unit:i.unit,amount:0};v.amount+=i.amount;m.set(k,v)})});return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
+}
+function weekBounds(dn){const s=Math.floor((Number(dn)-1)/7)*7+1;return [s,Math.min(s+6,30)]}
+function aggregateWeek(dn){
+ const [s,e]=weekBounds(dn),m=new Map();
+ state.days.filter(d=>d.day>=s&&d.day<=e).forEach(d=>aggregateDay(d.day).forEach(i=>{
+   const k=pkey(i.name,i.unit),v=m.get(k)||{name:i.name,unit:i.unit,amount:0};
+   v.amount+=i.amount;m.set(k,v);
+ }));
+ return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
+}
+function weekKey(dn){const [s,e]=weekBounds(dn);return `${s}-${e}`}
+function weeklyPantryHas(dn,i){return !!state.weeklyPantry?.[weekKey(dn)]?.[pkey(i.name,i.unit)]}
+function setWeeklyPantry(dn,i,v){const wk=weekKey(dn);state.weeklyPantry[wk] ||= {};state.weeklyPantry[wk][pkey(i.name,i.unit)]=v;save()}
+function pantryHas(dn,i){return !!state.pantry?.[dn]?.[pkey(i.name,i.unit)]}
+function setPantry(dn,i,v){state.pantry[dn] ||= {};state.pantry[dn][pkey(i.name,i.unit)]=v;save()}
+function latestPriceStatus(items){
+ const ps=items.map(i=>priceOf(i.name,i.unit)).filter(Boolean);const live=ps.filter(p=>p.status==='live').length;const snap=ps.filter(p=>p.status==='online-snapshot').length;
+ if(live)return `${live} kalem canlı · ${snap} kalem son çevrimiçi fiyat`;
+ if(snap)return `${snap} kalem son çevrimiçi fiyat · kalanlar otomatik tahmin`;
+ return 'Otomatik yaklaşık fiyat';
+}
+function fillSelects(){const o=state.days.map(d=>`<option value="${d.day}">Gün ${d.day} · ${d.label}</option>`).join('');$('#daySelect').innerHTML=o;$('#shopDaySelect').innerHTML=o;$('#daySelect').value=state.day;$('#shopDaySelect').value=state.day}
+function mealOptions(type,id){return state.recipes.filter(r=>r.mealType===type&&r.healthy).sort((a,b)=>recipeCost(a)-recipeCost(b)).map(r=>`<option value="${r.id}" ${r.id===id?'selected':''}>${r.title} · ${money.format(recipeCost(r))}</option>`).join('')}
+function renderHome(){
+ const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=`Gün ${d.day} · ${d.label}`;$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
+ $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{const r=recipe(id);return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${r.ingredients.slice(0,6).map(i=>`${i.name} ${qty(i.amount,i.unit)}`).join(' · ')}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}">${mealOptions(type,id)}</select></article>`}).join('');
+ $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()})
+}
+function renderShop(){
+ const weekly=state.shoppingScope==='week';
+ const items=weekly?aggregateWeek(state.day):aggregateDay(state.day);
+ const hasFn=weekly?((i)=>weeklyPantryHas(state.day,i)):((i)=>pantryHas(state.day,i));
+ let all=0,buy=0,buyCount=0;
+ items.forEach(i=>{const c=itemCost(i);all+=c;if(!hasFn(i)){buy+=c;buyCount++}});
+ $('#needCost').textContent=money.format(all);$('#buyCost').textContent=money.format(buy);$('#buyCount').textContent=`(${buyCount})`;
+ $('#shopMonthBudget').textContent=money.format(monthCost());
+ if(weekly){
+   const [s,e]=weekBounds(state.day);
+   $('#needLabel').textContent=`Haftalık ihtiyaç · Gün ${s}–${e}`;
+   $('#buyLabel').textContent='Haftalık market';
+   $('#shopHint').innerHTML='Haftalık görünümde <b>Kilerde var</b> seçimi yalnızca bu hafta için geçerlidir. Ürün market listesinden çıkar ama <b>Tüm ihtiyaçlar</b> sekmesinde görünmeye devam eder.';
+ }else{
+   $('#needLabel').textContent='Tüm ihtiyaç';
+   $('#buyLabel').textContent='Marketten alınacak';
+   $('#shopHint').innerHTML='“Kilerde var” dediğin ürün <b>marketten alınacaklar</b> listesinden çıkar. Ama bu günlük kontrol listesinde görünmeye devam eder. Ertesi gün aynı ürün yeniden kontrol edilir.';
+ }
+ const shown=state.listMode==='all'?items:items.filter(i=>!hasFn(i));
+ $('#shoppingList').innerHTML=shown.length?shown.map(i=>{
+   const h=hasFn(i),p=priceOf(i.name,i.unit);
+   return `<div class="shopitem ${h?'inpantry':''}"><div><div class="itemname">${i.name}</div><div class="itemmeta">${p?.provider||'Otomatik'} · ${p?.status==='live'?'canlı':p?.status==='online-snapshot'?'son çevrimiçi':'yaklaşık'}${p?.updatedAt?' · '+String(p.updatedAt).slice(0,10):''}</div><label class="pantrycheck"><input class="pantrybox" data-key="${encodeURIComponent(pkey(i.name,i.unit))}" type="checkbox" ${h?'checked':''}> Kilerde var</label></div><div class="itemqty">${qty(i.amount,i.unit)}<div class="itemmeta">${money.format(itemCost(i))}</div></div></div>`;
+ }).join(''):`<div class="hint">Harika — ${weekly?'bu hafta':'bugün'} marketten alınacak ürün kalmadı. Yine de “Tüm ihtiyaçlar” sekmesinden kileri kontrol edebilirsin.</div>`;
+ $$('.pantrybox').forEach(x=>x.onchange=e=>{
+   const [name,unit]=decodeURIComponent(e.target.dataset.key).split('|');
+   const item=items.find(i=>i.name===name&&i.unit===unit);
+   if(weekly)setWeeklyPantry(state.day,item,e.target.checked);else setPantry(state.day,item,e.target.checked);
+   renderShop();
+ });
+}
+function updateOptimizeButton(){
+ const start=Math.floor((state.day-1)/7)*7+1,end=Math.min(start+6,30),key=`${start}-${end}`;
+ const btn=$('#cheapWeekBtn');
+ if(!btn)return;
+ const optimized=!!state.weekOptimizationBackup?.[key];
+ btn.textContent=optimized?'Ekonomikleşmeyi Geri Al':'Haftayı Ekonomikleştir';
+ btn.classList.toggle('undo-mode',optimized);
+}
+function renderMenu(){
+ $('#monthMenu').innerHTML=state.days.map(d=>`<article class="daycard"><h3>Gün ${d.day} <span class="itemmeta">${d.label}</span></h3>${Object.entries(d.meals).map(([t,id])=>{const r=recipe(id);return `<div class="mealrow"><b>${t}</b><span>${r.title}</span><strong>${money.format(recipeCost(r))}</strong></div>`}).join('')}<div class="mealrow"><b>Toplam</b><span></span><strong>${money.format(dayCost(d))}</strong></div></article>`).join('')
+}
+function renderPeople(){
+ $('#people').innerHTML=state.people.map(p=>`<div class="person"><div><h3>${p.name}</h3><p>${p.age} yaş${p.weight?` · ${p.weight} kg`:''} · porsiyon ×${Number(p.portionFactor).toFixed(2)}</p></div><div class="person-actions"><label class="itemmeta"><input class="activep" data-id="${p.id}" type="checkbox" ${p.active?'checked':''}> aktif</label><button class="softbtn editp" data-id="${p.id}">Düzenle</button><button class="dangerbtn delp" data-id="${p.id}">×</button></div></div>`).join('');
+ $$('.activep').forEach(x=>x.onchange=e=>{state.people.find(p=>p.id===e.target.dataset.id).active=e.target.checked;save();renderAll()});
+ $$('.delp').forEach(x=>x.onclick=()=>{if(state.people.length<=1)return;state.people=state.people.filter(p=>p.id!==x.dataset.id);save();renderAll()});
+ $$('.editp').forEach(x=>x.onclick=()=>openPerson(state.people.find(p=>p.id===x.dataset.id)))
+}
+function renderSettings(){$('#lastSync').textContent=state.lastSync?new Date(state.lastSync).toLocaleString('tr-TR'):'Henüz bu cihazda yenilenmedi'}
+function renderMarkets(){
+ const ms=[['CarrefourSA','https://www.carrefoursa.com/'],['Migros','https://www.migros.com.tr/'],['A101 Kapıda','https://www.a101.com.tr/kapida'],['Yemeksepeti','https://www.yemeksepeti.com/']];
+ $('#marketGrid').innerHTML=ms.map(([n,u])=>`<button data-url="${u}">${n}</button>`).join('');
+ $$('#marketGrid button').forEach(b=>b.onclick=async()=>{const text=buyListText();try{await navigator.clipboard.writeText(text)}catch{}window.open(b.dataset.url,'_blank','noopener')})
+}
+function buyListText(){const weekly=state.shoppingScope==='week',items=weekly?aggregateWeek(state.day):aggregateDay(state.day);return items.filter(i=>weekly?!weeklyPantryHas(state.day,i):!pantryHas(state.day,i)).map(i=>`• ${i.name}: ${qty(i.amount,i.unit)}`).join('\n')}
+function renderAll(){fillSelects();renderHome();renderShop();renderMenu();renderPeople();renderSettings();renderMarkets();updateOptimizeButton()}
+async function syncPrices(){alert('Bu tek dosyalık demo, 26 Temmuz 2026 çevrimiçi fiyat snapshotını kullanır. Canlı otomatik fiyat yenileme tam PWA paketindeki sunucu ile çalışır.')}
+function cheapWeek(){
+ const start=Math.floor((state.day-1)/7)*7+1,end=Math.min(start+6,30);
+ const key=`${start}-${end}`;
+ state.weekOptimizationBackup ||= {};
+
+ // Aynı düğmeye ikinci kez basılırsa o haftayı optimizasyon öncesi haline döndür.
+ if(state.weekOptimizationBackup[key]){
+   const backup=state.weekOptimizationBackup[key];
+   state.days=state.days.map(d=>{
+     const original=backup.find(x=>x.day===d.day);
+     return original?original:d;
+   });
+   delete state.weekOptimizationBackup[key];
+   save();
+   renderAll();
+   return;
+ }
+
+ // İlk basışta mevcut haftayı yedekle, sonra ekonomik sağlıklı tariflere geçir.
+ state.weekOptimizationBackup[key]=clone(state.days.filter(d=>d.day>=start&&d.day<=end));
+ state.days.filter(d=>d.day>=start&&d.day<=end).forEach(d=>{
+   Object.keys(d.meals).forEach(t=>{
+     const c=state.recipes
+       .filter(r=>r.mealType===t&&r.healthy)
+       .sort((a,b)=>recipeCost(a)-recipeCost(b));
+     if(c[0])d.meals[t]=c[0].id;
+   });
+ });
+ save();
+ renderAll();
+}
+let editing=null;function openPerson(p=null){editing=p?.id||null;$('#pName').value=p?.name||'';$('#pAge').value=p?.age||'';$('#pWeight').value=p?.weight||'';$('#pFactor').value=p?.portionFactor||1;$('#personDialog').showModal()}
+$('#personForm').addEventListener('submit',e=>{e.preventDefault();const v={name:$('#pName').value.trim(),age:Number($('#pAge').value),weight:$('#pWeight').value?Number($('#pWeight').value):null,portionFactor:Number($('#pFactor').value),active:true};if(editing)Object.assign(state.people.find(p=>p.id===editing),v);else state.people.push({id:'p'+Date.now(),role:'Aile üyesi',...v});save();$('#personDialog').close();renderAll()});
+$('#pAge').onchange=()=>{if(!editing){const a=Number($('#pAge').value);$('#pFactor').value=a<=3?.45:a<=8?.6:a<=13?.75:a<=17?.9:1}}
+$('#daySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
+$('#shopDaySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
+$$('.navbtn').forEach(b=>b.onclick=()=>{$$('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.screen).classList.add('active')});
+$$('.segbtn').forEach(b=>b.onclick=()=>{$$('.segbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.listMode=b.dataset.list;save();renderShop()});
+$$('.scopebtn').forEach(b=>b.onclick=()=>{$$('.scopebtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.shoppingScope=b.dataset.scope;save();renderShop()});
+$('#syncBtn').onclick=syncPrices;$('#syncSettingsBtn').onclick=syncPrices;$('#cheapWeekBtn').onclick=cheapWeek;$('#addPersonBtn').onclick=()=>openPerson();
+$('#shareShopBtn').onclick=async()=>{const text=buyListText();if(navigator.share)await navigator.share({title:'Aile Sofrası alışveriş listesi',text});else{try{await navigator.clipboard.writeText(text);alert('Liste kopyalandı.')}catch{}}};
+$('#resetPantryBtn').onclick=()=>{if(confirm('Tüm günlerdeki kiler işaretleri temizlensin mi?')){state.pantry={};state.weeklyPantry={};save();renderAll()}};
+$('#resetAllBtn').onclick=()=>{if(confirm('Uygulama ilk haline dönsün mü?')){state=initial();save();renderAll()}};
+let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('#installBtn').classList.remove('hidden')});$('#installBtn').onclick=async()=>{if(!deferred)return;deferred.prompt();await deferred.userChoice;deferred=null;$('#installBtn').classList.add('hidden')};
+
+renderAll();setTimeout(()=>{if(location.protocol!=='file:')syncPrices()},700);
+</script>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+
+</body></html>
