@@ -181,7 +181,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 .event-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px}.event-section-title h3{margin:0;font-size:15px}
 
 </style>
-<title>Aile Sofrası v0.3.7</title>
+<title>Aile Sofrası v0.3.8</title>
 </head>
 <body>
 
@@ -251,7 +251,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.7 · MİSAFİR & ÖZEL GÜN</div>
+    <div class="mini">AİLE SOFRASI · v0.3.8 · DOĞRU TÜRK MUTFAĞI ÖLÇÜLERİ</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -986,23 +986,29 @@ function nutritionPanel(r,type){
 
 function qty(x,u){x*=factor();if(['g','ml'].includes(u))return `${Math.round(x/10)*10} ${u}`;if(['adet','demet','diş'].includes(u))return `${Math.max(1,Math.ceil(x))} ${u}`;return `${x.toFixed(1)} ${u}`}
 
-const TURKISH_CUP_GRAMS={
+
+// v0.3.8 — Gıdanın kendisine uygun Türk mutfağı ölçüsü.
+// Amaç: "tavuk 2 kase" gibi anlamsız dönüşümleri tamamen engellemek.
+const TURKISH_DRY_CUP_GRAMS={
  'Bulgur':180,'İnce bulgur':170,'Pirinç':180,'Kırmızı mercimek':180,'Yeşil mercimek':180,
- 'Kuru nohut':180,'Kuru fasulye':180,'Kuru barbunya':180,'Yoğurt':200,'Haşlanmış mısır':160,
- 'Beyaz peynir / lor':120,'Kaşar / beyaz peynir':120,'Lor / labne':160,'Ceviz içi':100,
- 'Çiğ badem/fındık/ceviz':110,'Karışık sebze':150,'Karışık yeşillik':80,'Mevsim sebzesi':150,
- 'Salata malzemesi':150,'Karışık çorbalık sebze':150
+ 'Kuru nohut':180,'Kuru fasulye':180,'Kuru barbunya':180,'Haşlanmış mısır':160
 };
-const TURKISH_TBSP_GRAMS={
- 'Yoğurt':30,'Domates salçası':20,'Bulgur':12,'İnce bulgur':11,'Pirinç':12,
- 'Kırmızı mercimek':12,'Yeşil mercimek':12,'Kuru nohut':12,'Kuru fasulye':12,'Kuru barbunya':12,
- 'Haşlanmış mısır':12,'Ceviz içi':8,'Çiğ badem/fındık/ceviz':9,'Karışık sebze':18,
- 'Salata malzemesi':18,'Karışık yeşillik':12
+const TURKISH_DRY_TBSP_GRAMS={
+ 'Bulgur':12,'İnce bulgur':11,'Pirinç':12,'Kırmızı mercimek':12,'Yeşil mercimek':12,
+ 'Kuru nohut':12,'Kuru fasulye':12,'Kuru barbunya':12,'Haşlanmış mısır':12,
+ 'Tam buğday galeta / ekmek içi':8
 };
 const TURKISH_ITEM_GRAMS={
  'Domates':120,'Havuç':80,'Patates':150,'Salatalık':120,'Yeşil biber':35,'Kuru soğan':100,
- 'Mevsim meyvesi':120,'Limon':60,'Yumurta':50
+ 'Limon':60,'Yumurta':50
 };
+const WEIGHT_ONLY_FOODS=new Set([
+ 'Yoğurt','Beyaz peynir / lor','Kaşar / beyaz peynir','Lor / labne',
+ 'Tavuk göğüs','Tavuk göğüs / but eti','Hindi / tavuk kıyma',
+ 'Yağsız dana kuşbaşı','Yağsız dana kıyma','Somon / uskumru / sardalya fileto',
+ 'Taze fasulye','Karışık sebze','Karışık çorbalık sebze','Mevsim sebzesi','Salata malzemesi'
+]);
+
 function kitchenFraction(n){
  const q=Math.round(Number(n||0)*4)/4;
  const whole=Math.floor(q),frac=Math.round((q-whole)*4);
@@ -1011,41 +1017,188 @@ function kitchenFraction(n){
  if(whole&&f)return `${whole}${f}`;
  return String(whole||Math.max(.25,q));
 }
+function trNumber(n,max=1){
+ return Number(n||0).toLocaleString('tr-TR',{maximumFractionDigits:max});
+}
+function weightText(grams){
+ const g=Math.max(0,Number(grams||0));
+ if(g>=1000)return `${trNumber(g/1000,2)} kg (≈${Math.round(g)} g)`;
+ return `${Math.round(g)} g`;
+}
+function volumeText(ml){
+ const v=Math.max(0,Number(ml||0));
+ if(v>=150)return `${kitchenFraction(v/200)} su bardağı (≈${Math.round(v)} ml)`;
+ if(v>=70)return `${kitchenFraction(v/100)} çay bardağı (≈${Math.round(v)} ml)`;
+ if(v>=10)return `${kitchenFraction(v/15)} yemek kaşığı (≈${Math.round(v)} ml)`;
+ return `${kitchenFraction(v/5)} çay kaşığı (≈${Math.round(v)} ml)`;
+}
+function approxWholeCount(grams,avg){
+ const raw=Number(grams||0)/Number(avg||1);
+ if(raw<=0)return '';
+ const nearest=Math.max(1,Math.round(raw));
+ if(Math.abs(raw-nearest)<=.22)return `${nearest} adet`;
+ const lo=Math.max(1,Math.floor(raw)),hi=Math.max(lo+1,Math.ceil(raw));
+ return `${lo}-${hi} adet`;
+}
+function fishFiletoText(grams){
+ const g=Number(grams||0);
+ if(g<=0)return '';
+ const count=Math.max(1,Math.round(g/200));
+ const each=Math.round(g/count);
+ // Generic fileto: adet + toplam gram. Türü çok değişken olan balıklar gram kalır.
+ return `${count} fileto (≈${each} g/fileto; toplam ≈${Math.round(g)} g)`;
+}
+function leafyText(name,grams){
+ const g=Number(grams||0);
+ if(name==='Karışık yeşillik'){
+   const bags=Math.max(1,Math.round(g/100));
+   return `${bags} bağ karışık yeşillik (≈${Math.round(g)} g)`;
+ }
+ return weightText(g);
+}
+function nutText(grams){
+ const g=Number(grams||0);
+ const handfuls=Math.max(.5,Math.round((g/30)*2)/2);
+ return `${kitchenFraction(handfuls)} küçük avuç (≈${Math.round(g)} g)`;
+}
+function oliveText(grams){
+ const g=Number(grams||0),count=Math.max(1,Math.round(g/4));
+ return `${count} adet (≈${Math.round(g)} g)`;
+}
+function breadText(grams){
+ const g=Number(grams||0),slices=Math.max(1,Math.round(g/30));
+ return `${slices} dilim (≈${Math.round(g)} g)`;
+}
+function fruitText(grams){
+ const g=Number(grams||0),portions=Math.max(1,Math.round(g/150));
+ return `${portions} porsiyon meyve (≈${Math.round(g)} g)`;
+}
+function dryFoodText(name,grams){
+ const g=Number(grams||0),cup=TURKISH_DRY_CUP_GRAMS[name],tbsp=TURKISH_DRY_TBSP_GRAMS[name];
+ if(cup && g>=60)return `${kitchenFraction(g/cup)} su bardağı (≈${Math.round(g)} g)`;
+ if(tbsp)return `${kitchenFraction(g/tbsp)} yemek kaşığı (≈${Math.round(g)} g)`;
+ return weightText(g);
+}
 function recipeMeasure(i){
  const amount=Number(i.amount||0)*factor(),unit=i.unit,name=i.name;
- let grams=0,primary='';
+
  if(unit==='g'){
-   grams=amount;
-   const each=TURKISH_ITEM_GRAMS[name];
-   const cup=TURKISH_CUP_GRAMS[name];
-   const tbsp=TURKISH_TBSP_GRAMS[name];
-   if(each && amount/each>=.5 && amount/each<=8) primary=`${kitchenFraction(amount/each)} adet`;
-   else if(cup && amount/cup>=.5) primary=`${kitchenFraction(amount/cup)} su bardağı`;
-   else if(tbsp) primary=`${kitchenFraction(amount/tbsp)} yemek kaşığı`;
-   else primary=`${kitchenFraction(amount/200)} kase`;
- }else if(unit==='ml'){
-   grams=amount*(UNIT_GRAMS[name]?.ml??1);
-   if(amount>=150)primary=`${kitchenFraction(amount/200)} su bardağı`;
-   else if(amount>=70)primary=`${kitchenFraction(amount/100)} çay bardağı`;
-   else if(amount>=12)primary=`${kitchenFraction(amount/15)} yemek kaşığı`;
-   else primary=`${kitchenFraction(amount/5)} çay kaşığı`;
- }else if(unit==='adet'){
-   grams=amount*(UNIT_GRAMS[name]?.adet??TURKISH_ITEM_GRAMS[name]??0);
-   primary=`${kitchenFraction(amount)} adet`;
- }else if(unit==='demet'){
-   grams=amount*(UNIT_GRAMS[name]?.demet??100);primary=`${kitchenFraction(amount)} demet`;
- }else if(unit==='diş'){
-   grams=amount*(UNIT_GRAMS[name]?.['diş']??3);primary=`${kitchenFraction(amount)} diş`;
- }else{
-   primary=`${kitchenFraction(amount)} ${unit}`;
+   if(name==='Balık fileto')return fishFiletoText(amount);
+   if(WEIGHT_ONLY_FOODS.has(name))return weightText(amount);
+
+   if(TURKISH_DRY_CUP_GRAMS[name]||TURKISH_DRY_TBSP_GRAMS[name])return dryFoodText(name,amount);
+
+   if(TURKISH_ITEM_GRAMS[name]){
+     const item=approxWholeCount(amount,TURKISH_ITEM_GRAMS[name]);
+     return `${item} (≈${Math.round(amount)} g)`;
+   }
+
+   if(name==='Mevsim meyvesi')return fruitText(amount);
+   if(name==='Karışık yeşillik')return leafyText(name,amount);
+   if(name==='Ceviz içi'||name==='Çiğ badem/fındık/ceviz')return nutText(amount);
+   if(name==='Zeytin')return oliveText(amount);
+   if(name==='Tam buğday / çavdar ekmeği')return breadText(amount);
+   if(name==='Domates salçası')return `${kitchenFraction(amount/20)} yemek kaşığı (≈${Math.round(amount)} g)`;
+
+   return weightText(amount);
  }
- return `${primary}${grams?` (≈${Math.round(grams)} g)`:''}`;
+
+ if(unit==='ml'){
+   if(name==='Zeytinyağı')return volumeText(amount);
+   if(name==='Ayran')return volumeText(amount);
+   return volumeText(amount);
+ }
+
+ if(unit==='adet'){
+   const grams=amount*(UNIT_GRAMS[name]?.adet??TURKISH_ITEM_GRAMS[name]??0);
+   return `${kitchenFraction(amount)} adet${grams?` (≈${Math.round(grams)} g)`:''}`;
+ }
+ if(unit==='demet')return `${kitchenFraction(amount)} demet`;
+ if(unit==='bağ')return `${kitchenFraction(amount)} bağ`;
+ if(unit==='dal')return `${kitchenFraction(amount)} dal`;
+ if(unit==='yaprak')return `${kitchenFraction(amount)} yaprak`;
+ if(unit==='tutam')return `${kitchenFraction(amount)} tutam`;
+ if(unit==='diş')return `${kitchenFraction(amount)} diş`;
+ if(unit==='dilim')return `${kitchenFraction(amount)} dilim`;
+
+ return `${kitchenFraction(amount)} ${unit}`;
+}
+
+// AI tariflerinde de gıdanın türüne aykırı birimi göstermeyiz.
+function aiFoodPolicy(name){
+ const n=normalizeFood(name);
+ if(/yoğurt|yogurt|peynir|lor|labne|tavuk|hindi|dana|kıyma|kiyma|kuşbaşı|kusbasi|et\b|taze fasulye/.test(n))return 'weight';
+ if(/hamsi|sardalya|uskumru/.test(n))return 'weight';
+ if(/somon|levrek|çipura|cipura|alabalık|alabalik|balık fileto|balik fileto/.test(n))return 'fish';
+ if(/bulgur|pirinç|pirinc|mercimek|nohut|kuru fasulye|barbunya|mısır|misir/.test(n))return 'dry';
+ if(/zeytinyağı|zeytinyagi|sıvı yağ|sivi yag|salça|salca|sirke|limon suyu/.test(n))return 'spoon';
+ if(/domates|patates|havuç|havuc|salatalık|salatalik|biber|soğan|sogan|limon|yumurta|elma|armut|portakal|mandalina/.test(n))return 'piece';
+ if(/maydanoz|dereotu|roka|tere|yeşillik|yesillik|nane|fesleğen|feslegen/.test(n))return 'leafy';
+ if(/marul|kıvırcık|kivircik/.test(n))return 'leaf';
+ if(/ekmek/.test(n))return 'slice';
+ if(/ceviz|badem|fındık|findik|kuruyemiş|kuruyemis/.test(n))return 'handful';
+ if(/tuz|karabiber|kimyon|pul biber|kekik|tarçın|tarcin|zerdeçal|zerdecal/.test(n))return 'spice';
+ if(/süt|sut|ayran|su\b|kefir/.test(n))return 'liquid';
+ return 'generic';
+}
+function normalizedAIUnit(x){
+ const raw=String(x?.measureUnit||'').toLocaleLowerCase('tr-TR').trim();
+ return raw.replace(/\s+/g,' ');
 }
 function measureObjectText(x){
- const amount=kitchenFraction(Number(x?.measureAmount||0));
- const unit=String(x?.measureUnit||'').trim();
- const g=Number(x?.gramsApprox||0);
- return `${amount} ${unit}${g>0?` (≈${Math.round(g)} g)`:''}`;
+ const name=String(x?.name||''),policy=aiFoodPolicy(name);
+ const amount=Number(x?.measureAmount||0),unit=normalizedAIUnit(x),g=Number(x?.gramsApprox||0);
+
+ const allowed={
+   weight:['g','gram','kg','kilogram'],
+   fish:['adet','fileto','g','gram','kg','kilogram'],
+   dry:['su bardağı','çay bardağı','yemek kaşığı'],
+   spoon:['yemek kaşığı','çay kaşığı','tatlı kaşığı'],
+   piece:['adet'],
+   leafy:['demet','bağ','dal','tutam'],
+   leaf:['adet','yaprak'],
+   slice:['dilim'],
+   handful:['avuç','küçük avuç'],
+   spice:['çay kaşığı','tatlı kaşığı','yemek kaşığı','tutam'],
+   liquid:['su bardağı','çay bardağı','yemek kaşığı','çay kaşığı','ml','l'],
+   generic:['adet','paket','su bardağı','çay bardağı','yemek kaşığı','çay kaşığı','demet','bağ','dal','yaprak','tutam','dilim','kase','kepçe','diş','avuç','g','kg']
+ };
+
+ // Et/tavuk/yoğurt/peynir gibi ürünleri bardak/kaseye asla dönüştürme.
+ if(policy==='weight' && g>0)return weightText(g);
+
+ // Balık: tür uygunsa fileto/adet; küçük/değişken türler zaten weight politikasına düşer.
+ if(policy==='fish'){
+   if((unit==='adet'||unit==='fileto')&&amount>0)return `${kitchenFraction(amount)} ${unit}${g>0?` (≈${Math.round(g)} g toplam)`:''}`;
+   if(g>0)return fishFiletoText(g);
+ }
+
+ // Bütün sebze/meyve/yumurta: adet. Bardak/kase kullanma.
+ if(policy==='piece'){
+   if(unit==='adet'&&amount>0)return `${kitchenFraction(amount)} adet${g>0?` (≈${Math.round(g)} g)`:''}`;
+   if(g>0){
+     const exact=Object.entries(TURKISH_ITEM_GRAMS).find(([k])=>normalizeFood(k)===normalizeFood(name));
+     if(exact)return `${approxWholeCount(g,exact[1])} (≈${Math.round(g)} g)`;
+   }
+ }
+
+ // Yeşillik: demet/bağ/dal/tutam; marul: adet/yaprak.
+ if((policy==='leafy'||policy==='leaf')&&allowed[policy].includes(unit)&&amount>0)
+   return `${kitchenFraction(amount)} ${unit}${g>0?` (≈${Math.round(g)} g)`:''}`;
+
+ // Ekmek dilim, kuruyemiş avuç.
+ if(policy==='slice'&&unit==='dilim'&&amount>0)return `${kitchenFraction(amount)} dilim${g>0?` (≈${Math.round(g)} g)`:''}`;
+ if(policy==='handful'&&allowed.handful.includes(unit)&&amount>0)return `${kitchenFraction(amount)} ${unit}${g>0?` (≈${Math.round(g)} g)`:''}`;
+
+ // Tahıl/bakliyat ve kaşıkla kullanılan ürünlerde AI'nın uygun ev ölçüsünü kabul et.
+ if(allowed[policy]?.includes(unit)&&amount>0){
+   const suffix=(g>0&&!['g','gram','kg','kilogram','ml','l'].includes(unit))?` (≈${Math.round(g)} g)`:'';
+   return `${kitchenFraction(amount)} ${unit}${suffix}`;
+ }
+
+ // AI yanlış birim üretirse güvenli geri dönüş.
+ if(g>0)return weightText(g);
+ return `${kitchenFraction(amount||1)} ${unit||'adet'}`;
 }
 
 function aggregateDay(dn){
@@ -1359,7 +1512,17 @@ Kurallar:
 - Bütçe ekonomik ise az çeşit ama yeterli ve doyurucu; dengeli ise orta çeşit; özel/şık ise kontrollü biçimde daha özenli olabilir.
 - Kullanıcı "kim ne getirecek" yazdıysa o ürünleri tekrar alışverişe ekleme ve sofra bütünlüğünde hesaba kat.
 - ${ev.usePantry!==false?'Kilerdeki ürünleri ve özellikle tarihi yaklaşanları önce değerlendir.':'Kileri tüketmek zorunlu değil; menüyü etkinlik ihtiyacına göre kur.'}
-- Ana ölçü gram olmasın. adet, paket, su bardağı, çay bardağı, yemek kaşığı, çay kaşığı, demet, dilim, kase, kepçe, diş, tutam gibi Türk mutfağı ev ölçülerini kullan; gramsApprox alanında yaklaşık gram karşılığını ayrıca ver.
+- Her malzeme için Türk mutfağında gerçekten kullanılan doğal ölçüyü seç; gramsApprox alanında gerektiğinde yaklaşık gram karşılığını ayrıca ver.
+- ÖLÇÜ KURALI ÇOK ÖNEMLİ:
+  * Tavuk, hindi, dana eti, kıyma, kuşbaşı, yoğurt, peynir, lor, labne, taze fasulye ve karışık sebze gibi ürünleri gram/kg ile ver. Bunları kase/bardakla ölçme.
+  * Balığı türüne göre ver: fileto/iri balıkta adet veya fileto + yaklaşık toplam gram; hamsi, sardalya, uskumru gibi boyutu değişken balıklarda gram/kg daha güvenlidir.
+  * Kuru bulgur, pirinç, mercimek, nohut, kuru fasulye ve barbunyada su bardağı/çay bardağı/yemek kaşığı kullanılabilir; yaklaşık gramı parantezde ver.
+  * Domates, patates, havuç, salatalık, biber, soğan, limon, yumurta gibi bütün ürünlerde adet kullan; bardak/kase kullanma.
+  * Maydanoz, dereotu, roka, tere, nane ve benzeri yeşilliklerde demet/bağ/dal/tutam; marul/kıvırcıkta adet veya yaprak kullan.
+  * Ekmekte dilim; kuruyemişte avuç; sarımsakta diş; zeytinyağı/salça/baharatlarda yemek kaşığı, çay kaşığı veya tutam kullan.
+  * Süt, ayran, su gibi sıvılarda su bardağı/çay bardağı/ml uygundur.
+  * Bir gıdayı sırf ev ölçüsü olsun diye anlamsız bir birime dönüştürme. Gram Türk mutfağında doğal kullanılan ürünlerde ana ölçü olabilir.
+
 - ingredientsUsed pantryId değerini stok listesinden aynen kopyalasın. pantryQuantityUsed stok birimi cinsinden ve stoktan fazla olmayacak şekilde yazılsın.
 - Paket net miktarı bilinmiyorsa kısmi paketi uydurma; pantryQuantityUsed=0 ve note="kalan miktarı elle doğrula" yaz.
 - dishes içinde sofrayı oluşturan 3-6 öğe olsun; gereksiz çeşit ve israf yaratma.
@@ -2021,7 +2184,17 @@ ${recentFeedbackText()}
 Kurallar:
 - Tam 3 sağlıklı, pratik, ailece yenebilecek TÜRK MUTFAĞI yemeği öner.
 - Türk ev mutfağı karakterini koru: çorba, zeytinyağlı, sulu yemek, sebze yemeği, menemen, pilav, cacık, fırın/ızgara, bakliyat gibi doğal seçeneklere öncelik ver. Uygun olmayan malzemeye sırf Türk yemeği olsun diye zorlama.
-- Tarif ölçülerinde ana birim olarak GRAM KULLANMA. Türk mutfağındaki ev ölçülerini kullan: adet, paket, su bardağı, çay bardağı, yemek kaşığı, çay kaşığı, demet, dilim, kase, kepçe, diş, tutam.
+- Tarif ölçülerinde her gıdanın Türk mutfağında gerçekten kullanılan doğal birimini seç.
+- ÖLÇÜ KURALI ÇOK ÖNEMLİ:
+  * Tavuk, hindi, dana eti, kıyma, kuşbaşı, yoğurt, peynir, lor, labne, taze fasulye ve karışık sebze gibi ürünleri gram/kg ile ver. Bunları kase/bardakla ölçme.
+  * Balığı türüne göre ver: fileto/iri balıkta adet veya fileto + yaklaşık toplam gram; hamsi, sardalya, uskumru gibi boyutu değişken balıklarda gram/kg daha güvenlidir.
+  * Kuru bulgur, pirinç, mercimek, nohut, kuru fasulye ve barbunyada su bardağı/çay bardağı/yemek kaşığı kullanılabilir; yaklaşık gramı parantezde ver.
+  * Domates, patates, havuç, salatalık, biber, soğan, limon, yumurta gibi bütün ürünlerde adet kullan; bardak/kase kullanma.
+  * Maydanoz, dereotu, roka, tere, nane ve benzeri yeşilliklerde demet/bağ/dal/tutam; marul/kıvırcıkta adet veya yaprak kullan.
+  * Ekmekte dilim; kuruyemişte avuç; sarımsakta diş; zeytinyağı/salça/baharatlarda yemek kaşığı, çay kaşığı veya tutam kullan.
+  * Süt, ayran, su gibi sıvılarda su bardağı/çay bardağı/ml uygundur.
+  * Bir gıdayı sırf ev ölçüsü olsun diye anlamsız bir birime dönüştürme. Gram Türk mutfağında doğal kullanılan ürünlerde ana ölçü olabilir.
+
 - Her malzeme için measureAmount + measureUnit ana gösterimdir. gramsApprox alanında parantezde göstermek üzere yaklaşık gram karşılığını ayrıca ver.
 - 1 su bardağı yaklaşık 200 ml, 1 çay bardağı yaklaşık 100 ml, 1 yemek kaşığı yaklaşık 15 ml, 1 çay kaşığı yaklaşık 5 ml kabul edilebilir; katı gıdada gerçek yoğunluğa göre yaklaşık gram hesapla.
 - ingredientsUsed içindeki pantryId değerini yukarıdaki stok ID'sinden AYNEN kopyala.
