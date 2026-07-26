@@ -3,288 +3,455 @@
     "ingredient": "Ayran",
     "unit": "ml",
     "query": "Mis ayran tam yağlı",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "volume",
+    "requiredAll": [
+      "ayran"
+    ]
   },
   {
     "ingredient": "Balık fileto",
     "unit": "g",
     "query": "balık fileto",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Beyaz peynir / lor",
     "unit": "g",
     "query": "Mis süzme beyaz peynir 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Bulgur",
     "unit": "g",
     "query": "pilavlık bulgur 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "bulgur"
+    ]
   },
   {
     "ingredient": "Ceviz içi",
     "unit": "g",
     "query": "ceviz içi",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Domates",
     "unit": "g",
     "query": "domates kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Domates salçası",
     "unit": "g",
     "query": "domates salçası",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Havuç",
     "unit": "g",
     "query": "havuç kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Haşlanmış mısır",
     "unit": "g",
     "query": "haşlanmış mısır",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Hindi / tavuk kıyma",
     "unit": "g",
     "query": "tavuk kıyma",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Karışık sebze",
     "unit": "g",
     "query": "dondurulmuş karışık sebze",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Karışık yeşillik",
     "unit": "g",
     "query": "karışık yeşillik",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Karışık çorbalık sebze",
     "unit": "g",
     "query": "çorbalık sebze",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Kaşar / beyaz peynir",
     "unit": "g",
     "query": "Mis tam yağlı tost peyniri 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Kuru barbunya",
     "unit": "g",
     "query": "barbunya 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "barbunya"
+    ]
   },
   {
     "ingredient": "Kuru fasulye",
     "unit": "g",
     "query": "kuru fasulye 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "fasulye"
+    ]
   },
   {
     "ingredient": "Kuru nohut",
     "unit": "g",
     "query": "nohut 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "nohut"
+    ]
   },
   {
     "ingredient": "Kuru soğan",
     "unit": "g",
     "query": "kuru soğan kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Kırmızı mercimek",
     "unit": "g",
     "query": "kırmızı mercimek 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Limon",
     "unit": "adet",
     "query": "limon kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "adet"
   },
   {
     "ingredient": "Lor / labne",
     "unit": "g",
     "query": "labne",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Mevsim meyvesi",
     "unit": "g",
     "query": "elma kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Mevsim sebzesi",
     "unit": "g",
     "query": "kabak kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Patates",
     "unit": "g",
     "query": "patates kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Pirinç",
     "unit": "g",
     "query": "pirinç 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Salata malzemesi",
     "unit": "g",
     "query": "domates salatalık",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Salatalık",
     "unit": "g",
     "query": "salatalık kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Sarımsak",
     "unit": "diş",
     "query": "sarımsak",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "diş"
   },
   {
     "ingredient": "Somon / uskumru / sardalya fileto",
     "unit": "g",
     "query": "somon fileto",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Tam buğday / çavdar ekmeği",
     "unit": "g",
     "query": "tam buğday ekmeği",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Tam buğday galeta / ekmek içi",
     "unit": "g",
     "query": "tam buğday galeta",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Tavuk göğüs",
     "unit": "g",
     "query": "tavuk göğüs kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Tavuk göğüs / but eti",
     "unit": "g",
     "query": "tavuk but kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Taze fasulye",
     "unit": "g",
     "query": "taze fasulye kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Yağsız dana kuşbaşı",
     "unit": "g",
     "query": "dana kuşbaşı kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Yağsız dana kıyma",
     "unit": "g",
     "query": "dana kıyma kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Yeşil biber",
     "unit": "g",
     "query": "yeşil biber kg",
-    "pricingMode": "weight"
+    "pricingMode": "weight",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Yeşil mercimek",
     "unit": "g",
     "query": "yeşil mercimek 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Yeşillik",
     "unit": "demet",
     "query": "maydanoz",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "demet"
   },
   {
     "ingredient": "Yoğurt",
     "unit": "g",
     "query": "Mis yoğurt tam yağlı homojenize 3000 g",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "yoğurt"
+    ]
   },
   {
     "ingredient": "Yumurta",
     "unit": "adet",
     "query": "yumurta 15 li",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "adet",
+    "requiredAll": [
+      "yumurta"
+    ]
   },
   {
     "ingredient": "Zeytin",
     "unit": "g",
     "query": "siyah zeytin",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "zeytin"
+    ]
   },
   {
     "ingredient": "Zeytinyağı",
     "unit": "ml",
     "query": "zeytinyağı 1 litre",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "volume",
+    "requiredAll": [
+      "zeytinyağı"
+    ]
   },
   {
     "ingredient": "Çiğ badem/fındık/ceviz",
     "unit": "g",
     "query": "çiğ badem",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAny": [
+      "badem",
+      "fındık",
+      "findik",
+      "ceviz"
+    ],
+    "forbidden": [
+      "dondurma",
+      "süt",
+      "sut",
+      "içecek",
+      "icecek"
+    ]
   },
   {
     "ingredient": "İnce bulgur",
     "unit": "g",
     "query": "ince bulgur 1 kg",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass"
   },
   {
     "ingredient": "Kaymak",
     "unit": "g",
     "query": "kaymak",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "kaymak"
+    ],
+    "forbidden": [
+      "kornet",
+      "dondurma",
+      "çilek",
+      "cilek",
+      "kup"
+    ]
   },
   {
     "ingredient": "Bal",
     "unit": "g",
     "query": "çiçek balı",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "bal"
+    ],
+    "forbidden": [
+      "badem",
+      "balık",
+      "balik",
+      "dondurma",
+      "kornet"
+    ]
   },
   {
     "ingredient": "Reçel",
     "unit": "g",
     "query": "çilek reçeli",
-    "pricingMode": "package"
+    "pricingMode": "package",
+    "strict": true,
+    "expectedUnitFamily": "mass",
+    "requiredAll": [
+      "reçel"
+    ],
+    "forbidden": [
+      "süt",
+      "sut",
+      "içecek",
+      "icecek",
+      "dondurma",
+      "kornet"
+    ]
   }
 ]
