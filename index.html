@@ -65,7 +65,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 .activity{display:grid;gap:7px}.activity-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.activity-item b{font-size:11px}.activity-item small{display:block;color:var(--muted);margin-top:2px}
 
 </style>
-<title>Aile Sofrası v0.3.0</title>
+<title>Aile Sofrası v0.3.1</title>
 </head>
 <body>
 
@@ -135,7 +135,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.0 · ORTAK AİLE</div>
+    <div class="mini">AİLE SOFRASI · v0.3.1 · CANLI TAKVİM</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -155,7 +155,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
     <div class="hero-cost"><small>Bugünün yaklaşık maliyeti</small><strong id="dayCost">—</strong></div>
   </div>
   <div class="budget-strip">
-    <div><small>30 günlük tahmini bütçe</small><strong id="monthBudget">—</strong></div>
+    <div><small>Bu ay tahmini bütçe</small><strong id="monthBudget">—</strong></div>
     <div><small>Haftalık ortalama</small><strong id="avgWeekBudget">—</strong></div>
   </div>
   <div class="day-picker-wrap"><select id="daySelect" class="control"></select></div>
@@ -179,9 +179,9 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
   </div>
 
   <div class="month-budget-card">
-    <span>30 günlük plan için tahmini ayrılacak bütçe</span>
+    <span>Bu ay için tahmini ayrılacak bütçe</span>
     <strong id="shopMonthBudget">—</strong>
-    <small>Kiler düşülmeden, mevcut aile ve seçili menülere göre hesaplanır.</small>
+    <small>Kiler düşülmeden, bu ayın gerçek gün sayısı ve seçili menülere göre hesaplanır.</small>
   </div>
 
   <div class="seg">
@@ -201,7 +201,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 
 <section id="menu" class="screen">
   <div class="title-row">
-    <div><div class="mini dark">30 GÜNLÜK PLAN</div><h2>Menü</h2></div>
+    <div><div class="mini dark" id="monthPlanLabel">AYLIK PLAN</div><h2>Menü</h2></div>
     <button id="cheapWeekBtn" class="softbtn">Haftayı ekonomikleştir</button>
   </div>
   <div id="monthMenu" class="month-menu"></div>
@@ -287,7 +287,7 @@ const KEY='aile-sofrasi-v02';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const money=new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null}}
+function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null,calendarMonth:null}}
 let state=(()=>{try{return {...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return initial()}})();
 
 const cloud={
@@ -295,7 +295,7 @@ const cloud={
   familyId:null, family:null, member:null, unsubscribeState:null, unsubscribeActivity:null,
   applyingRemote:false, saveTimer:null, localOnly:false
 };
-const sharedKeys=['people','days','pantry','weeklyPantry','weekOptimizationBackup','monthlyBudgetTarget'];
+const sharedKeys=['people','days','pantry','weeklyPantry','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
 function sharedPayload(){const p={};sharedKeys.forEach(k=>p[k]=clone(state[k]));return p}
 function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state))}
 function save(){
@@ -305,6 +305,69 @@ function save(){
     cloud.saveTimer=setTimeout(pushSharedState,650);
   }
 }
+
+const TR_MONTHS=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const TR_DAYS=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+function localToday(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function monthKeyOf(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
+function monthParts(){const [y,m]=String(state.calendarMonth||monthKeyOf(localToday())).split('-').map(Number);return {year:y,month:m-1}}
+function daysInCalendarMonth(){const {year,month}=monthParts();return new Date(year,month+1,0).getDate()}
+function dateForDay(dn){const {year,month}=monthParts();return new Date(year,month,Number(dn))}
+function calendarLabel(dn){
+  const d=dateForDay(dn);
+  return `${dn} ${TR_MONTHS[d.getMonth()]} ${TR_DAYS[d.getDay()]}`;
+}
+function weekNumberForDay(dn){
+  const d=dateForDay(dn), first=new Date(d.getFullYear(),d.getMonth(),1);
+  const mondayOffset=(first.getDay()+6)%7;
+  return Math.floor((mondayOffset+(dn-1))/7)+1;
+}
+function calendarDayLabel(dn){return `${weekNumberForDay(dn)}. Hafta · ${calendarLabel(dn)}`}
+function buildCalendarDays(existing=[]){
+  const count=daysInCalendarMonth();
+  const byDay=new Map((existing||[]).map(d=>[Number(d.day),d]));
+  return Array.from({length:count},(_,i)=>{
+    const dn=i+1, old=byDay.get(dn), tpl=seed.days[i % seed.days.length];
+    return {
+      day:dn,
+      label:calendarDayLabel(dn),
+      meals:clone(old?.meals || tpl.meals)
+    };
+  });
+}
+function ensureCalendarState({forceToday=false}={}){
+  const today=localToday(), currentKey=monthKeyOf(today);
+  const oldKey=state.calendarMonth;
+  let changed=false;
+
+  if(oldKey!==currentKey){
+    // Yeni aya geçildiğinde ay-gün bazlı işaretler eski aya taşınmasın.
+    state.calendarMonth=currentKey;
+    state.days=buildCalendarDays(oldKey?[]:state.days);
+    state.pantry={};
+    state.weeklyPantry={};
+    state.weekOptimizationBackup={};
+    state.day=today.getDate();
+    changed=true;
+  }else{
+    const expected=daysInCalendarMonth();
+    if(!Array.isArray(state.days) || state.days.length!==expected ||
+       state.days.some(d=>d.label!==calendarDayLabel(d.day))){
+      state.days=buildCalendarDays(state.days);
+      changed=true;
+    }
+    if(forceToday && state.day!==today.getDate()){
+      state.day=today.getDate();
+      changed=true;
+    }
+    if(state.day<1 || state.day>expected){
+      state.day=Math.min(today.getDate(),expected);
+      changed=true;
+    }
+  }
+  return changed;
+}
+
 const recipe=id=>state.recipes.find(r=>r.id===id);
 const day=n=>state.days.find(d=>d.day===Number(n));
 const factor=()=>state.people.filter(p=>p.active).reduce((s,p)=>s+Number(p.portionFactor||0),0)/(seed.basePortionUnits||2.3);
@@ -318,7 +381,12 @@ function qty(x,u){x*=factor();if(['g','ml'].includes(u))return `${Math.round(x/1
 function aggregateDay(dn){
  const m=new Map();Object.values(day(dn).meals).forEach(id=>{const r=recipe(id);r?.ingredients.forEach(i=>{const k=pkey(i.name,i.unit),v=m.get(k)||{name:i.name,unit:i.unit,amount:0};v.amount+=i.amount;m.set(k,v)})});return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
 }
-function weekBounds(dn){const s=Math.floor((Number(dn)-1)/7)*7+1;return [s,Math.min(s+6,30)]}
+function weekBounds(dn){
+ const d=dateForDay(dn), mondayIndex=(d.getDay()+6)%7;
+ const s=Math.max(1,Number(dn)-mondayIndex);
+ const e=Math.min(daysInCalendarMonth(),s+6);
+ return [s,e];
+}
 function aggregateWeek(dn){
  const [s,e]=weekBounds(dn),m=new Map();
  state.days.filter(d=>d.day>=s&&d.day<=e).forEach(d=>aggregateDay(d.day).forEach(i=>{
@@ -327,7 +395,7 @@ function aggregateWeek(dn){
  }));
  return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
 }
-function weekKey(dn){const [s,e]=weekBounds(dn);return `${s}-${e}`}
+function weekKey(dn){const [s,e]=weekBounds(dn);return `${state.calendarMonth}:${s}-${e}`}
 function weeklyPantryHas(dn,i){return !!state.weeklyPantry?.[weekKey(dn)]?.[pkey(i.name,i.unit)]}
 function setWeeklyPantry(dn,i,v){const wk=weekKey(dn);state.weeklyPantry[wk] ||= {};state.weeklyPantry[wk][pkey(i.name,i.unit)]=v;save()}
 function pantryHas(dn,i){return !!state.pantry?.[dn]?.[pkey(i.name,i.unit)]}
@@ -338,10 +406,10 @@ function latestPriceStatus(items){
  if(snap)return `${snap} kalem son çevrimiçi fiyat · kalanlar otomatik tahmin`;
  return 'Otomatik yaklaşık fiyat';
 }
-function fillSelects(){const o=state.days.map(d=>`<option value="${d.day}">Gün ${d.day} · ${d.label}</option>`).join('');$('#daySelect').innerHTML=o;$('#shopDaySelect').innerHTML=o;$('#daySelect').value=state.day;$('#shopDaySelect').value=state.day}
+function fillSelects(){const o=state.days.map(d=>`<option value="${d.day}">${calendarLabel(d.day)}</option>`).join('');$('#daySelect').innerHTML=o;$('#shopDaySelect').innerHTML=o;$('#daySelect').value=state.day;$('#shopDaySelect').value=state.day}
 function mealOptions(type,id){return state.recipes.filter(r=>r.mealType===type&&r.healthy).sort((a,b)=>recipeCost(a)-recipeCost(b)).map(r=>`<option value="${r.id}" ${r.id===id?'selected':''}>${r.title} · ${money.format(recipeCost(r))}</option>`).join('')}
 function renderHome(){
- const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=`Gün ${d.day} · ${d.label}`;$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
+ const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=calendarLabel(d.day);$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
  $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{const r=recipe(id);return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${r.ingredients.slice(0,6).map(i=>`${i.name} ${qty(i.amount,i.unit)}`).join(' · ')}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}">${mealOptions(type,id)}</select></article>`}).join('');
  $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()})
 }
@@ -355,7 +423,9 @@ function renderShop(){
  $('#shopMonthBudget').textContent=money.format(monthCost());
  if(weekly){
    const [s,e]=weekBounds(state.day);
-   $('#needLabel').textContent=`Haftalık ihtiyaç · Gün ${s}–${e}`;
+   const sd=dateForDay(s),ed=dateForDay(e);
+   const span=s===e?calendarLabel(s):`${s}${sd.getMonth()!==ed.getMonth()?' '+TR_MONTHS[sd.getMonth()]:''}–${e} ${TR_MONTHS[ed.getMonth()]}`;
+   $('#needLabel').textContent=`Haftalık ihtiyaç · ${span}`;
    $('#buyLabel').textContent='Haftalık market';
    $('#shopHint').innerHTML='Haftalık görünümde <b>Kilerde var</b> seçimi yalnızca bu hafta için geçerlidir. Ürün market listesinden çıkar ama <b>Tüm ihtiyaçlar</b> sekmesinde görünmeye devam eder.';
  }else{
@@ -376,7 +446,7 @@ function renderShop(){
  });
 }
 function updateOptimizeButton(){
- const start=Math.floor((state.day-1)/7)*7+1,end=Math.min(start+6,30),key=`${start}-${end}`;
+ const [start,end]=weekBounds(state.day),key=weekKey(state.day);
  const btn=$('#cheapWeekBtn');
  if(!btn)return;
  const optimized=!!state.weekOptimizationBackup?.[key];
@@ -384,7 +454,7 @@ function updateOptimizeButton(){
  btn.classList.toggle('undo-mode',optimized);
 }
 function renderMenu(){
- $('#monthMenu').innerHTML=state.days.map(d=>`<article class="daycard"><h3>Gün ${d.day} <span class="itemmeta">${d.label}</span></h3>${Object.entries(d.meals).map(([t,id])=>{const r=recipe(id);return `<div class="mealrow"><b>${t}</b><span>${r.title}</span><strong>${money.format(recipeCost(r))}</strong></div>`}).join('')}<div class="mealrow"><b>Toplam</b><span></span><strong>${money.format(dayCost(d))}</strong></div></article>`).join('')
+ $('#monthPlanLabel').textContent=`${TR_MONTHS[monthParts().month].toUpperCase()} ${monthParts().year} · ${state.days.length} GÜN`;$('#monthMenu').innerHTML=state.days.map(d=>`<article class="daycard"><h3>${calendarLabel(d.day)} <span class="itemmeta">${weekNumberForDay(d.day)}. Hafta</span></h3>${Object.entries(d.meals).map(([t,id])=>{const r=recipe(id);return `<div class="mealrow"><b>${t}</b><span>${r.title}</span><strong>${money.format(recipeCost(r))}</strong></div>`}).join('')}<div class="mealrow"><b>Toplam</b><span></span><strong>${money.format(dayCost(d))}</strong></div></article>`).join('')
 }
 function renderPeople(){
  $('#people').innerHTML=state.people.map(p=>`<div class="person"><div><h3>${p.name}</h3><p>${p.age} yaş${p.weight?` · ${p.weight} kg`:''} · porsiyon ×${Number(p.portionFactor).toFixed(2)}</p></div><div class="person-actions"><label class="itemmeta"><input class="activep" data-id="${p.id}" type="checkbox" ${p.active?'checked':''}> aktif</label><button class="softbtn editp" data-id="${p.id}">Düzenle</button><button class="dangerbtn delp" data-id="${p.id}">×</button></div></div>`).join('');
@@ -473,8 +543,10 @@ async function connectFamily(familyId, memberData=null){
     if(payload && !snap.metadata.hasPendingWrites){
       cloud.applyingRemote=true;
       sharedKeys.forEach(k=>{if(payload[k]!==undefined)state[k]=clone(payload[k])});
+      const calendarMigrated=ensureCalendarState();
       saveLocal(); renderAll();
       cloud.applyingRemote=false;
+      if(calendarMigrated) save();
     }
     cloudStatus(snap.metadata.fromCache?'Çevrimdışı':'Senkron',!snap.metadata.fromCache);
   },e=>cloudStatus('Senkron hatası',false));
@@ -553,10 +625,10 @@ async function initCloud(){
 }
 
 function renderAll(){fillSelects();renderHome();renderShop();renderMenu();renderPeople();renderSettings();renderMarkets();updateOptimizeButton()}
-async function syncPrices(){alert('Bu tek dosyalık demo, 26 Temmuz 2026 çevrimiçi fiyat snapshotını kullanır. Canlı otomatik fiyat yenileme tam PWA paketindeki sunucu ile çalışır.')}
+async function syncPrices(){alert('Bu sürüm, kayıtlı çevrimiçi market fiyat snapshotını kullanır. Canlı otomatik fiyat yenileme tam PWA paketindeki sunucu ile çalışır.')}
 function cheapWeek(){
- const start=Math.floor((state.day-1)/7)*7+1,end=Math.min(start+6,30);
- const key=`${start}-${end}`;
+ const [start,end]=weekBounds(state.day);
+ const key=weekKey(state.day);
  state.weekOptimizationBackup ||= {};
 
  // Aynı düğmeye ikinci kez basılırsa o haftayı optimizasyon öncesi haline döndür.
@@ -600,6 +672,18 @@ $('#resetAllBtn').onclick=()=>{if(confirm('Uygulama ilk haline dönsün mü?')){
 let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('#installBtn').classList.remove('hidden')});$('#installBtn').onclick=async()=>{if(!deferred)return;deferred.prompt();await deferred.userChoice;deferred=null;$('#installBtn').classList.add('hidden')};
 
 
+
+let lastCalendarDay=localToday().toDateString();
+function refreshCalendarClock(){
+  const now=localToday(),stamp=now.toDateString();
+  if(stamp!==lastCalendarDay){
+    lastCalendarDay=stamp;
+    if(ensureCalendarState({forceToday:true})){save();renderAll()}
+  }
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCalendarClock()});
+setInterval(refreshCalendarClock,60000);
+
 $$('.authtab').forEach(b=>b.onclick=()=>{
   $$('.authtab').forEach(x=>x.classList.toggle('active',x===b));
   $('#loginForm').classList.toggle('hidden',b.dataset.auth!=='login');
@@ -641,7 +725,7 @@ $('#shareInviteBtn').onclick=async()=>{
   if(navigator.share)await navigator.share({title:'Aile Sofrası daveti',text});else{try{await navigator.clipboard.writeText(text);alert('Davet bağlantısı kopyalandı.')}catch{alert(text)}}
 };
 
-renderAll();initCloud();setTimeout(()=>{if(location.protocol!=='file:')syncPrices()},700);
+ensureCalendarState({forceToday:true});saveLocal();renderAll();initCloud();setTimeout(()=>{if(location.protocol!=='file:')syncPrices()},700);
 </script>
 
 <script>

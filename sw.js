@@ -1,4 +1,4 @@
-const CACHE='aile-sofrasi-v030';
+const CACHE='aile-sofrasi-v031-calendar';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
