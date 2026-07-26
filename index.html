@@ -64,8 +64,29 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sync-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#d6a93e;margin-right:5px}.sync-dot.ok{background:#55c47b}.sync-dot.off{background:#c76a6a}
 .activity{display:grid;gap:7px}.activity-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}.activity-item b{font-size:11px}.activity-item small{display:block;color:var(--muted);margin-top:2px}
 
+
+/* v0.3.2 kalori & kişisel porsiyon */
+.nutrition-details{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+.nutrition-details summary{cursor:pointer;font-size:11px;font-weight:900;color:var(--green2);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.nutrition-details summary::-webkit-details-marker{display:none}
+.nutrition-details summary:after{content:"＋";font-size:16px}
+.nutrition-details[open] summary:after{content:"−"}
+.nutrition-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:9px 0}
+.nutrition-overview>div{background:#f3f8f4;border-radius:12px;padding:8px;text-align:center}
+.nutrition-overview small{display:block;color:var(--muted);font-size:8px}
+.nutrition-overview strong{display:block;margin-top:2px;font-size:12px}
+.portion-grid{display:grid;gap:7px}
+.portion-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:9px}
+.portion-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.portion-head b{font-size:12px}.portion-main{text-align:right}
+.portion-main strong{display:block;font-size:14px}.portion-main small{display:block;color:var(--muted);font-size:9px}
+.portion-kcal{font-size:10px;color:var(--green2);font-weight:850;margin-top:3px}
+.portion-note{font-size:9px;line-height:1.35;color:var(--muted);margin-top:5px}
+.nutrition-warning{margin-top:8px;padding:8px 9px;border-radius:12px;background:#fff7df;border:1px solid #eedca7;color:#655735;font-size:9px;line-height:1.4}
+.energy-tag{display:inline-flex;margin-top:4px;padding:3px 7px;border-radius:999px;background:#eef6ef;color:var(--green2);font-size:9px;font-weight:850}
+
 </style>
-<title>Aile Sofrası v0.3.1</title>
+<title>Aile Sofrası v0.3.2</title>
 </head>
 <body>
 
@@ -135,7 +156,7 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.1 · CANLI TAKVİM</div>
+    <div class="mini">AİLE SOFRASI · v0.3.2 · KALORİ & PORSİYON</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -272,6 +293,8 @@ dialog{border:0;border-radius:22px;padding:18px;width:min(92%,430px);box-shadow:
 <label>Ad<input id="pName" class="control wide" required></label>
 <label>Yaş<input id="pAge" class="control wide" type="number" min="1" max="110" required></label>
 <label>Kilo<input id="pWeight" class="control wide" type="number" min="1" step=".1"></label>
+<label>Günlük enerji hedefi (kcal, yetişkinlerde isteğe bağlı)<input id="pCalories" class="control wide" type="number" min="1000" max="6000" step="50" placeholder="Boş bırakılabilir"></label>
+<div class="hint">Kalori hedefi uygulama tarafından tahmin edilmez. Yetişkin için bilinen/tercih edilen hedef varsa girilir. 18 yaş altındakilerde kalori hedefi kullanılmaz.</div>
 <label>Porsiyon katsayısı<input id="pFactor" class="control wide" type="number" min=".2" max="2" step=".05" required></label>
 <div class="dialog-actions"><button value="cancel" class="softbtn">Vazgeç</button><button value="default" class="primary">Kaydet</button></div>
 </form>
@@ -377,6 +400,110 @@ function itemCost(i){const p=priceOf(i.name,i.unit);return p?i.amount*factor()/N
 function recipeCost(r){return r.ingredients.reduce((s,i)=>s+itemCost(i),0)}
 function dayCost(d){return Object.values(d.meals).reduce((s,id)=>{const r=recipe(id);return s+(r?recipeCost(r):0)},0)}
 function monthCost(){return state.days.reduce((s,d)=>s+dayCost(d),0)}
+
+// Yaklaşık enerji değerleri (kcal/100 g). Marka, yağ oranı ve ürüne göre değişebilir.
+// Üretim sürümünde bu tablo USDA FoodData Central / doğrulanmış ürün verisi ile güncellenebilir.
+const NUTRITION_KCAL100={
+ 'Ayran':37,'Balık fileto':120,'Beyaz peynir / lor':180,'Bulgur':342,'Ceviz içi':654,
+ 'Domates':18,'Domates salçası':82,'Havuç':41,'Haşlanmış mısır':96,'Hindi / tavuk kıyma':170,
+ 'Karışık sebze':35,'Karışık yeşillik':25,'Karışık çorbalık sebze':35,'Kaşar / beyaz peynir':280,
+ 'Kuru barbunya':333,'Kuru fasulye':333,'Kuru nohut':364,'Kuru soğan':40,'Kırmızı mercimek':352,
+ 'Limon':29,'Lor / labne':180,'Mevsim meyvesi':60,'Mevsim sebzesi':35,'Patates':77,'Pirinç':360,
+ 'Salata malzemesi':25,'Salatalık':15,'Sarımsak':149,'Somon / uskumru / sardalya fileto':200,
+ 'Tam buğday / çavdar ekmeği':250,'Tam buğday galeta / ekmek içi':360,'Tavuk göğüs':120,
+ 'Tavuk göğüs / but eti':150,'Taze fasulye':31,'Yağsız dana kuşbaşı':170,'Yağsız dana kıyma':200,
+ 'Yeşil biber':20,'Yeşil mercimek':352,'Yeşillik':25,'Yoğurt':61,'Yumurta':143,'Zeytin':116,
+ 'Zeytinyağı':884,'Çiğ badem/fındık/ceviz':620,'İnce bulgur':342
+};
+const UNIT_GRAMS={
+ 'Yumurta':{adet:50},'Limon':{adet:60},'Sarımsak':{'diş':3},'Yeşillik':{'demet':100},
+ 'Zeytinyağı':{ml:.91},'Ayran':{ml:1.02}
+};
+const COOK_YIELD={
+ 'Bulgur':2.5,'İnce bulgur':2.4,'Pirinç':2.7,'Kırmızı mercimek':2.3,'Yeşil mercimek':2.3,
+ 'Kuru nohut':2.4,'Kuru fasulye':2.4,'Kuru barbunya':2.4,
+ 'Tavuk göğüs':.78,'Tavuk göğüs / but eti':.78,'Hindi / tavuk kıyma':.78,
+ 'Yağsız dana kuşbaşı':.75,'Yağsız dana kıyma':.75,'Balık fileto':.8,
+ 'Somon / uskumru / sardalya fileto':.8
+};
+const MEAL_ENERGY_SHARE={'Kahvaltı':.25,'Öğle':.30,'Akşam':.35,'Ara Öğün':.10};
+
+function ingredientRawGrams(i){
+ if(i.unit==='g')return Number(i.amount);
+ if(i.unit==='ml')return Number(i.amount)*(UNIT_GRAMS[i.name]?.ml ?? 1);
+ return Number(i.amount)*(UNIT_GRAMS[i.name]?.[i.unit] ?? 1);
+}
+function ingredientCalories(i){
+ const kcal100=NUTRITION_KCAL100[i.name];
+ if(!kcal100)return 0;
+ return ingredientRawGrams(i)*kcal100/100;
+}
+function ingredientCookedGrams(i){
+ const raw=ingredientRawGrams(i);
+ return raw*(COOK_YIELD[i.name] ?? 1);
+}
+function recipeExtraWater(r){
+ const t=r.title.toLocaleLowerCase('tr-TR');
+ if(t.includes('çorba'))return 900;
+ if(t.includes('cacık'))return 250;
+ if(t.includes('sulu')||t.includes('türlü'))return 300;
+ return 0;
+}
+function recipeCalories(r){return r.ingredients.reduce((s,i)=>s+ingredientCalories(i),0)}
+function recipeYieldGrams(r){return Math.max(1,r.ingredients.reduce((s,i)=>s+ingredientCookedGrams(i),0)+recipeExtraWater(r))}
+function recipeKcal100(r){return recipeCalories(r)/recipeYieldGrams(r)*100}
+function spoonText(r,grams){
+ const t=r.title.toLocaleLowerCase('tr-TR');
+ if(t.includes('çorba'))return `~${Math.max(.5,grams/150).toFixed(1)} kepçe`;
+ if(/pilav|bulgur|mercimek|nohut|fasulye|barbunya|yoğurt|cacık|sebze yemeği|türlü/.test(t))
+   return `~${Math.max(1,Math.round(grams/20))} yemek kaşığı`;
+ return '';
+}
+function activeFactorTotal(){return state.people.filter(p=>p.active).reduce((s,p)=>s+Number(p.portionFactor||0),0)||1}
+function personPortion(r,p,type){
+ const batchScale=factor(), cooked=recipeYieldGrams(r)*batchScale, kcal=recipeCalories(r)*batchScale;
+ const defaultShare=Number(p.portionFactor||1)/activeFactorTotal();
+ let grams=cooked*defaultShare, mode='porsiyon katsayısına göre';
+
+ if(Number(p.age)>=18 && Number(p.calorieTarget)>0){
+   const mealTarget=Number(p.calorieTarget)*(MEAL_ENERGY_SHARE[type]??.25);
+   const density=kcal/cooked;
+   if(density>0){grams=mealTarget/density;mode='günlük kcal hedefine göre'}
+ }
+ grams=Math.max(1,grams);
+ const density=kcal/cooked;
+ const portionKcal=density*grams;
+ return {grams,portionKcal,mode,spoon:spoonText(r,grams)};
+}
+function nutritionPanel(r,type){
+ const totalKcal=recipeCalories(r)*factor(), cooked=recipeYieldGrams(r)*factor(), k100=totalKcal/cooked*100;
+ const people=state.people.filter(p=>p.active);
+ return `<details class="nutrition-details">
+   <summary>Kalori & kişi porsiyonları</summary>
+   <div class="nutrition-overview">
+     <div><small>Tarif toplamı</small><strong>${Math.round(totalKcal)} kcal</strong></div>
+     <div><small>Tahmini pişmiş</small><strong>${Math.round(cooked)} g</strong></div>
+     <div><small>Enerji</small><strong>${Math.round(k100)} kcal/100g</strong></div>
+   </div>
+   <div class="portion-grid">${people.map(p=>{
+      const x=personPortion(r,p,type), child=Number(p.age)<18;
+      const target=(Number(p.age)>=18&&Number(p.calorieTarget)>0)?`<span class="energy-tag">günlük hedef ${Math.round(p.calorieTarget)} kcal</span>`:'';
+      const note=child
+        ? 'Başlangıç porsiyonu. Çocukta zorlamadan, açlık ve tokluk sinyallerine göre artırıp azaltın.'
+        : (x.mode==='günlük kcal hedefine göre'
+            ? 'Girilen günlük enerji hedefinin bu öğüne ayrılan payına göre hesaplandı.'
+            : 'Kalori hedefi girilmediği için aile porsiyon katsayısı kullanıldı.');
+      return `<div class="portion-card">
+        <div class="portion-head"><div><b>${p.name}</b>${target}</div>
+        <div class="portion-main"><strong>~${Math.round(x.grams)} g</strong><small>${x.spoon||'gram porsiyonu'}</small></div></div>
+        <div class="portion-kcal">~${Math.round(x.portionKcal)} kcal · ${x.mode}</div>
+        <div class="portion-note">${note}</div>
+      </div>`;
+   }).join('')}</div>
+   <div class="nutrition-warning">Yaklaşık hesap: marka, tarifteki gerçek yağ miktarı, su kaybı/çekimi ve pişirme yöntemi sonucu değiştirebilir. 3–5 yaş çocuklarda rakam “bitirilmesi gereken miktar” değildir; küçük başlangıç porsiyonu ve çocuğun açlık-tokluk sinyalleri esas alınır.</div>
+ </details>`;
+}
+
 function qty(x,u){x*=factor();if(['g','ml'].includes(u))return `${Math.round(x/10)*10} ${u}`;if(['adet','demet','diş'].includes(u))return `${Math.max(1,Math.ceil(x))} ${u}`;return `${x.toFixed(1)} ${u}`}
 function aggregateDay(dn){
  const m=new Map();Object.values(day(dn).meals).forEach(id=>{const r=recipe(id);r?.ingredients.forEach(i=>{const k=pkey(i.name,i.unit),v=m.get(k)||{name:i.name,unit:i.unit,amount:0};v.amount+=i.amount;m.set(k,v)})});return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
@@ -410,7 +537,7 @@ function fillSelects(){const o=state.days.map(d=>`<option value="${d.day}">${cal
 function mealOptions(type,id){return state.recipes.filter(r=>r.mealType===type&&r.healthy).sort((a,b)=>recipeCost(a)-recipeCost(b)).map(r=>`<option value="${r.id}" ${r.id===id?'selected':''}>${r.title} · ${money.format(recipeCost(r))}</option>`).join('')}
 function renderHome(){
  const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=calendarLabel(d.day);$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
- $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{const r=recipe(id);return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${r.ingredients.slice(0,6).map(i=>`${i.name} ${qty(i.amount,i.unit)}`).join(' · ')}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}">${mealOptions(type,id)}</select></article>`}).join('');
+ $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{const r=recipe(id);return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${r.ingredients.slice(0,6).map(i=>`${i.name} ${qty(i.amount,i.unit)}`).join(' · ')}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}">${mealOptions(type,id)}</select>${nutritionPanel(r,type)}</article>`}).join('');
  $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()})
 }
 function renderShop(){
@@ -457,7 +584,7 @@ function renderMenu(){
  $('#monthPlanLabel').textContent=`${TR_MONTHS[monthParts().month].toUpperCase()} ${monthParts().year} · ${state.days.length} GÜN`;$('#monthMenu').innerHTML=state.days.map(d=>`<article class="daycard"><h3>${calendarLabel(d.day)} <span class="itemmeta">${weekNumberForDay(d.day)}. Hafta</span></h3>${Object.entries(d.meals).map(([t,id])=>{const r=recipe(id);return `<div class="mealrow"><b>${t}</b><span>${r.title}</span><strong>${money.format(recipeCost(r))}</strong></div>`}).join('')}<div class="mealrow"><b>Toplam</b><span></span><strong>${money.format(dayCost(d))}</strong></div></article>`).join('')
 }
 function renderPeople(){
- $('#people').innerHTML=state.people.map(p=>`<div class="person"><div><h3>${p.name}</h3><p>${p.age} yaş${p.weight?` · ${p.weight} kg`:''} · porsiyon ×${Number(p.portionFactor).toFixed(2)}</p></div><div class="person-actions"><label class="itemmeta"><input class="activep" data-id="${p.id}" type="checkbox" ${p.active?'checked':''}> aktif</label><button class="softbtn editp" data-id="${p.id}">Düzenle</button><button class="dangerbtn delp" data-id="${p.id}">×</button></div></div>`).join('');
+ $('#people').innerHTML=state.people.map(p=>`<div class="person"><div><h3>${p.name}</h3><p>${p.age} yaş${p.weight?` · ${p.weight} kg`:''} · porsiyon ×${Number(p.portionFactor).toFixed(2)}${Number(p.age)>=18&&Number(p.calorieTarget)>0?` · ${Math.round(p.calorieTarget)} kcal/gün`:Number(p.age)<18?' · çocuk porsiyonu':''}</p></div><div class="person-actions"><label class="itemmeta"><input class="activep" data-id="${p.id}" type="checkbox" ${p.active?'checked':''}> aktif</label><button class="softbtn editp" data-id="${p.id}">Düzenle</button><button class="dangerbtn delp" data-id="${p.id}">×</button></div></div>`).join('');
  $$('.activep').forEach(x=>x.onchange=e=>{state.people.find(p=>p.id===e.target.dataset.id).active=e.target.checked;save();renderAll()});
  $$('.delp').forEach(x=>x.onclick=()=>{if(state.people.length<=1)return;state.people=state.people.filter(p=>p.id!==x.dataset.id);save();renderAll()});
  $$('.editp').forEach(x=>x.onclick=()=>openPerson(state.people.find(p=>p.id===x.dataset.id)))
@@ -657,9 +784,9 @@ function cheapWeek(){
  save();
  renderAll();
 }
-let editing=null;function openPerson(p=null){editing=p?.id||null;$('#pName').value=p?.name||'';$('#pAge').value=p?.age||'';$('#pWeight').value=p?.weight||'';$('#pFactor').value=p?.portionFactor||1;$('#personDialog').showModal()}
-$('#personForm').addEventListener('submit',e=>{e.preventDefault();const v={name:$('#pName').value.trim(),age:Number($('#pAge').value),weight:$('#pWeight').value?Number($('#pWeight').value):null,portionFactor:Number($('#pFactor').value),active:true};if(editing)Object.assign(state.people.find(p=>p.id===editing),v);else state.people.push({id:'p'+Date.now(),role:'Aile üyesi',...v});save();$('#personDialog').close();renderAll()});
-$('#pAge').onchange=()=>{if(!editing){const a=Number($('#pAge').value);$('#pFactor').value=a<=3?.45:a<=8?.6:a<=13?.75:a<=17?.9:1}}
+let editing=null;function openPerson(p=null){editing=p?.id||null;$('#pName').value=p?.name||'';$('#pAge').value=p?.age||'';$('#pWeight').value=p?.weight||'';$('#pCalories').value=Number(p?.age)>=18&&p?.calorieTarget?p.calorieTarget:'';$('#pFactor').value=p?.portionFactor||1;$('#personDialog').showModal()}
+$('#personForm').addEventListener('submit',e=>{e.preventDefault();const age=Number($('#pAge').value);const v={name:$('#pName').value.trim(),age,weight:$('#pWeight').value?Number($('#pWeight').value):null,calorieTarget:age>=18&&$('#pCalories').value?Number($('#pCalories').value):null,portionFactor:Number($('#pFactor').value),active:true};if(editing)Object.assign(state.people.find(p=>p.id===editing),v);else state.people.push({id:'p'+Date.now(),role:'Aile üyesi',...v});save();$('#personDialog').close();renderAll()});
+$('#pAge').onchange=()=>{const a=Number($('#pAge').value);if(a<18)$('#pCalories').value='';if(!editing)$('#pFactor').value=a<=3?.45:a<=8?.6:a<=13?.75:a<=17?.9:1}
 $('#daySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
 $('#shopDaySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
 $$('.navbtn').forEach(b=>b.onclick=()=>{$$('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.screen).classList.add('active')});
