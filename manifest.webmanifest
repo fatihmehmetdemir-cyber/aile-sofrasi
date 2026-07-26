@@ -1,7 +1,7 @@
 {
   "name": "Aile Sofrası",
   "short_name": "Aile Sofrası",
-  "description": "Sağlıklı aile menüsü, kiler kontrolü, alışveriş ve yaklaşık bütçe planı",
+  "description": "Ortak aile hesabı ile sağlıklı menü, kiler, alışveriş ve bütçe planı",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

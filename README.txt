@@ -1,14 +1,13 @@
-Aile Sofrası v0.2.3 – yayın paketi
+Aile Sofrası v0.3.0 — Ortak Aile Hesabı
 
-Bu klasör Netlify Drop gibi statik HTTPS barındırmaya doğrudan yüklenebilir.
+Yeni:
+- E-posta/şifre ile hesap
+- Yeni aile oluşturma
+- 6 haneli davet kodu ve paylaşım linki
+- Eşin davet koduyla aynı aileye katılabilir
+- Menü, aile bireyleri, günlük/haftalık kiler ve ekonomik hafta durumu ortak senkron olur
+- Son aile hareketleri görünür
+- İnternet olmadığında cihazdaki yerel veri kullanılmaya devam eder
 
-Yükleme sonrası verilen https://....netlify.app adresi:
-- Android Chrome'da ana ekrana eklenebilir / web uygulaması olarak kurulabilir.
-- Eşinizle aynı bağlantı paylaşılabilir.
-- Her telefondaki kiler/menü seçimleri cihazın kendi tarayıcı depolamasında ayrı tutulur.
-
-Bu sürüm v0.2.2 mobil demo özelliklerini içerir:
-- günlük/haftalık alışveriş
-- günlük ve haftalık kiler kontrolü
-- 30 günlük bütçe
-- haftayı ekonomikleştir / aynı butondan geri al
+ÖNCE: FIREBASE_KURULUM.md dosyasındaki Firebase adımlarını tamamlayın.
+Firebase ayarı yapılmazsa uygulama mevcut yerel modda çalışır.
