@@ -8,6 +8,18 @@
     "expectedUnitFamily": "volume",
     "requiredAll": [
       "ayran"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/ayran-c-52453",
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/mis-ayran-tam-yagli-1-5-l-p-7386"
+    ],
+    "matchGroups": [
+      [
+        "ayran"
+      ]
     ]
   },
   {
@@ -16,7 +28,22 @@
     "query": "balık fileto",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/dondurulmus-urunler-c-1550"
+    ],
+    "matchGroups": [
+      [
+        "balık",
+        "balik",
+        "somon",
+        "uskumru",
+        "sardalya"
+      ],
+      [
+        "fileto"
+      ]
+    ]
   },
   {
     "ingredient": "Beyaz peynir / lor",
@@ -24,7 +51,29 @@
     "query": "Mis süzme beyaz peynir 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/mis-tam-yagli-suzme-beyaz-peynir-1-kg-p-5446"
+    ],
+    "matchGroups": [
+      [
+        "peynir"
+      ],
+      [
+        "beyaz",
+        "süzme",
+        "suzme",
+        "lor"
+      ]
+    ],
+    "forbidden": [
+      "kasar",
+      "kaşar",
+      "tost"
+    ]
   },
   {
     "ingredient": "Bulgur",
@@ -35,6 +84,18 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "bulgur"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/pirinc-ve-bulgur-c-1810"
+    ],
+    "matchGroups": [
+      [
+        "bulgur"
+      ]
+    ],
+    "preferredAny": [
+      "pilavlık",
+      "pilavlik"
     ]
   },
   {
@@ -43,7 +104,22 @@
     "query": "ceviz içi",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/amigo-ceviz-ici-150-g-p-7513"
+    ],
+    "matchGroups": [
+      [
+        "ceviz"
+      ],
+      [
+        "içi",
+        "ici"
+      ]
+    ]
   },
   {
     "ingredient": "Domates",
@@ -51,7 +127,23 @@
     "query": "domates kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "domates"
+      ]
+    ],
+    "forbidden": [
+      "ketcap",
+      "ketçap",
+      "pure",
+      "püre",
+      "salca",
+      "salça"
+    ]
   },
   {
     "ingredient": "Domates salçası",
@@ -59,7 +151,19 @@
     "query": "domates salçası",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/salca-c-1830"
+    ],
+    "matchGroups": [
+      [
+        "domates"
+      ],
+      [
+        "salça",
+        "salca"
+      ]
+    ]
   },
   {
     "ingredient": "Havuç",
@@ -67,7 +171,16 @@
     "query": "havuç kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "havuç",
+        "havuc"
+      ]
+    ]
   },
   {
     "ingredient": "Haşlanmış mısır",
@@ -75,7 +188,21 @@
     "query": "haşlanmış mısır",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bizim-vatan-br-191"
+    ],
+    "matchGroups": [
+      [
+        "mısır",
+        "misir"
+      ],
+      [
+        "konserve",
+        "haşlanmış",
+        "haslanmis"
+      ]
+    ]
   },
   {
     "ingredient": "Hindi / tavuk kıyma",
@@ -83,7 +210,22 @@
     "query": "tavuk kıyma",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/et-ve-tavuk-ve-sarkuteri-c-160"
+    ],
+    "matchGroups": [
+      [
+        "hindi",
+        "tavuk",
+        "piliç",
+        "pilic"
+      ],
+      [
+        "kıyma",
+        "kiyma"
+      ]
+    ]
   },
   {
     "ingredient": "Karışık sebze",
@@ -91,7 +233,19 @@
     "query": "dondurulmuş karışık sebze",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/dondurulmus-urunler-c-1550"
+    ],
+    "matchGroups": [
+      [
+        "karışık",
+        "karisik"
+      ],
+      [
+        "sebze"
+      ]
+    ]
   },
   {
     "ingredient": "Karışık yeşillik",
@@ -99,7 +253,17 @@
     "query": "karışık yeşillik",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "yeşillik",
+        "yesillik",
+        "salata"
+      ]
+    ]
   },
   {
     "ingredient": "Karışık çorbalık sebze",
@@ -107,7 +271,19 @@
     "query": "çorbalık sebze",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/dondurulmus-urunler-c-1550"
+    ],
+    "matchGroups": [
+      [
+        "çorbalık",
+        "corbalik"
+      ],
+      [
+        "sebze"
+      ]
+    ]
   },
   {
     "ingredient": "Kaşar / beyaz peynir",
@@ -115,7 +291,23 @@
     "query": "Mis tam yağlı tost peyniri 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/mis-tam-yagli-tost-peyniri-1-kg-p-7384"
+    ],
+    "matchGroups": [
+      [
+        "peynir"
+      ],
+      [
+        "kaşar",
+        "kasar",
+        "tost"
+      ]
+    ]
   },
   {
     "ingredient": "Kuru barbunya",
@@ -126,6 +318,14 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "barbunya"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bakliyat-c-1820"
+    ],
+    "matchGroups": [
+      [
+        "barbunya"
+      ]
     ]
   },
   {
@@ -137,6 +337,19 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "fasulye"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bakliyat-c-1820"
+    ],
+    "matchGroups": [
+      [
+        "fasulye"
+      ]
+    ],
+    "forbidden": [
+      "haslanmis",
+      "haşlanmış",
+      "konserve"
     ]
   },
   {
@@ -148,6 +361,22 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "nohut"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bakliyat-c-1820"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/anadolu-mutfagi-nohut-1-kg-p-9054"
+    ],
+    "matchGroups": [
+      [
+        "nohut"
+      ]
+    ],
+    "forbidden": [
+      "haslanmis",
+      "haşlanmış",
+      "konserve"
     ]
   },
   {
@@ -156,15 +385,37 @@
     "query": "kuru soğan kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "soğan",
+        "sogan"
+      ]
+    ]
   },
   {
     "ingredient": "Kırmızı mercimek",
     "unit": "g",
-    "query": "kırmızı mercimek 1 kg",
+    "query": "Anadolu Mutfağı kırmızı mercimek 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bakliyat-c-1820",
+      "https://www.sokmarket.com.tr/pirinc-ve-bulgur-c-1810"
+    ],
+    "matchGroups": [
+      [
+        "mercimek"
+      ],
+      [
+        "kırmızı",
+        "kirmizi"
+      ]
+    ]
   },
   {
     "ingredient": "Limon",
@@ -172,7 +423,18 @@
     "query": "limon kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "adet"
+    "expectedUnitFamily": "adet",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "limon"
+      ]
+    ],
+    "massToTargetUnit": {
+      "gramsPerUnit": 60
+    }
   },
   {
     "ingredient": "Lor / labne",
@@ -180,23 +442,62 @@
     "query": "labne",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "matchGroups": [
+      [
+        "lor",
+        "labne"
+      ]
+    ],
+    "forbidden": [
+      "dondurma"
+    ]
   },
   {
     "ingredient": "Mevsim meyvesi",
     "unit": "g",
-    "query": "elma kg",
+    "query": "mevsim meyvesi",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "elma",
+        "şeftali",
+        "seftali",
+        "muz",
+        "kavun",
+        "karpuz",
+        "armut",
+        "erik"
+      ]
+    ]
   },
   {
     "ingredient": "Mevsim sebzesi",
     "unit": "g",
-    "query": "kabak kg",
+    "query": "mevsim sebzesi",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "kabak",
+        "patlıcan",
+        "patlican",
+        "biber",
+        "fasulye"
+      ]
+    ]
   },
   {
     "ingredient": "Patates",
@@ -204,7 +505,15 @@
     "query": "patates kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "patates"
+      ]
+    ]
   },
   {
     "ingredient": "Pirinç",
@@ -212,7 +521,16 @@
     "query": "pirinç 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/pirinc-ve-bulgur-c-1810"
+    ],
+    "matchGroups": [
+      [
+        "pirinç",
+        "pirinc"
+      ]
+    ]
   },
   {
     "ingredient": "Salata malzemesi",
@@ -220,7 +538,17 @@
     "query": "domates salatalık",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "domates",
+        "salatalık",
+        "salatalik"
+      ]
+    ]
   },
   {
     "ingredient": "Salatalık",
@@ -228,7 +556,16 @@
     "query": "salatalık kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "salatalık",
+        "salatalik"
+      ]
+    ]
   },
   {
     "ingredient": "Sarımsak",
@@ -236,7 +573,19 @@
     "query": "sarımsak",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "diş"
+    "expectedUnitFamily": "diş",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "sarımsak",
+        "sarimsak"
+      ]
+    ],
+    "massToTargetUnit": {
+      "gramsPerUnit": 3
+    }
   },
   {
     "ingredient": "Somon / uskumru / sardalya fileto",
@@ -244,7 +593,20 @@
     "query": "somon fileto",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/dondurulmus-urunler-c-1550"
+    ],
+    "matchGroups": [
+      [
+        "somon",
+        "uskumru",
+        "sardalya"
+      ],
+      [
+        "fileto"
+      ]
+    ]
   },
   {
     "ingredient": "Tam buğday / çavdar ekmeği",
@@ -252,7 +614,21 @@
     "query": "tam buğday ekmeği",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/ekmek-ve-pastane-c-1250"
+    ],
+    "matchGroups": [
+      [
+        "ekmek"
+      ],
+      [
+        "buğday",
+        "bugday",
+        "çavdar",
+        "cavdar"
+      ]
+    ]
   },
   {
     "ingredient": "Tam buğday galeta / ekmek içi",
@@ -260,23 +636,69 @@
     "query": "tam buğday galeta",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/ekmek-ve-pastane-c-1250"
+    ],
+    "matchGroups": [
+      [
+        "galeta",
+        "ekmek"
+      ],
+      [
+        "buğday",
+        "bugday"
+      ]
+    ]
   },
   {
     "ingredient": "Tavuk göğüs",
     "unit": "g",
-    "query": "tavuk göğüs kg",
+    "query": "Gedik piliç bonfile kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/et-ve-tavuk-ve-sarkuteri-c-160"
+    ],
+    "matchGroups": [
+      [
+        "tavuk",
+        "piliç",
+        "pilic",
+        "gedik"
+      ],
+      [
+        "göğüs",
+        "gogus",
+        "bonfile"
+      ]
+    ]
   },
   {
     "ingredient": "Tavuk göğüs / but eti",
     "unit": "g",
-    "query": "tavuk but kg",
+    "query": "Gedik piliç but kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/et-ve-tavuk-ve-sarkuteri-c-160"
+    ],
+    "matchGroups": [
+      [
+        "tavuk",
+        "piliç",
+        "pilic",
+        "gedik"
+      ],
+      [
+        "but",
+        "göğüs",
+        "gogus",
+        "bonfile"
+      ]
+    ]
   },
   {
     "ingredient": "Taze fasulye",
@@ -284,7 +706,21 @@
     "query": "taze fasulye kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "fasulye"
+      ]
+    ],
+    "forbidden": [
+      "haslanmis",
+      "haşlanmış",
+      "konserve",
+      "kuru"
+    ]
   },
   {
     "ingredient": "Yağsız dana kuşbaşı",
@@ -292,7 +728,19 @@
     "query": "dana kuşbaşı kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/et-ve-tavuk-ve-sarkuteri-c-160"
+    ],
+    "matchGroups": [
+      [
+        "dana"
+      ],
+      [
+        "kuşbaşı",
+        "kusbasi"
+      ]
+    ]
   },
   {
     "ingredient": "Yağsız dana kıyma",
@@ -300,15 +748,42 @@
     "query": "dana kıyma kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/et-ve-tavuk-ve-sarkuteri-c-160"
+    ],
+    "matchGroups": [
+      [
+        "dana"
+      ],
+      [
+        "kıyma",
+        "kiyma"
+      ]
+    ]
   },
   {
     "ingredient": "Yeşil biber",
     "unit": "g",
-    "query": "yeşil biber kg",
+    "query": "çarliston biber kg",
     "pricingMode": "weight",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "biber",
+        "çarliston",
+        "carliston"
+      ]
+    ],
+    "forbidden": [
+      "dolmalik",
+      "dolmalık",
+      "kapya"
+    ]
   },
   {
     "ingredient": "Yeşil mercimek",
@@ -316,7 +791,19 @@
     "query": "yeşil mercimek 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bakliyat-c-1820"
+    ],
+    "matchGroups": [
+      [
+        "mercimek"
+      ],
+      [
+        "yeşil",
+        "yesil"
+      ]
+    ]
   },
   {
     "ingredient": "Yeşillik",
@@ -324,7 +811,20 @@
     "query": "maydanoz",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "demet"
+    "expectedUnitFamily": "demet",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/meyve-ve-sebze-c-20"
+    ],
+    "matchGroups": [
+      [
+        "maydanoz",
+        "roka",
+        "dereotu",
+        "kıvırcık",
+        "kivircik"
+      ]
+    ],
+    "implicitOneTargetUnit": true
   },
   {
     "ingredient": "Yoğurt",
@@ -335,6 +835,18 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "yoğurt"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "matchGroups": [
+      [
+        "yoğurt",
+        "yogurt"
+      ]
+    ],
+    "preferredAny": [
+      "mis"
     ]
   },
   {
@@ -346,6 +858,18 @@
     "expectedUnitFamily": "adet",
     "requiredAll": [
       "yumurta"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/yumurta-c-895",
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/anadolu-ciftligi-l-yumurta-15-li-63-72-g-p-4821?vo=1"
+    ],
+    "matchGroups": [
+      [
+        "yumurta"
+      ]
     ]
   },
   {
@@ -357,6 +881,18 @@
     "expectedUnitFamily": "mass",
     "requiredAll": [
       "zeytin"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/zeytin-c-900",
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "matchGroups": [
+      [
+        "zeytin"
+      ]
+    ],
+    "forbidden": [
+      "ezme"
     ]
   },
   {
@@ -368,6 +904,18 @@
     "expectedUnitFamily": "volume",
     "requiredAll": [
       "zeytinyağı"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/sivi-yaglar-c-1780"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/lio-riviera-zeytinyagi-1-l-p-8748"
+    ],
+    "matchGroups": [
+      [
+        "zeytinyağı",
+        "zeytinyagi"
+      ]
     ]
   },
   {
@@ -385,19 +933,43 @@
     ],
     "forbidden": [
       "dondurma",
-      "süt",
-      "sut",
+      "icecek",
       "içecek",
-      "icecek"
+      "sut",
+      "süt"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "matchGroups": [
+      [
+        "badem",
+        "fındık",
+        "findik",
+        "ceviz"
+      ]
     ]
   },
   {
     "ingredient": "İnce bulgur",
     "unit": "g",
-    "query": "ince bulgur 1 kg",
+    "query": "Anadolu Mutfağı köftelik bulgur 1 kg",
     "pricingMode": "package",
     "strict": true,
-    "expectedUnitFamily": "mass"
+    "expectedUnitFamily": "mass",
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/pirinc-ve-bulgur-c-1810"
+    ],
+    "matchGroups": [
+      [
+        "bulgur"
+      ],
+      [
+        "köftelik",
+        "koftelik",
+        "ince"
+      ]
+    ]
   },
   {
     "ingredient": "Kaymak",
@@ -410,11 +982,23 @@
       "kaymak"
     ],
     "forbidden": [
-      "kornet",
-      "dondurma",
-      "çilek",
       "cilek",
-      "kup"
+      "dondurma",
+      "kornet",
+      "kup",
+      "çilek"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/kaymak-ve-krema-c-540",
+      "https://www.sokmarket.com.tr/sut-ve-sut-urunleri-c-460"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/mis-kaymak-200-g-p-7066?vo=1"
+    ],
+    "matchGroups": [
+      [
+        "kaymak"
+      ]
     ]
   },
   {
@@ -429,10 +1013,26 @@
     ],
     "forbidden": [
       "badem",
-      "balık",
       "balik",
+      "balli",
+      "ballı",
+      "balık",
       "dondurma",
-      "kornet"
+      "kornet",
+      "sut",
+      "süt"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/bal-c-920",
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/kovandan-cicek-bali-460-g-p-363689"
+    ],
+    "matchGroups": [
+      [
+        "bal"
+      ]
     ]
   },
   {
@@ -446,12 +1046,25 @@
       "reçel"
     ],
     "forbidden": [
-      "süt",
-      "sut",
-      "içecek",
-      "icecek",
       "dondurma",
-      "kornet"
+      "icecek",
+      "içecek",
+      "kornet",
+      "sut",
+      "süt"
+    ],
+    "catalogUrls": [
+      "https://www.sokmarket.com.tr/recel-c-910",
+      "https://www.sokmarket.com.tr/kahvaltilik-c-890"
+    ],
+    "directUrls": [
+      "https://www.sokmarket.com.tr/boltane-cilek-receli-380-g-p-6930"
+    ],
+    "matchGroups": [
+      [
+        "reçel",
+        "recel"
+      ]
     ]
   }
 ]
