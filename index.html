@@ -158,8 +158,30 @@ dialog.wide-dialog{width:min(96%,620px)}
 .cook-result{font-size:9px;color:var(--muted);line-height:1.45;background:#f7faf7;border:1px solid var(--line);border-radius:12px;padding:8px;margin-top:7px}
 .history-done{font-size:9px;color:#2e7250;font-weight:850;margin-top:6px}
 
+
+/* v0.3.7 Misafir / Özel Gün / İftar */
+.event-hero{background:linear-gradient(135deg,#49351f,#8a6237);color:#fff;border-radius:22px;padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.event-hero-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.event-hero h2{margin:4px 0;font-size:22px}.event-hero p{margin:0;opacity:.8;font-size:10px;line-height:1.45}
+.event-hero .event-add{border:0;background:#fff;color:#674922;border-radius:13px;padding:10px 12px;font-weight:900;white-space:nowrap}
+.event-list{display:grid;gap:8px;margin-top:10px}.event-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)}
+.event-card.done{background:#f8faf8}.event-card-top{display:flex;justify-content:space-between;gap:10px}.event-card h3{margin:0;font-size:14px}
+.event-date{font-size:9px;color:var(--muted);margin-top:3px}.event-headcount{text-align:right;font-weight:950;font-size:14px;white-space:nowrap}
+.event-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.event-badge{font-size:8px;font-weight:850;padding:4px 7px;border-radius:999px;background:#f2eee8;color:#674b2c}
+.event-badge.iftar{background:#e9efff;color:#405c9a}.event-badge.done{background:#e6f4e9;color:#2e7047}.event-badge.ai{background:#fff0cc;color:#735a1c}
+.event-plan-preview{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}.event-plan-preview b{font-size:9px}.event-plan-preview p{font-size:9px;color:var(--muted);line-height:1.45;margin:3px 0}
+.event-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.event-actions button{padding:8px 9px;font-size:9px}
+.event-home{margin:9px 0;border-radius:17px;padding:11px;background:#fff7e8;border:1px solid #ead7b6}.event-home h3{margin:0;font-size:13px}.event-home p{font-size:9px;color:#715d3b;margin:4px 0 0}
+.event-form{display:grid;gap:8px}.event-form .two{display:grid;grid-template-columns:1fr 1fr;gap:7px}.event-form label{font-size:9px;font-weight:800;color:#506258}
+.event-form input,.event-form select,.event-form textarea{margin-top:3px}
+.event-check{display:flex!important;align-items:center;gap:7px;font-size:10px!important}.event-check input{width:18px;height:18px;accent-color:var(--green)}
+.event-plan-result{display:grid;gap:10px;max-height:64vh;overflow:auto}.event-plan-summary{background:#fff7e8;border:1px solid #ead7b6;border-radius:14px;padding:10px;font-size:9px;line-height:1.45}
+.event-dish{border:1px solid var(--line);border-radius:16px;padding:10px;background:#fbfdfb}.event-dish h4{margin:0 0 3px;font-size:14px}
+.event-dish small{color:var(--muted);font-size:8px}.timeline{display:grid;gap:5px}.timeline-row{display:grid;grid-template-columns:55px 1fr;gap:8px;padding:7px 8px;border-radius:11px;background:#f6f8f6;font-size:9px}.timeline-row b{color:var(--green)}
+.bring-list{font-size:9px;line-height:1.5;padding-left:18px}.leftover-note{margin-top:7px;padding:8px;border-radius:11px;background:#eef6ef;color:#42614e;font-size:9px}
+.event-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px}.event-section-title h3{margin:0;font-size:15px}
+
 </style>
-<title>Aile Sofrası v0.3.6</title>
+<title>Aile Sofrası v0.3.7</title>
 </head>
 <body>
 
@@ -229,7 +251,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.6 · TÜRK MUTFAĞI & AKILLI TÜKETİM</div>
+    <div class="mini">AİLE SOFRASI · v0.3.7 · MİSAFİR & ÖZEL GÜN</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -253,6 +275,7 @@ dialog.wide-dialog{width:min(96%,620px)}
     <div><small>Haftalık ortalama</small><strong id="avgWeekBudget">—</strong></div>
   </div>
   <div id="homeExpiryAlert" class="expiry-home hidden"></div>
+  <div id="homeEventBanner" class="event-home hidden"></div>
   <div class="day-picker-wrap"><select id="daySelect" class="control"></select></div>
   <div class="mealstack" id="mealStack"></div>
 </section>
@@ -341,6 +364,18 @@ dialog.wide-dialog{width:min(96%,620px)}
 </section>
 
 <section id="menu" class="screen">
+  <div class="event-hero">
+    <div class="event-hero-top">
+      <div>
+        <div class="mini">MİSAFİR / ÖZEL GÜN</div>
+        <h2>Sofrayı kişiye göre büyüt</h2>
+        <p>Akşam yemeği, kahvaltı, çay saati, doğum günü, iftar, kutlama veya piknik için geçici kişi sayısı ve ayrı menü planı oluştur.</p>
+      </div>
+      <button id="newEventBtn" class="event-add">＋ Etkinlik</button>
+    </div>
+    <div id="specialEventList" class="event-list"></div>
+  </div>
+
   <div class="title-row">
     <div><div class="mini dark" id="monthPlanLabel">AYLIK PLAN</div><h2>Menü</h2></div>
     <button id="cheapWeekBtn" class="softbtn">Haftayı ekonomikleştir</button>
@@ -408,6 +443,111 @@ dialog.wide-dialog{width:min(96%,620px)}
 </nav>
 </div>
 
+
+
+<dialog id="eventDialog" class="wide-dialog">
+<form id="eventForm" class="event-form" method="dialog">
+  <div class="mini dark">MİSAFİR / ÖZEL GÜN</div>
+  <h3 id="eventDialogTitle">Etkinlik oluştur</h3>
+
+  <div class="two">
+    <label>Etkinlik türü
+      <select id="eventType" class="control wide">
+        <option>Akşam yemeği</option>
+        <option>Kahvaltı</option>
+        <option>Çay saati</option>
+        <option>Doğum günü</option>
+        <option>İftar</option>
+        <option>Kutlama</option>
+        <option>Piknik</option>
+        <option>Diğer</option>
+      </select>
+    </label>
+    <label>Başlık
+      <input id="eventTitle" class="control wide" placeholder="Örn. Ailece iftar" required>
+    </label>
+  </div>
+
+  <div class="two">
+    <label>Tarih<input id="eventDate" class="control wide" type="date" required></label>
+    <label>Misafir / buluşma saati<input id="eventTime" class="control wide" type="time" required></label>
+  </div>
+
+  <div class="two">
+    <label>Toplam kişi<input id="eventPeople" class="control wide" type="number" min="1" max="100" value="6" required></label>
+    <label>Çocuk sayısı<input id="eventChildren" class="control wide" type="number" min="0" max="50" value="0"></label>
+  </div>
+
+  <div class="two">
+    <label>Yaşlı / özel yumuşak porsiyon<input id="eventElderly" class="control wide" type="number" min="0" max="50" value="0"></label>
+    <label>Vejetaryen kişi<input id="eventVegetarian" class="control wide" type="number" min="0" max="50" value="0"></label>
+  </div>
+
+  <label>Alerji / kaçınılacak gıdalar
+    <input id="eventAllergies" class="control wide" placeholder="Örn. fındık, susam, laktoz">
+  </label>
+
+  <div class="two">
+    <label>Bütçe yaklaşımı
+      <select id="eventBudgetStyle" class="control wide">
+        <option value="ekonomik">Ekonomik</option>
+        <option value="dengeli" selected>Dengeli</option>
+        <option value="ozel">Özel / şık</option>
+        <option value="manuel">Manuel limit</option>
+      </select>
+    </label>
+    <label>Bütçe limiti (₺)
+      <input id="eventBudgetLimit" class="control wide" type="number" min="0" step="100" placeholder="Opsiyonel">
+    </label>
+  </div>
+
+  <label>Pişirme tarzı
+    <select id="eventCookingStyle" class="control wide">
+      <option>Karışık</option>
+      <option>Hızlı</option>
+      <option>Önceden hazırlanabilir</option>
+      <option>Fırın</option>
+      <option>Izgara</option>
+      <option>Tek tencere</option>
+    </select>
+  </label>
+
+  <label class="event-check"><input id="eventUsePantry" type="checkbox" checked> Sanal kilerde olanları önce kullan</label>
+
+  <label>Kim ne getirecek?
+    <textarea id="eventBring" class="control wide" rows="3" placeholder="Örn. Ayşe: salata&#10;Mehmet: tatlı"></textarea>
+  </label>
+
+  <label>Not
+    <textarea id="eventNotes" class="control wide" rows="2" placeholder="Örn. Çocuklar erken yiyecek, masa balkonda kurulacak"></textarea>
+  </label>
+
+  <div class="dialog-actions">
+    <button value="cancel" class="softbtn">Vazgeç</button>
+    <button id="saveEventBtn" value="default" class="primary">Kaydet</button>
+  </div>
+</form>
+</dialog>
+
+<dialog id="eventPlanDialog" class="wide-dialog">
+  <div id="eventPlanProgress" class="scan-progress hidden">
+    <div class="scan-spinner"></div>
+    <b>Özel gün sofrası hazırlanıyor…</b>
+    <span class="itemmeta">Kişi sayısı, kiler, özel beslenme ve hazırlık saati birlikte hesaplanıyor.</span>
+  </div>
+  <div id="eventPlanWrap" class="hidden">
+    <div class="title-row">
+      <div><div class="mini dark">AI SOFRA PLANI</div><h3 id="eventPlanTitle">Etkinlik planı</h3></div>
+    </div>
+    <div id="eventPlanResult" class="event-plan-result"></div>
+    <div class="nutrition-warning">Alerji, gıda güvenliği ve özel sağlık gereksinimlerinde fiziksel ürün etiketini ve kişinin kendi kısıtlarını ayrıca kontrol et.</div>
+    <div class="dialog-actions">
+      <button id="shareEventPlanBtn" class="softbtn">Paylaş</button>
+      <button id="closeEventPlanBtn" class="softbtn">Kapat</button>
+      <button id="completeEventBtn" class="primary">✓ Etkinlik yapıldı</button>
+    </div>
+  </div>
+</dialog>
 
 <dialog id="pantryItemDialog" class="wide-dialog">
 <form id="pantryItemForm" class="pantry-form" method="dialog">
@@ -526,15 +666,15 @@ const KEY='aile-sofrasi-v02';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const money=new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],mealHistory:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null,calendarMonth:null}}
+function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],mealHistory:[],specialEvents:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null,calendarMonth:null}}
 let state=(()=>{try{return {...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return initial()}})();
 
 const cloud={
   configured:false, app:null, auth:null, db:null, user:null, userProfile:null,
-  familyId:null, family:null, member:null, unsubscribeState:null, unsubscribeActivity:null, ai:null, aiModel:null, recipeModel:null, appCheck:null,
+  familyId:null, family:null, member:null, unsubscribeState:null, unsubscribeActivity:null, ai:null, aiModel:null, recipeModel:null, eventModel:null, appCheck:null,
   applyingRemote:false, saveTimer:null, localOnly:false
 };
-const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','mealHistory','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
+const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','mealHistory','specialEvents','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
 function sharedPayload(){const p={};sharedKeys.forEach(k=>p[k]=clone(state[k]));return p}
 function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state))}
 function save(){
@@ -1018,11 +1158,11 @@ function consumeAIRecipe(r){
  });
  return {deductions,unmatched};
 }
-function createMealHistory({source,title,mealType,recipeId=null,aiTitle=null,deductions=[],unmatched=[]}){
+function createMealHistory({source,title,mealType,recipeId=null,aiTitle=null,eventId=null,deductions=[],unmatched=[]}){
  state.mealHistory ||= [];
  const h={
    id:'mh'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
-   source,title,mealType,recipeId,aiTitle,
+   source,title,mealType,recipeId,aiTitle,eventId,
    calendarMonth:state.calendarMonth,day:state.day,cookedAt:new Date().toISOString(),
    deductions:clone(deductions),unmatched:clone(unmatched),feedback:null,undoneAt:null
  };
@@ -1082,6 +1222,10 @@ function undoCookHistory(id){
    else if(d.snapshot){const restored=clone(d.snapshot);restored.quantity=d.before;restored.updatedAt=new Date().toISOString();state.virtualPantry.push(restored)}
  });
  h.undoneAt=new Date().toISOString();
+ if(h.eventId){
+   const ev=(state.specialEvents||[]).find(x=>x.id===h.eventId);
+   if(ev){ev.status='planned';ev.completedAt=null;ev.mealHistoryId=null}
+ }
  save();renderAll();logActivity(`${h.title} tüketim kaydı geri alındı`);
 }
 function openFeedbackDialog(id){
@@ -1095,6 +1239,256 @@ function openFeedbackDialog(id){
  $('#feedbackNote').value=fb.note||'';
  $$('.feedback-star').forEach(b=>b.classList.toggle('active',Number(b.dataset.rating)<=Number(fb.rating||0)));
  $('#mealFeedbackDialog').showModal();
+}
+
+
+let editingEventId=null;
+let activeEventPlanId=null;
+
+function eventTypeClass(type){return type==='İftar'?'iftar':''}
+function activeFamilyCount(){return state.people.filter(p=>p.active).length}
+function eventGuestCount(ev){return Math.max(0,Number(ev.totalPeople||0)-activeFamilyCount())}
+function eventDateLabel(ev){
+ const d=new Date(`${ev.date}T12:00:00`);
+ if(Number.isNaN(d.getTime()))return ev.date||'—';
+ return `${d.getDate()} ${TR_MONTHS[d.getMonth()]} ${TR_DAYS[d.getDay()]} · ${ev.time||'—'}`;
+}
+function eventById(id){return (state.specialEvents||[]).find(x=>x.id===id)}
+function eventMealHistory(ev){
+ if(!ev?.mealHistoryId)return null;
+ return (state.mealHistory||[]).find(h=>h.id===ev.mealHistoryId&&!h.undoneAt)||null;
+}
+function upcomingEvents(){
+ const today=todayISO();
+ return [...(state.specialEvents||[])].filter(e=>e.status!=='done'&&e.date>=today).sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+function todayEvents(){return (state.specialEvents||[]).filter(e=>e.date===todayISO())}
+function openMenuScreen(){
+ $$('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.screen==='menu'));
+ $$('.screen').forEach(x=>x.classList.remove('active'));
+ $('#menu').classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderHomeEventBanner(){
+ const el=$('#homeEventBanner');if(!el)return;
+ const events=todayEvents();
+ if(!events.length){el.classList.add('hidden');el.innerHTML='';return}
+ const ev=events[0],guests=eventGuestCount(ev);
+ el.classList.remove('hidden');
+ el.innerHTML=`<h3>🎉 Bugün: ${esc(ev.title)}</h3><p>${esc(ev.type)} · ${esc(ev.time)} · ${ev.totalPeople} kişi${guests?` · +${guests} misafir`:''}${ev.plan?' · AI planı hazır':''}</p><div class="event-actions"><button id="openTodayEventBtn" class="softbtn">Planı aç</button></div>`;
+ $('#openTodayEventBtn').onclick=()=>{openMenuScreen();if(ev.plan)setTimeout(()=>openEventPlan(ev.id),100)};
+}
+function openEventForm(ev=null,cloneMode=false){
+ editingEventId=cloneMode?null:(ev?.id||null);
+ $('#eventDialogTitle').textContent=cloneMode?'Etkinliği tekrar kullan':ev?'Etkinliği düzenle':'Etkinlik oluştur';
+ $('#eventType').value=ev?.type||'Akşam yemeği';
+ $('#eventTitle').value=ev?.title||'';
+ $('#eventDate').value=cloneMode?todayISO():(ev?.date||todayISO());
+ $('#eventTime').value=ev?.time||'19:00';
+ $('#eventPeople').value=ev?.totalPeople||Math.max(4,activeFamilyCount()+2);
+ $('#eventChildren').value=ev?.children||0;
+ $('#eventElderly').value=ev?.elderly||0;
+ $('#eventVegetarian').value=ev?.vegetarian||0;
+ $('#eventAllergies').value=ev?.allergies||'';
+ $('#eventBudgetStyle').value=ev?.budgetStyle||'dengeli';
+ $('#eventBudgetLimit').value=ev?.budgetLimit||'';
+ $('#eventCookingStyle').value=ev?.cookingStyle||'Karışık';
+ $('#eventUsePantry').checked=ev?.usePantry!==false;
+ $('#eventBring').value=ev?.bringItems||'';
+ $('#eventNotes').value=ev?.notes||'';
+ $('#eventDialog').showModal();
+}
+function eventStockText(ev){
+ if(ev.usePantry===false)return '- Kullanıcı kiler stokunu bu planda önceliklendirmek istemiyor.';
+ const usable=usablePantryForAI();
+ if(!usable.length)return '- Sanal kilerde kullanılabilir kayıt yok.';
+ return usable.map(x=>{
+   const d=expiryDays(x.expiryDate);
+   const priority=d!==null&&d<=7?` [ÖNCELİKLİ: ${d===0?'bugün':d+' gün içinde'}]`:'';
+   return `- ID=${x.id} | ${x.name}${x.brand?' / '+x.brand:''} | stok=${itemQuantityText(x)} | ${x.location||'Kiler'}${x.expiryDate?' | tarih='+x.expiryDate:''}${priority}`;
+ }).join('\n');
+}
+function eventTypeGuidance(type){
+ const map={
+   'İftar':'İftar sofrası dengeli olsun: hafif açılış, çorba, ana yemek, uygun yardımcı yemek/salata/yoğurt ve hafif tatlı veya meyve. Çok ağır kızartma ve aşırı şeker yükleme.',
+   'Kahvaltı':'Paylaşımlı Türk kahvaltısı düzeni kur; yumurta/peynir/sebze/tam tahıl dengesini koru.',
+   'Çay saati':'Türk çay saati düzeni kur; 2-4 küçük tuzlu/tatlı seçenek yeterli olsun, gereksiz çeşit israfına kaçma.',
+   'Doğum günü':'Kutlama havası olsun; servis kolaylığı, çocuk güvenliği ve önceden hazırlanabilir seçeneklere önem ver.',
+   'Piknik':'Taşınabilir, açık havada güvenli tutulabilecek, kolay servis edilen Türk mutfağı seçenekleri seç; soğuk zincir riskini belirt.',
+   'Akşam yemeği':'Türk ev sofrası düzeni kur: çorba veya başlangıç, ana yemek, tamamlayıcı ve salata/yoğurt dengesini düşün.',
+   'Kutlama':'Şık ama uygulanabilir Türk sofrası oluştur; önceden hazırlığı mümkün olan seçenekleri artır.',
+   'Diğer':'Etkinliğin notlarına göre uygulanabilir bir Türk sofrası oluştur.'
+ };
+ return map[type]||map['Diğer'];
+}
+function eventPlanPrompt(ev){
+ const manualBudget=ev.budgetStyle==='manuel'&&ev.budgetLimit?`${ev.budgetLimit} TL üst sınırı`:`${ev.budgetStyle} bütçe yaklaşımı`;
+ return `Aile Sofrası uygulamasında bir MİSAFİR / ÖZEL GÜN sofrası planla.
+
+Etkinlik:
+- Başlık: ${ev.title}
+- Tür: ${ev.type}
+- Tarih: ${ev.date}
+- Misafir/buluşma saati: ${ev.time}
+- Toplam kişi: ${ev.totalPeople}
+- Evde aktif aile üyesi: ${activeFamilyCount()}
+- Tahmini ek misafir: ${eventGuestCount(ev)}
+- Çocuk: ${ev.children}
+- Yaşlı/yumuşak servis ihtiyacı: ${ev.elderly}
+- Vejetaryen: ${ev.vegetarian}
+- Alerji/kaçınılacaklar: ${ev.allergies||'belirtilmedi'}
+- Bütçe: ${manualBudget}
+- Pişirme tarzı: ${ev.cookingStyle}
+- Kim ne getirecek: ${ev.bringItems||'belirtilmedi'}
+- Not: ${ev.notes||'yok'}
+
+Etkinlik türü yönlendirmesi:
+${eventTypeGuidance(ev.type)}
+
+Sanal kiler:
+${eventStockText(ev)}
+
+Aile yemek geri bildirimleri:
+${recentFeedbackText()}
+
+Kurallar:
+- Türk ev mutfağına uygun, sağlıklı ve gerçekçi bir sofra oluştur.
+- Toplam kişi sayısını tarif porsiyonlarında esas al.
+- Çocuk, yaşlı, vejetaryen ve alerji sayılarını gerçekten dikkate al.
+- Alerji alanında yazan ürünü veya açık türevini tariflere koyma.
+- Bütçe ekonomik ise az çeşit ama yeterli ve doyurucu; dengeli ise orta çeşit; özel/şık ise kontrollü biçimde daha özenli olabilir.
+- Kullanıcı "kim ne getirecek" yazdıysa o ürünleri tekrar alışverişe ekleme ve sofra bütünlüğünde hesaba kat.
+- ${ev.usePantry!==false?'Kilerdeki ürünleri ve özellikle tarihi yaklaşanları önce değerlendir.':'Kileri tüketmek zorunlu değil; menüyü etkinlik ihtiyacına göre kur.'}
+- Ana ölçü gram olmasın. adet, paket, su bardağı, çay bardağı, yemek kaşığı, çay kaşığı, demet, dilim, kase, kepçe, diş, tutam gibi Türk mutfağı ev ölçülerini kullan; gramsApprox alanında yaklaşık gram karşılığını ayrıca ver.
+- ingredientsUsed pantryId değerini stok listesinden aynen kopyalasın. pantryQuantityUsed stok birimi cinsinden ve stoktan fazla olmayacak şekilde yazılsın.
+- Paket net miktarı bilinmiyorsa kısmi paketi uydurma; pantryQuantityUsed=0 ve note="kalan miktarı elle doğrula" yaz.
+- dishes içinde sofrayı oluşturan 3-6 öğe olsun; gereksiz çeşit ve israf yaratma.
+- timeline etkinlik saati ${ev.time} referans alınarak HH:MM biçiminde gerçek hazırlık sırası versin. Önceden yapılabilecek işleri erkene koy.
+- bringSuggestions, misafirlerden istenebilecek en fazla 3 mantıklı katkı önerisi olsun; zaten getirilecekler yazılmışsa tekrarlama.
+- leftoverPlan, artan yemekleri güvenli ve pratik değerlendirmek için 2-4 fikir versin; bozulabilir yiyeceklerin oda sıcaklığında bekletilmesini önermesin.
+- Çocuklarda bütün sert kuruyemiş, çiğ/az pişmiş yumurta-et-balık veya boğulma riski yaratabilecek servislerden kaçın.
+- Son geri bildirimlerde düşük puan alan yemekleri aynen tekrar etmekten kaçın.`;
+}
+function renderSpecialEvents(){
+ state.specialEvents ||= [];
+ const list=$('#specialEventList');if(!list)return;
+ const sorted=[...state.specialEvents].sort((a,b)=>{
+   if(a.status!==b.status)return a.status==='done'?1:-1;
+   return `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`);
+ });
+ list.innerHTML=sorted.length?sorted.map(ev=>{
+   const guests=eventGuestCount(ev),hist=eventMealHistory(ev),dishes=ev.plan?.dishes||[];
+   return `<article class="event-card ${ev.status==='done'?'done':''}">
+     <div class="event-card-top">
+       <div><h3>${esc(ev.title)}</h3><div class="event-date">${esc(eventDateLabel(ev))}</div></div>
+       <div class="event-headcount">${Number(ev.totalPeople)} kişi${guests?`<div class="itemmeta">+${guests} misafir</div>`:''}</div>
+     </div>
+     <div class="event-badges">
+       <span class="event-badge ${eventTypeClass(ev.type)}">${esc(ev.type)}</span>
+       <span class="event-badge">${esc(ev.budgetStyle)}</span>
+       <span class="event-badge">${esc(ev.cookingStyle)}</span>
+       ${ev.plan?'<span class="event-badge ai">✨ AI planı hazır</span>':''}
+       ${ev.status==='done'?'<span class="event-badge done">✓ Yapıldı</span>':''}
+     </div>
+     ${ev.plan?`<div class="event-plan-preview"><b>Sofra:</b><p>${dishes.slice(0,5).map(d=>esc(d.title)).join(' · ')}${dishes.length>5?' …':''}</p></div>`:''}
+     ${ev.leftovers?`<div class="leftover-note"><b>Artanlar:</b> ${esc(ev.leftovers)}</div>`:''}
+     <div class="event-actions">
+       ${ev.plan?`<button class="softbtn open-event-plan" data-id="${ev.id}">Planı aç</button>`:`<button class="primary plan-event" data-id="${ev.id}">✨ AI planla</button>`}
+       ${ev.status!=='done'?`<button class="softbtn edit-event" data-id="${ev.id}">Düzenle</button>`:''}
+       <button class="softbtn clone-event" data-id="${ev.id}">Tekrarla</button>
+       ${ev.status==='done'&&hist?`<button class="feedback-btn event-feedback" data-history="${hist.id}">${hist.feedback?'★ Geri bildirimi düzenle':'★ Geri bildirim ver'}</button><button class="cooked-btn done undo-event" data-history="${hist.id}">Geri al</button>`:''}
+       ${ev.status!=='done'?`<button class="dangerbtn delete-event" data-id="${ev.id}">Sil</button>`:''}
+     </div>
+   </article>`;
+ }).join(''):'<div class="camera-note" style="color:rgba(255,255,255,.78)">Henüz özel gün yok. Misafir sayısını girip tek seferlik sofrayı ayrı planlayabilirsin.</div>';
+
+ $$('.plan-event').forEach(b=>b.onclick=()=>generateEventPlan(b.dataset.id));
+ $$('.open-event-plan').forEach(b=>b.onclick=()=>openEventPlan(b.dataset.id));
+ $$('.edit-event').forEach(b=>b.onclick=()=>openEventForm(eventById(b.dataset.id)));
+ $$('.clone-event').forEach(b=>b.onclick=()=>openEventForm(eventById(b.dataset.id),true));
+ $$('.delete-event').forEach(b=>b.onclick=()=>{const ev=eventById(b.dataset.id);if(ev&&confirm(`${ev.title} silinsin mi?`)){state.specialEvents=state.specialEvents.filter(x=>x.id!==ev.id);save();renderAll()}});
+ $$('.event-feedback').forEach(b=>b.onclick=()=>openFeedbackDialog(b.dataset.history));
+ $$('.undo-event').forEach(b=>b.onclick=()=>undoCookHistory(b.dataset.history));
+ renderHomeEventBanner();
+}
+function renderEventPlan(ev){
+ const p=ev.plan;if(!p)return;
+ $('#eventPlanTitle').textContent=ev.title;
+ $('#eventPlanResult').innerHTML=`
+   <div class="event-plan-summary"><b>${esc(p.headline||ev.title)}</b><br>${esc(p.guestSummary||'')}<br><br><b>Bütçe yaklaşımı:</b> ${esc(p.budgetNote||'')}</div>
+   <div class="event-section-title"><h3>Sofra</h3><span class="itemmeta">${ev.totalPeople} kişi</span></div>
+   ${(p.dishes||[]).map(d=>`<article class="event-dish">
+     <h4>${esc(d.title)}</h4><small>${esc(d.course||'Yemek')} · ~${Math.round(Number(d.prepMinutes||0))} dk · ${Math.round(Number(d.servings||ev.totalPeople))} kişilik</small>
+     <div class="reason" style="margin-top:5px">${esc(d.reason||'')}</div>
+     <div class="recipe-block"><b>Kilerden</b><div>${(d.ingredientsUsed||[]).map(x=>`<div class="recipe-ingredient-line"><span>${esc(x.name)}</span><span>${esc(measureObjectText(x))}</span></div>`).join('')||'<div class="recipe-ingredient-line"><span>—</span></div>'}</div></div>
+     <div class="recipe-block"><b>Eksik / alınacak</b><div>${(d.missingIngredients||[]).map(x=>`<div class="recipe-ingredient-line"><span>${esc(x.name)}</span><span>${esc(measureObjectText(x))}</span></div>`).join('')||'<div class="recipe-ingredient-line"><span>Yok</span></div>'}</div></div>
+     <div class="recipe-block"><b>Yapılışı</b><ol>${(d.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
+     ${d.childNote?`<div class="nutrition-warning"><b>Çocuk için:</b> ${esc(d.childNote)}</div>`:''}
+   </article>`).join('')}
+   <div class="event-section-title"><h3>Hazırlık akışı</h3></div>
+   <div class="timeline">${(p.timeline||[]).map(x=>`<div class="timeline-row"><b>${esc(x.time)}</b><span>${esc(x.task)}</span></div>`).join('')}</div>
+   <div class="event-section-title"><h3>Kim ne getirebilir?</h3></div>
+   <ul class="bring-list">${(p.bringSuggestions||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Ek katkı gerekmiyor.</li>'}</ul>
+   <div class="event-section-title"><h3>Artanları değerlendirme</h3></div>
+   <ul class="bring-list">${(p.leftoverPlan||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Artanlara göre etkinlik sonrası karar ver.</li>'}</ul>`;
+ $('#completeEventBtn').classList.toggle('hidden',ev.status==='done');
+}
+function openEventPlan(id){
+ const ev=eventById(id);if(!ev?.plan)return;
+ activeEventPlanId=id;
+ renderEventPlan(ev);
+ $('#eventPlanProgress').classList.add('hidden');
+ $('#eventPlanWrap').classList.remove('hidden');
+ $('#eventPlanDialog').showModal();
+}
+async function generateEventPlan(id){
+ const ev=eventById(id);if(!ev)return;
+ if(!cloud.eventModel){alert('AI özel gün planlayıcısı henüz hazır değil. Uygulamayı kapatıp yeniden açmayı dene.');return}
+ activeEventPlanId=id;
+ $('#eventPlanDialog').showModal();$('#eventPlanProgress').classList.remove('hidden');$('#eventPlanWrap').classList.add('hidden');
+ try{
+   const result=await cloud.eventModel.generateContent(eventPlanPrompt(ev));
+   const data=JSON.parse(result.response.text());
+   ev.plan=data;ev.updatedAt=new Date().toISOString();
+   save();renderAll();renderEventPlan(ev);
+   $('#eventPlanProgress').classList.add('hidden');$('#eventPlanWrap').classList.remove('hidden');
+   logActivity(`${ev.title} için özel gün planı hazırlandı`);
+ }catch(e){
+   $('#eventPlanDialog').close();
+   alert('Özel gün planı hazırlanamadı. İnternet ve AI Logic bağlantısını kontrol et.');
+ }
+}
+function eventPlanText(ev){
+ const p=ev.plan;if(!p)return '';
+ const dishes=(p.dishes||[]).map(d=>`${d.course}: ${d.title}\n${(d.ingredientsUsed||[]).map(x=>`  • ${x.name}: ${measureObjectText(x)}`).join('\n')}`).join('\n\n');
+ const timeline=(p.timeline||[]).map(x=>`${x.time} — ${x.task}`).join('\n');
+ return `${ev.title}\n${eventDateLabel(ev)} · ${ev.totalPeople} kişi\n\n${p.headline||''}\n\nSOFRA\n${dishes}\n\nHAZIRLIK\n${timeline}`;
+}
+async function shareEventPlan(){
+ const ev=eventById(activeEventPlanId);if(!ev?.plan)return;
+ const text=eventPlanText(ev);
+ if(navigator.share){try{await navigator.share({title:ev.title,text})}catch{}}
+ else{try{await navigator.clipboard.writeText(text);alert('Etkinlik planı kopyalandı.')}catch{}}
+}
+function consumeEventPlan(ev){
+ const requirements=new Map();
+ (ev.plan?.dishes||[]).forEach(d=>(d.ingredientsUsed||[]).forEach(use=>{
+   const qty=Number(use.pantryQuantityUsed||0);if(qty<=0)return;
+   const key=use.pantryId;
+   const old=requirements.get(key)||{...use,pantryQuantityUsed:0};
+   old.pantryQuantityUsed+=qty;requirements.set(key,old);
+ }));
+ return consumeAIRecipe({ingredientsUsed:[...requirements.values()]});
+}
+async function completeEvent(){
+ const ev=eventById(activeEventPlanId);if(!ev?.plan||ev.status==='done')return;
+ if(!confirm(`${ev.title} tamamlandı olarak işaretlensin ve kullanılan kiler miktarları düşülsün mü?`))return;
+ const result=consumeEventPlan(ev);
+ const leftovers=prompt('Artan yemek/ürün varsa kısa not düşebilirsin. Yoksa boş bırak.','')||'';
+ const h=createMealHistory({source:'event',title:ev.title,mealType:ev.type,eventId:ev.id,deductions:result.deductions,unmatched:result.unmatched});
+ ev.status='done';ev.completedAt=new Date().toISOString();ev.mealHistoryId=h.id;ev.leftovers=leftovers;
+ $('#eventPlanDialog').close();
+ await finishCook(h);
 }
 
 function renderHome(){
@@ -1237,6 +1631,63 @@ const pantryRecipeSchema = Schema.object({
         optionalProperties: ["childNote"],
       }),
     }),
+  },
+});
+
+const eventPlanSchema = Schema.object({
+  properties: {
+    headline: Schema.string(),
+    guestSummary: Schema.string(),
+    budgetNote: Schema.string(),
+    dishes: Schema.array({
+      items: Schema.object({
+        properties: {
+          title: Schema.string(),
+          course: Schema.string(),
+          reason: Schema.string(),
+          prepMinutes: Schema.number(),
+          servings: Schema.number(),
+          ingredientsUsed: Schema.array({
+            items: Schema.object({
+              properties: {
+                pantryId: Schema.string(),
+                name: Schema.string(),
+                measureAmount: Schema.number(),
+                measureUnit: Schema.string(),
+                gramsApprox: Schema.number(),
+                pantryQuantityUsed: Schema.number(),
+                pantryUnit: Schema.string(),
+                note: Schema.string(),
+              },
+              optionalProperties: ["note"],
+            }),
+          }),
+          missingIngredients: Schema.array({
+            items: Schema.object({
+              properties: {
+                name: Schema.string(),
+                measureAmount: Schema.number(),
+                measureUnit: Schema.string(),
+                gramsApprox: Schema.number(),
+              },
+            }),
+          }),
+          steps: Schema.array({items:Schema.string()}),
+          childNote: Schema.string(),
+        },
+        optionalProperties: ["childNote"],
+      }),
+    }),
+    timeline: Schema.array({
+      items: Schema.object({
+        properties: {
+          time: Schema.string(),
+          task: Schema.string(),
+        },
+      }),
+    }),
+    bringSuggestions: Schema.array({items:Schema.string()}),
+    leftoverPlan: Schema.array({items:Schema.string()}),
   },
 });
 
@@ -1792,6 +2243,7 @@ async function initCloud(){
       cloud.ai=getAI(cloud.app,{backend:new GoogleAIBackend()});
       cloud.aiModel=getGenerativeModel(cloud.ai,{model:'gemini-3.6-flash',generationConfig:{responseMimeType:'application/json',responseSchema:pantryScanSchema}});
       cloud.recipeModel=getGenerativeModel(cloud.ai,{model:'gemini-3.6-flash',generationConfig:{responseMimeType:'application/json',responseSchema:pantryRecipeSchema}});
+      cloud.eventModel=getGenerativeModel(cloud.ai,{model:'gemini-3.6-flash',generationConfig:{responseMimeType:'application/json',responseSchema:eventPlanSchema}});
     }catch{}
     cloud.configured=true;
     onAuthStateChanged(cloud.auth,async user=>{
@@ -1803,7 +2255,7 @@ async function initCloud(){
   }catch(e){showGate('firebaseMissing');cloudStatus('Bağlantı hatası',false)}
 }
 
-function renderAll(){fillSelects();renderHome();renderShop();renderVirtualPantry();renderExpiryAlerts();renderMenu();renderPeople();renderSettings();renderMarkets();updateOptimizeButton()}
+function renderAll(){fillSelects();renderHome();renderShop();renderVirtualPantry();renderExpiryAlerts();renderMenu();renderSpecialEvents();renderPeople();renderSettings();renderMarkets();updateOptimizeButton()}
 async function syncPrices(){alert('Bu sürüm, kayıtlı çevrimiçi market fiyat snapshotını kullanır. Canlı otomatik fiyat yenileme tam PWA paketindeki sunucu ile çalışır.')}
 function cheapWeek(){
  const [start,end]=weekBounds(state.day);
@@ -1841,6 +2293,38 @@ $('#personForm').addEventListener('submit',e=>{e.preventDefault();const age=Numb
 $('#pAge').onchange=()=>{const a=Number($('#pAge').value);if(a<18)$('#pCalories').value='';if(!editing)$('#pFactor').value=a<=3?.45:a<=8?.6:a<=13?.75:a<=17?.9:1}
 $('#daySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
 $('#shopDaySelect').onchange=e=>{state.day=Number(e.target.value);save();renderAll();syncPrices()};
+
+$('#newEventBtn').onclick=()=>openEventForm();
+$('#eventType').onchange=()=>{
+ if(!$('#eventTitle').value.trim())$('#eventTitle').value=$('#eventType').value;
+};
+$('#eventBudgetStyle').onchange=()=>{
+ $('#eventBudgetLimit').disabled=$('#eventBudgetStyle').value!=='manuel';
+};
+$('#eventForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const total=Number($('#eventPeople').value||0),children=Number($('#eventChildren').value||0),elderly=Number($('#eventElderly').value||0),vegetarian=Number($('#eventVegetarian').value||0);
+ if(total<1){alert('Toplam kişi sayısı en az 1 olmalı.');return}
+ if(children>total||elderly>total||vegetarian>total){alert('Çocuk, yaşlı veya vejetaryen sayısı toplam kişi sayısını aşamaz.');return}
+ const v={
+   type:$('#eventType').value,title:$('#eventTitle').value.trim(),date:$('#eventDate').value,time:$('#eventTime').value,totalPeople:total,
+   children,elderly,vegetarian,allergies:$('#eventAllergies').value.trim(),budgetStyle:$('#eventBudgetStyle').value,
+   budgetLimit:$('#eventBudgetLimit').value?Number($('#eventBudgetLimit').value):null,cookingStyle:$('#eventCookingStyle').value,
+   usePantry:$('#eventUsePantry').checked,bringItems:$('#eventBring').value.trim(),notes:$('#eventNotes').value.trim(),updatedAt:new Date().toISOString()
+ };
+ state.specialEvents ||= [];
+ if(editingEventId){
+   const ev=eventById(editingEventId);
+   if(ev)Object.assign(ev,v,{plan:null,status:ev.status==='done'?'done':'planned'});
+ }else{
+   state.specialEvents.push({id:'ev'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),...v,plan:null,status:'planned',createdAt:new Date().toISOString(),completedAt:null,mealHistoryId:null,leftovers:''});
+ }
+ save();$('#eventDialog').close();renderAll();
+});
+$('#closeEventPlanBtn').onclick=()=>$('#eventPlanDialog').close();
+$('#shareEventPlanBtn').onclick=shareEventPlan;
+$('#completeEventBtn').onclick=completeEvent;
+
 $$('.navbtn').forEach(b=>b.onclick=()=>{$$('.navbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.screen).classList.add('active')});
 $$('.segbtn').forEach(b=>b.onclick=()=>{$$('.segbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.listMode=b.dataset.list;save();renderShop()});
 $$('.scopebtn').forEach(b=>b.onclick=()=>{$$('.scopebtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.shoppingScope=b.dataset.scope;save();renderShop()});

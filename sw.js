@@ -1,4 +1,4 @@
-const CACHE='aile-sofrasi-v036-turkish-smart-consumption';
+const CACHE='aile-sofrasi-v037-special-events';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js','./appcheck-config.js'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
