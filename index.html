@@ -198,7 +198,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 .price-pref{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800}.price-pref input{width:18px;height:18px;accent-color:var(--green)}
 
 </style>
-<title>Aile Sofrası v0.4.3</title>
+<title>Aile Sofrası v0.4.4</title>
 </head>
 <body>
 
@@ -268,7 +268,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.4.3 · ŞOK GÜNCEL FİYAT</div>
+    <div class="mini">AİLE SOFRASI · v0.4.4 · ŞOK GÜNCEL FİYAT</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -1068,13 +1068,35 @@ function plateComponents(r){
  return comps.filter(c=>c.grams>0 || c.calories>0);
 }
 function personShare(r,p,type){
+ // Gerçek yiyecek miktarı kalori hedefine göre büyütülmez.
+ // Kalori hedefi yalnızca bilgi etiketi olarak gösterilir.
  const defaultShare=Number(p.portionFactor||1)/activeFactorTotal();
- if(Number(p.age)>=18 && Number(p.calorieTarget)>0){
-   const mealTarget=Number(p.calorieTarget)*(MEAL_ENERGY_SHARE[type]??.25);
-   const batchCalories=recipeCalories(r)*factor();
-   if(batchCalories>0)return {share:mealTarget/batchCalories,mode:'kcal hedefine göre'};
- }
  return {share:defaultShare,mode:'porsiyon katsayısına göre'};
+}
+const SOUP_BOWL_GRAMS=300;
+function soupServingTarget(p){
+ const age=Number(p?.age||0);
+ if(age>0 && age<3)return 150;
+ if(age>=3 && age<=5)return 180;
+ if(age>=6 && age<=12)return 220;
+ if(age>=13 && age<18)return 250;
+ return 300;
+}
+function componentPortionForPerson(c,p,batchScale,share){
+ const totalGrams=Math.max(0,c.grams*batchScale);
+ const totalKcal=Math.max(0,c.calories*batchScale);
+ let grams=totalGrams*share;
+
+ // Çorbanın tamamını kişiye paylaştırmak yerine gerçek servis miktarını sınırla.
+ // Yetişkin: ~300 g (1 kase), 3–5 yaş: ~180 g (küçük kase).
+ if(c.kind==='soup'){
+   grams=Math.min(grams,soupServingTarget(p));
+ }
+
+ // Porsiyon gramı sınırlandıysa kaloriyi de aynı bileşen oranında hesapla.
+ const ratio=totalGrams>0?Math.min(1,grams/totalGrams):0;
+ const kcal=totalKcal*ratio;
+ return {grams,kcal};
 }
 function niceNumber(n,dec=1){
  const rounded=Math.round(n*10**dec)/10**dec;
@@ -1082,7 +1104,10 @@ function niceNumber(n,dec=1){
 }
 function componentAmountText(c,grams){
  const g=Math.max(0,grams);
- if(c.kind==='soup')return {main:`${niceNumber(g/150)} kepçe`,sub:`~${Math.round(g)} g`};
+ if(c.kind==='soup'){
+   const bowl=g<=210?'1 küçük kase':g<=330?'1 kase':`${niceNumber(g/SOUP_BOWL_GRAMS)} kase`;
+   return {main:bowl,sub:`~${Math.round(g)} g · 1 kase ≈ ${SOUP_BOWL_GRAMS} g`};
+ }
  if(c.kind==='yogurt')return {main:`${niceNumber(g/30)} yemek kaşığı`,sub:`~${Math.round(g)} g`};
  if(c.kind==='veg')return {main:`${niceNumber(g/27)} dolu yemek kaşığı`,sub:`~${Math.round(g)} g`};
  if(c.kind==='pulse')return {main:`${niceNumber(g/27)} dolu yemek kaşığı`,sub:`~${Math.round(g)} g`};
@@ -1102,6 +1127,7 @@ function componentAmountText(c,grams){
 function childGuide(c,p){
  const age=Number(p.age);
  if(age<3||age>5)return '';
+ if(c.kind==='soup')return '3–5 yaş rehberi: yaklaşık 150–180 g / küçük kase';
  if(c.kind==='protein')return '3–5 yaş rehberi: 40–80 g / 2–3 yemek kaşığı';
  if(c.kind==='potato')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
  if(c.kind==='veg')return '3–5 yaş rehberi: 60–80 g / 2–3 yemek kaşığı';
@@ -1123,8 +1149,9 @@ function nutritionPanel(r,type){
      const ps=personShare(r,p,type), child=Number(p.age)<18;
      let personKcal=0;
      const rows=comps.map(c=>{
-       const grams=c.grams*batchScale*ps.share;
-       const kcal=c.calories*batchScale*ps.share;
+       const portion=componentPortionForPerson(c,p,batchScale,ps.share);
+       const grams=portion.grams;
+       const kcal=portion.kcal;
        personKcal+=kcal;
        const a=componentAmountText(c,grams), guide=childGuide(c,p);
        return `<div class="food-row">
@@ -1135,10 +1162,8 @@ function nutritionPanel(r,type){
      const target=(Number(p.age)>=18&&Number(p.calorieTarget)>0)
        ? `<span class="energy-tag">günlük hedef ${Math.round(p.calorieTarget)} kcal</span>`:'';
      const note=child
-       ? 'Çocuk porsiyonları başlangıç miktarıdır; bitirme hedefi değildir. Açlık ve tokluk sinyallerine göre artırıp azaltın.'
-       : (ps.mode==='kcal hedefine göre'
-          ? 'Her yiyeceğin miktarı, girilen günlük enerji hedefinin bu öğüne düşen payı korunarak ayrı ayrı hesaplandı.'
-          : 'Her yiyecek, ailedeki kişisel porsiyon katsayısına göre ayrı ayrı hesaplandı.');
+       ? 'Çocuk porsiyonları başlangıç miktarıdır; bitirme hedefi değildir. Çorbada 3–5 yaş için küçük kase yaklaşık 150–180 g kabul edilir.'
+       : 'Yiyecek miktarı ailedeki kişisel porsiyon katsayısına göre hesaplanır. Girilen kalori hedefi gerçek porsiyonu büyütmez; yalnızca referanstır.';
      return `<div class="portion-card">
        <div class="portion-head"><div><b>${p.name}</b>${target}</div><div class="portion-main"><small>${ps.mode}</small></div></div>
        <div class="food-list">${rows}</div>
@@ -1146,7 +1171,7 @@ function nutritionPanel(r,type){
        <div class="portion-note">${note}</div>
      </div>`;
    }).join('')}</div>
-   <div class="nutrition-warning">Artık birleşik “toplam tabak gramı” kullanılmıyor. Çorba, et/tavuk/balık, bulgur/pirinç, sebze/salata, yoğurt, ekmek gibi yiyecekler ayrı ayrı porsiyonlanıyor. Kaşık karşılıkları mutfak tipi yaklaşık ölçüdür; yemeğin kıvamı ve kaşığın doluluğu sonucu değiştirir.</div>
+   <div class="nutrition-warning">Çorba servisinde tencerenin toplam ağırlığı kişi porsiyonu gibi gösterilmez. Referans: yetişkin için yaklaşık 300 g = 1 kase; 3–5 yaş için yaklaşık 150–180 g = küçük kase. Kalori hedefi porsiyon gramını şişirmez. Diğer kaşık/gram karşılıkları mutfak tipi yaklaşık ölçüdür.</div>
  </details>`;
 }
 
