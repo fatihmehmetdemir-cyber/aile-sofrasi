@@ -141,8 +141,25 @@ dialog.wide-dialog{width:min(96%,620px)}
 .recipe-badge.priority{background:#fff0cc;color:#745817}.recipe-block{margin-top:7px}.recipe-block b{font-size:9px}.recipe-block ul,.recipe-block ol{margin:4px 0 0;padding-left:18px;font-size:9px;line-height:1.45;color:#526258}
 .recipe-card-actions{display:flex;justify-content:flex-end;margin-top:8px}.recipe-card-actions button{padding:8px 10px;font-size:9px}
 
+
+/* v0.3.6 Türk mutfağı ölçüleri + tüketim + geri bildirim */
+.meal-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.meal-actions button{padding:9px 10px;font-size:9px}
+.cooked-btn{background:#e8f5eb;color:#286749;border:1px solid #cfe6d5;border-radius:12px;font-weight:900}
+.cooked-btn.done{background:#fff1cf;color:#73591d;border-color:#ead49b}
+.feedback-btn{background:#eef3ff;color:#415f99;border:1px solid #d9e2f8;border-radius:12px;font-weight:900}
+.kitchen-measure{font-weight:800;color:#315d45}
+.recipe-ingredient-line{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px dashed var(--line);font-size:10px}
+.recipe-ingredient-line:first-child{border-top:0}
+.recipe-ingredient-line span:last-child{text-align:right;color:var(--green2);font-weight:850}
+.feedback-stars{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.feedback-star{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 4px;font-size:17px}
+.feedback-star.active{background:#fff1cf;border-color:#e7cb78}
+.cook-result{font-size:9px;color:var(--muted);line-height:1.45;background:#f7faf7;border:1px solid var(--line);border-radius:12px;padding:8px;margin-top:7px}
+.history-done{font-size:9px;color:#2e7250;font-weight:850;margin-top:6px}
+
 </style>
-<title>Aile Sofrası v0.3.5</title>
+<title>Aile Sofrası v0.3.6</title>
 </head>
 <body>
 
@@ -212,7 +229,7 @@ dialog.wide-dialog{width:min(96%,620px)}
 <div id="app">
 <header class="appbar">
   <div>
-    <div class="mini">AİLE SOFRASI · v0.3.5 · AKILLI KİLER</div>
+    <div class="mini">AİLE SOFRASI · v0.3.6 · TÜRK MUTFAĞI & AKILLI TÜKETİM</div>
     <h1 id="hello">Bugün ne pişiriyoruz?</h1>
   </div>
   <div class="appbar-actions">
@@ -442,6 +459,47 @@ dialog.wide-dialog{width:min(96%,620px)}
   </div>
 </dialog>
 
+
+<dialog id="mealFeedbackDialog" class="wide-dialog">
+  <form id="mealFeedbackForm" method="dialog">
+    <div class="mini dark">YEMEK SONRASI</div>
+    <h3 id="feedbackMealTitle">Nasıl oldu?</h3>
+    <input id="feedbackHistoryId" type="hidden">
+    <label>Genel beğeni</label>
+    <div class="feedback-stars" id="feedbackStars">
+      <button type="button" class="feedback-star" data-rating="1">★</button>
+      <button type="button" class="feedback-star" data-rating="2">★</button>
+      <button type="button" class="feedback-star" data-rating="3">★</button>
+      <button type="button" class="feedback-star" data-rating="4">★</button>
+      <button type="button" class="feedback-star" data-rating="5">★</button>
+    </div>
+    <input id="feedbackRating" type="hidden" value="0">
+    <div class="pantry-form two" style="margin-top:9px">
+      <label>Porsiyon
+        <select id="feedbackPortion" class="control wide">
+          <option value="tam">Tam geldi</option>
+          <option value="az">Az geldi</option>
+          <option value="fazla">Fazla geldi</option>
+        </select>
+      </label>
+      <label>Tekrar yapalım mı?
+        <select id="feedbackAgain" class="control wide">
+          <option value="evet">Evet</option>
+          <option value="belki">Belki</option>
+          <option value="hayir">Hayır</option>
+        </select>
+      </label>
+    </div>
+    <label>Not
+      <textarea id="feedbackNote" class="control wide" rows="3" placeholder="Örn. Alparslan çok sevdi, tuzu biraz az olsun."></textarea>
+    </label>
+    <div class="dialog-actions">
+      <button value="cancel" class="softbtn">Sonra</button>
+      <button id="saveMealFeedbackBtn" value="default" class="primary">Geri bildirimi kaydet</button>
+    </div>
+  </form>
+</dialog>
+
 <dialog id="personDialog">
 <form id="personForm" method="dialog">
 <h3>Kişi ekle / düzenle</h3>
@@ -468,7 +526,7 @@ const KEY='aile-sofrasi-v02';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const money=new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0});
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null,calendarMonth:null}}
+function initial(){return {people:clone(seed.people),days:clone(seed.days),recipes:clone(seed.recipes),priceBook:clone(seed.priceBook),pantry:{},weeklyPantry:{},virtualPantry:[],mealHistory:[],weekOptimizationBackup:{},day:1,listMode:'all',shoppingScope:'day',lastSync:null,monthlyBudgetTarget:null,calendarMonth:null}}
 let state=(()=>{try{return {...initial(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return initial()}})();
 
 const cloud={
@@ -476,7 +534,7 @@ const cloud={
   familyId:null, family:null, member:null, unsubscribeState:null, unsubscribeActivity:null, ai:null, aiModel:null, recipeModel:null, appCheck:null,
   applyingRemote:false, saveTimer:null, localOnly:false
 };
-const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
+const sharedKeys=['people','days','pantry','weeklyPantry','virtualPantry','mealHistory','weekOptimizationBackup','monthlyBudgetTarget','calendarMonth'];
 function sharedPayload(){const p={};sharedKeys.forEach(k=>p[k]=clone(state[k]));return p}
 function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state))}
 function save(){
@@ -787,6 +845,69 @@ function nutritionPanel(r,type){
 }
 
 function qty(x,u){x*=factor();if(['g','ml'].includes(u))return `${Math.round(x/10)*10} ${u}`;if(['adet','demet','diş'].includes(u))return `${Math.max(1,Math.ceil(x))} ${u}`;return `${x.toFixed(1)} ${u}`}
+
+const TURKISH_CUP_GRAMS={
+ 'Bulgur':180,'İnce bulgur':170,'Pirinç':180,'Kırmızı mercimek':180,'Yeşil mercimek':180,
+ 'Kuru nohut':180,'Kuru fasulye':180,'Kuru barbunya':180,'Yoğurt':200,'Haşlanmış mısır':160,
+ 'Beyaz peynir / lor':120,'Kaşar / beyaz peynir':120,'Lor / labne':160,'Ceviz içi':100,
+ 'Çiğ badem/fındık/ceviz':110,'Karışık sebze':150,'Karışık yeşillik':80,'Mevsim sebzesi':150,
+ 'Salata malzemesi':150,'Karışık çorbalık sebze':150
+};
+const TURKISH_TBSP_GRAMS={
+ 'Yoğurt':30,'Domates salçası':20,'Bulgur':12,'İnce bulgur':11,'Pirinç':12,
+ 'Kırmızı mercimek':12,'Yeşil mercimek':12,'Kuru nohut':12,'Kuru fasulye':12,'Kuru barbunya':12,
+ 'Haşlanmış mısır':12,'Ceviz içi':8,'Çiğ badem/fındık/ceviz':9,'Karışık sebze':18,
+ 'Salata malzemesi':18,'Karışık yeşillik':12
+};
+const TURKISH_ITEM_GRAMS={
+ 'Domates':120,'Havuç':80,'Patates':150,'Salatalık':120,'Yeşil biber':35,'Kuru soğan':100,
+ 'Mevsim meyvesi':120,'Limon':60,'Yumurta':50
+};
+function kitchenFraction(n){
+ const q=Math.round(Number(n||0)*4)/4;
+ const whole=Math.floor(q),frac=Math.round((q-whole)*4);
+ const f=frac===1?'¼':frac===2?'½':frac===3?'¾':'';
+ if(!whole&&f)return f;
+ if(whole&&f)return `${whole}${f}`;
+ return String(whole||Math.max(.25,q));
+}
+function recipeMeasure(i){
+ const amount=Number(i.amount||0)*factor(),unit=i.unit,name=i.name;
+ let grams=0,primary='';
+ if(unit==='g'){
+   grams=amount;
+   const each=TURKISH_ITEM_GRAMS[name];
+   const cup=TURKISH_CUP_GRAMS[name];
+   const tbsp=TURKISH_TBSP_GRAMS[name];
+   if(each && amount/each>=.5 && amount/each<=8) primary=`${kitchenFraction(amount/each)} adet`;
+   else if(cup && amount/cup>=.5) primary=`${kitchenFraction(amount/cup)} su bardağı`;
+   else if(tbsp) primary=`${kitchenFraction(amount/tbsp)} yemek kaşığı`;
+   else primary=`${kitchenFraction(amount/200)} kase`;
+ }else if(unit==='ml'){
+   grams=amount*(UNIT_GRAMS[name]?.ml??1);
+   if(amount>=150)primary=`${kitchenFraction(amount/200)} su bardağı`;
+   else if(amount>=70)primary=`${kitchenFraction(amount/100)} çay bardağı`;
+   else if(amount>=12)primary=`${kitchenFraction(amount/15)} yemek kaşığı`;
+   else primary=`${kitchenFraction(amount/5)} çay kaşığı`;
+ }else if(unit==='adet'){
+   grams=amount*(UNIT_GRAMS[name]?.adet??TURKISH_ITEM_GRAMS[name]??0);
+   primary=`${kitchenFraction(amount)} adet`;
+ }else if(unit==='demet'){
+   grams=amount*(UNIT_GRAMS[name]?.demet??100);primary=`${kitchenFraction(amount)} demet`;
+ }else if(unit==='diş'){
+   grams=amount*(UNIT_GRAMS[name]?.['diş']??3);primary=`${kitchenFraction(amount)} diş`;
+ }else{
+   primary=`${kitchenFraction(amount)} ${unit}`;
+ }
+ return `${primary}${grams?` (≈${Math.round(grams)} g)`:''}`;
+}
+function measureObjectText(x){
+ const amount=kitchenFraction(Number(x?.measureAmount||0));
+ const unit=String(x?.measureUnit||'').trim();
+ const g=Number(x?.gramsApprox||0);
+ return `${amount} ${unit}${g>0?` (≈${Math.round(g)} g)`:''}`;
+}
+
 function aggregateDay(dn){
  const m=new Map();Object.values(day(dn).meals).forEach(id=>{const r=recipe(id);r?.ingredients.forEach(i=>{const k=pkey(i.name,i.unit),v=m.get(k)||{name:i.name,unit:i.unit,amount:0};v.amount+=i.amount;m.set(k,v)})});return [...m.values()].sort((a,b)=>a.name.localeCompare(b.name,'tr'));
 }
@@ -817,10 +938,179 @@ function latestPriceStatus(items){
 }
 function fillSelects(){const o=state.days.map(d=>`<option value="${d.day}">${calendarLabel(d.day)}</option>`).join('');$('#daySelect').innerHTML=o;$('#shopDaySelect').innerHTML=o;$('#daySelect').value=state.day;$('#shopDaySelect').value=state.day}
 function mealOptions(type,id){return state.recipes.filter(r=>r.mealType===type&&r.healthy).sort((a,b)=>recipeCost(a)-recipeCost(b)).map(r=>`<option value="${r.id}" ${r.id===id?'selected':''}>${r.title} · ${money.format(recipeCost(r))}</option>`).join('')}
+
+function currentMealHistory(dayNum,type,recipeId){
+ state.mealHistory ||= [];
+ return [...state.mealHistory].reverse().find(h=>
+   h.source==='plan' && h.calendarMonth===state.calendarMonth &&
+   Number(h.day)===Number(dayNum) && h.mealType===type && h.recipeId===recipeId && !h.undoneAt
+ )||null;
+}
+function recentFeedbackText(){
+ const rows=(state.mealHistory||[]).filter(h=>h.feedback&&!h.undoneAt).slice(-8);
+ if(!rows.length)return 'Henüz yemek geri bildirimi yok.';
+ return rows.map(h=>`- ${h.title}: ${h.feedback.rating}/5, porsiyon ${h.feedback.portion}, tekrar ${h.feedback.again}${h.feedback.note?`, not: ${h.feedback.note}`:''}`).join('\n');
+}
+function pantryCandidates(name){
+ const n=normalizeFood(name);
+ return (state.virtualPantry||[]).filter(x=>{
+   if(Number(x.quantity||0)<=0)return false;
+   if(x.expiryDate && (expiryDays(x.expiryDate)??0)<0)return false;
+   const m=normalizeFood(x.name);
+   return m===n || (m.length>3&&m.includes(n)) || (n.length>3&&n.includes(m));
+ }).sort((a,b)=>{
+   const ad=expiryDays(a.expiryDate),bd=expiryDays(b.expiryDate);
+   return (ad===null?99999:ad)-(bd===null?99999:bd);
+ });
+}
+function convertRecipeAmountToPantry(amount,sourceUnit,item,name){
+ const target=item.unit;
+ if(sourceUnit===target)return amount;
+ if(sourceUnit==='g'&&target==='kg')return amount/1000;
+ if(sourceUnit==='kg'&&target==='g')return amount*1000;
+ if(sourceUnit==='ml'&&target==='L')return amount/1000;
+ if(sourceUnit==='L'&&target==='ml')return amount*1000;
+ const each=UNIT_GRAMS[name]?.adet??TURKISH_ITEM_GRAMS[name];
+ if(sourceUnit==='g'&&target==='adet'&&each)return amount/each;
+ if(sourceUnit==='adet'&&target==='g'&&each)return amount*each;
+ if(sourceUnit==='adet'&&target==='kg'&&each)return amount*each/1000;
+ if(sourceUnit==='g'&&target==='ml'&&(name==='Yoğurt'||name==='Ayran'))return amount;
+ if(sourceUnit==='ml'&&target==='g'&&(name==='Yoğurt'||name==='Ayran'))return amount;
+ return null;
+}
+function consumePlannedRecipe(r){
+ const deductions=[],unmatched=[];
+ r.ingredients.forEach(ing=>{
+   let need=Number(ing.amount||0)*factor();
+   const candidates=pantryCandidates(ing.name);
+   if(!candidates.length){unmatched.push(`${ing.name}: kilerde eşleşme yok`);return}
+   let any=false;
+   for(const item of candidates){
+     if(need<=1e-6)break;
+     const converted=convertRecipeAmountToPantry(need,ing.unit,item,ing.name);
+     if(converted===null)continue;
+     any=true;
+     const take=Math.min(Number(item.quantity||0),converted);
+     if(take<=0)continue;
+     const before=Number(item.quantity||0),after=Math.max(0,before-take);
+     deductions.push({pantryId:item.id,name:item.name,amount:take,unit:item.unit,before,after,snapshot:clone(item)});
+     item.quantity=after;item.updatedAt=new Date().toISOString();
+     // Reduce remaining need by inverse conversion using proportionality.
+     if(converted>0)need=Math.max(0,need*(1-take/converted));
+   }
+   if(!any)unmatched.push(`${ing.name}: birim otomatik çevrilemedi`);
+   else if(need>1e-4)unmatched.push(`${ing.name}: kiler miktarı yetersiz`);
+ });
+ return {deductions,unmatched};
+}
+function consumeAIRecipe(r){
+ const deductions=[],unmatched=[];
+ (r.ingredientsUsed||[]).forEach(use=>{
+   const item=(state.virtualPantry||[]).find(x=>x.id===use.pantryId);
+   const ask=Number(use.pantryQuantityUsed||0);
+   if(!item){unmatched.push(`${use.name}: kiler kaydı bulunamadı`);return}
+   if(ask<=0){unmatched.push(`${use.name}: paket miktarı kesin olmadığı için otomatik düşülmedi`);return}
+   const before=Number(item.quantity||0),take=Math.min(before,ask),after=Math.max(0,before-take);
+   if(take<=0){unmatched.push(`${use.name}: kilerde miktar yok`);return}
+   deductions.push({pantryId:item.id,name:item.name,amount:take,unit:item.unit,before,after,snapshot:clone(item)});
+   item.quantity=after;item.updatedAt=new Date().toISOString();
+   if(ask>before)unmatched.push(`${use.name}: istenen miktarın yalnızca mevcut kısmı düşüldü`);
+ });
+ return {deductions,unmatched};
+}
+function createMealHistory({source,title,mealType,recipeId=null,aiTitle=null,deductions=[],unmatched=[]}){
+ state.mealHistory ||= [];
+ const h={
+   id:'mh'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+   source,title,mealType,recipeId,aiTitle,
+   calendarMonth:state.calendarMonth,day:state.day,cookedAt:new Date().toISOString(),
+   deductions:clone(deductions),unmatched:clone(unmatched),feedback:null,undoneAt:null
+ };
+ state.mealHistory.push(h);
+ return h;
+}
+function deductionSummary(h){
+ if(!h?.deductions?.length)return 'Kilerden otomatik düşülebilen ürün olmadı.';
+ return h.deductions.slice(0,4).map(d=>`${d.name}: ${Number(d.amount).toLocaleString('tr-TR',{maximumFractionDigits:2})} ${d.unit}`).join(' · ')+(h.deductions.length>4?' …':'');
+}
+async function sendMealFeedbackNotification(h){
+ if(!('Notification' in window)||!('serviceWorker' in navigator))return false;
+ try{
+   let permission=Notification.permission;
+   if(permission==='default')permission=await Notification.requestPermission();
+   if(permission!=='granted')return false;
+   const reg=await navigator.serviceWorker.ready;
+   await reg.showNotification('Aile Sofrası · Yemek geri bildirimi',{
+     body:`${h.title} yapıldı ve kiler güncellendi. Yemekten sonra nasıl olduğunu puanlar mısın?`,
+     tag:`meal-feedback-${h.id}`,
+     renotify:false,
+     data:{feedbackId:h.id},
+     icon:'./icon.svg',
+     badge:'./icon.svg'
+   });
+   return true;
+ }catch{return false}
+}
+async function finishCook(h){
+ save();renderAll();
+ logActivity(`${h.title} yapıldı · sanal kiler güncellendi`);
+ const notified=await sendMealFeedbackNotification(h);
+ if(!notified)setTimeout(()=>openFeedbackDialog(h.id),250);
+}
+async function cookPlannedMeal(dayNum,type,recipeId){
+ if(currentMealHistory(dayNum,type,recipeId)){return}
+ const r=recipe(recipeId);if(!r)return;
+ if(!confirm(`${r.title} bu öğünde yapıldı olarak işaretlensin ve eşleşen ürünler sanal kilerden düşülsün mü?`))return;
+ const result=consumePlannedRecipe(r);
+ const h=createMealHistory({source:'plan',title:r.title,mealType:type,recipeId,deductions:result.deductions,unmatched:result.unmatched});
+ await finishCook(h);
+}
+async function cookAIRecipe(i){
+ const r=pantryRecipeSuggestions[i];if(!r)return;
+ if(!confirm(`${r.title} yapıldı olarak kaydedilsin ve tarifte kullanılan kiler miktarları düşülsün mü?`))return;
+ const result=consumeAIRecipe(r);
+ const h=createMealHistory({source:'ai',title:r.title,mealType:r.mealType||'Öğün',aiTitle:r.title,deductions:result.deductions,unmatched:result.unmatched});
+ $('#pantryRecipeDialog').close();
+ await finishCook(h);
+}
+function undoCookHistory(id){
+ const h=(state.mealHistory||[]).find(x=>x.id===id);if(!h||h.undoneAt)return;
+ if(!confirm(`${h.title} için kiler düşümü geri alınsın mı?`))return;
+ (h.deductions||[]).forEach(d=>{
+   let item=(state.virtualPantry||[]).find(x=>x.id===d.pantryId);
+   if(item){item.quantity=d.before;item.updatedAt=new Date().toISOString()}
+   else if(d.snapshot){const restored=clone(d.snapshot);restored.quantity=d.before;restored.updatedAt=new Date().toISOString();state.virtualPantry.push(restored)}
+ });
+ h.undoneAt=new Date().toISOString();
+ save();renderAll();logActivity(`${h.title} tüketim kaydı geri alındı`);
+}
+function openFeedbackDialog(id){
+ const h=(state.mealHistory||[]).find(x=>x.id===id);if(!h||h.undoneAt)return;
+ $('#feedbackHistoryId').value=id;
+ $('#feedbackMealTitle').textContent=`${h.title} nasıl oldu?`;
+ const fb=h.feedback||{};
+ $('#feedbackRating').value=fb.rating||0;
+ $('#feedbackPortion').value=fb.portion||'tam';
+ $('#feedbackAgain').value=fb.again||'evet';
+ $('#feedbackNote').value=fb.note||'';
+ $$('.feedback-star').forEach(b=>b.classList.toggle('active',Number(b.dataset.rating)<=Number(fb.rating||0)));
+ $('#mealFeedbackDialog').showModal();
+}
+
 function renderHome(){
  const d=day(state.day), items=aggregateDay(state.day);$('#dayTitle').textContent=calendarLabel(d.day);$('#dayCost').textContent=money.format(dayCost(d));$('#monthBudget').textContent=money.format(monthCost());$('#avgWeekBudget').textContent=money.format(monthCost()/4.2857);$('#priceState').textContent=latestPriceStatus(items);
- $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{const r=recipe(id);return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${r.ingredients.slice(0,6).map(i=>`${i.name} ${qty(i.amount,i.unit)}`).join(' · ')}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}">${mealOptions(type,id)}</select>${nutritionPanel(r,type)}</article>`}).join('');
- $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()})
+ $('#mealStack').innerHTML=Object.entries(d.meals).map(([type,id])=>{
+   const r=recipe(id),done=currentMealHistory(d.day,type,id);
+   const ingredients=r.ingredients.slice(0,6).map(i=>`<span><b>${esc(i.name)}</b> <span class="kitchen-measure">${esc(recipeMeasure(i))}</span></span>`).join(' · ');
+   const action=done
+     ? `<div class="meal-actions"><button class="feedback-btn meal-feedback-open" data-history="${done.id}">${done.feedback?'★ Geri bildirimi düzenle':'★ Geri bildirim ver'}</button><button class="cooked-btn done undo-meal-cook" data-history="${done.id}">✓ Yapıldı · geri al</button></div><div class="history-done">${esc(deductionSummary(done))}${done.unmatched?.length?`<br><span style="color:#8a621e">Kontrol: ${esc(done.unmatched.slice(0,2).join(' · '))}</span>`:''}</div>`
+     : `<div class="meal-actions"><button class="cooked-btn mark-meal-cooked" data-day="${d.day}" data-type="${esc(type)}" data-recipe="${id}">✓ Bu öğün yapıldı</button></div>`;
+   return `<article class="mealcard"><div class="meal-top"><div><div class="mealtype">${type.toUpperCase()}</div><h3>${r.title}</h3></div><div class="mealprice">${money.format(recipeCost(r))}</div></div><div class="ingredients">${ingredients}${r.ingredients.length>6?' …':''}</div><select class="control mealswap" data-type="${type}" ${done?'disabled':''}>${mealOptions(type,id)}</select>${nutritionPanel(r,type)}${action}</article>`
+ }).join('');
+ $$('.mealswap').forEach(x=>x.onchange=e=>{d.meals[e.target.dataset.type]=e.target.value;save();renderAll()});
+ $$('.mark-meal-cooked').forEach(b=>b.onclick=()=>cookPlannedMeal(Number(b.dataset.day),b.dataset.type,b.dataset.recipe));
+ $$('.undo-meal-cook').forEach(b=>b.onclick=()=>undoCookHistory(b.dataset.history));
+ $$('.meal-feedback-open').forEach(b=>b.onclick=()=>openFeedbackDialog(b.dataset.history));
 }
 function renderShop(){
  const weekly=state.shoppingScope==='week';
@@ -916,8 +1206,31 @@ const pantryRecipeSchema = Schema.object({
           prepMinutes: Schema.number(),
           servings: Schema.number(),
           priorityExpiry: Schema.boolean(),
-          ingredientsUsed: Schema.array({items:Schema.string()}),
-          missingIngredients: Schema.array({items:Schema.string()}),
+          ingredientsUsed: Schema.array({
+            items: Schema.object({
+              properties: {
+                pantryId: Schema.string(),
+                name: Schema.string(),
+                measureAmount: Schema.number(),
+                measureUnit: Schema.string(),
+                gramsApprox: Schema.number(),
+                pantryQuantityUsed: Schema.number(),
+                pantryUnit: Schema.string(),
+                note: Schema.string(),
+              },
+              optionalProperties: ["note"],
+            }),
+          }),
+          missingIngredients: Schema.array({
+            items: Schema.object({
+              properties: {
+                name: Schema.string(),
+                measureAmount: Schema.number(),
+                measureUnit: Schema.string(),
+                gramsApprox: Schema.number(),
+              },
+            }),
+          }),
           steps: Schema.array({items:Schema.string()}),
           childNote: Schema.string(),
         },
@@ -1243,26 +1556,35 @@ function pantryRecipePrompt(){
  const stock=usable.map(x=>{
    const d=expiryDays(x.expiryDate);
    const priority=d!==null&&d<=7?` [ÖNCELİKLİ: ${d===0?'bugün':d+' gün içinde'}]`:'';
-   return `- ${x.name}${x.brand?' / '+x.brand:''}: ${itemQuantityText(x)}, ${x.location||'Kiler'}${x.expiryDate?' tarih '+x.expiryDate:''}${priority}`;
+   return `- ID=${x.id} | ${x.name}${x.brand?' / '+x.brand:''} | stok=${itemQuantityText(x)} | konum=${x.location||'Kiler'}${x.expiryDate?' | tarih='+x.expiryDate:''}${priority}`;
  }).join('\n');
- return `Aile Sofrası adlı aile mutfak uygulamasında sanal kilerden yemek öner.
+ return `Aile Sofrası adlı aile mutfak uygulamasında sanal kilerden TÜRK EV MUTFAĞINA uygun yemek öner.
 Aile: ${family||'aile profili yok'}.
 
 Kullanılabilir ürünler:
 ${stock||'- Kullanılabilir kayıt yok'}
 
+Son geri bildirimler:
+${recentFeedbackText()}
+
 Kurallar:
-- Tam 3 sağlıklı, pratik, ailece yenebilecek yemek öner.
+- Tam 3 sağlıklı, pratik, ailece yenebilecek TÜRK MUTFAĞI yemeği öner.
+- Türk ev mutfağı karakterini koru: çorba, zeytinyağlı, sulu yemek, sebze yemeği, menemen, pilav, cacık, fırın/ızgara, bakliyat gibi doğal seçeneklere öncelik ver. Uygun olmayan malzemeye sırf Türk yemeği olsun diye zorlama.
+- Tarif ölçülerinde ana birim olarak GRAM KULLANMA. Türk mutfağındaki ev ölçülerini kullan: adet, paket, su bardağı, çay bardağı, yemek kaşığı, çay kaşığı, demet, dilim, kase, kepçe, diş, tutam.
+- Her malzeme için measureAmount + measureUnit ana gösterimdir. gramsApprox alanında parantezde göstermek üzere yaklaşık gram karşılığını ayrıca ver.
+- 1 su bardağı yaklaşık 200 ml, 1 çay bardağı yaklaşık 100 ml, 1 yemek kaşığı yaklaşık 15 ml, 1 çay kaşığı yaklaşık 5 ml kabul edilebilir; katı gıdada gerçek yoğunluğa göre yaklaşık gram hesapla.
+- ingredientsUsed içindeki pantryId değerini yukarıdaki stok ID'sinden AYNEN kopyala.
+- pantryUnit değerini stoktaki birimden AYNEN kopyala.
+- pantryQuantityUsed, yemek yapıldığında sanal kilerden düşülecek miktardır ve MUTLAKA pantryUnit cinsinden olmalıdır. Stoktan fazla olamaz.
+- Stok birimi "paket" ve paketin net miktarı bilinmiyorsa: yalnızca bütün paket gerçekten kullanılacaksa pantryQuantityUsed=1 (veya gereken tam paket sayısı) yaz. Kısmi paket kullanımını güvenle hesaplayamıyorsan pantryQuantityUsed=0 yap ve note alanına "kalan miktarı elle doğrula" yaz.
 - Tarihi geçmiş ürünler listeye zaten dahil edilmedi; hiçbir şekilde tarihi geçmiş ürün önermemelisin.
 - 7 gün içinde tarihi gelecek ürünleri mümkün olduğunca önce kullan ve priorityExpiry=true yap.
 - Bir öneri mümkünse hiç eksik malzeme istemesin; diğerlerinde en fazla 2 basit eksik malzeme olabilir.
-- Miktarları eldeki stoktan fazla varsayma. Kesin gram bilinmiyorsa aşırı kesin miktar uydurma.
-- Akdeniz tipi, sebze/bakliyat/tam tahıl ağırlıklı, aşırı tuz ve işlenmiş ürün odaklı olmayan seçenekleri tercih et.
+- missingIngredients için de gram ana ölçü olmasın; ev ölçüsü + gramsApprox ver.
 - Ailede küçük çocuk varsa bütün sert kuruyemiş önerme; çiğ/az pişmiş yumurta-et-balık önerme; büyük/sert parçaları childNote alanında belirt.
-- steps kısa ve uygulanabilir 3-6 adım olsun.
+- steps kısa, Türkçe ve uygulanabilir 3-6 adım olsun.
 - reason alanında hangi kiler ürününü neden önce kullandığını açıkla.
-- ingredientsUsed yalnızca gerçekten kullanacağın kiler ürünlerini yaz.
-- missingIngredients yoksa boş dizi döndür.`;
+- Kullanıcı geri bildiriminde düşük puan alan yemekleri aynen tekrar önermekten kaçın; beğenilen tarzları tercih et.`;
 }
 function renderPantryRecipes(){
  const wrap=$('#pantryRecipeResult');
@@ -1276,17 +1598,27 @@ function renderPantryRecipes(){
        <span class="recipe-badge">${Math.round(Number(r.servings||state.people.filter(p=>p.active).length||1))} kişilik</span>
        ${r.priorityExpiry?'<span class="recipe-badge priority">⏳ Önce tüket</span>':''}
      </div>
-     <div class="recipe-block"><b>Kilerden kullanılacak</b><ul>${(r.ingredientsUsed||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>—</li>'}</ul></div>
-     <div class="recipe-block"><b>Eksik olabilecekler</b><ul>${(r.missingIngredients||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Yok</li>'}</ul></div>
+     <div class="recipe-block"><b>Kilerden kullanılacak</b>
+       <div>${(r.ingredientsUsed||[]).map(x=>`<div class="recipe-ingredient-line"><span>${esc(x.name)}</span><span>${esc(measureObjectText(x))}</span></div>`).join('')||'<div class="recipe-ingredient-line"><span>—</span></div>'}</div>
+     </div>
+     <div class="recipe-block"><b>Eksik olabilecekler</b>
+       <div>${(r.missingIngredients||[]).map(x=>`<div class="recipe-ingredient-line"><span>${esc(x.name)}</span><span>${esc(measureObjectText(x))}</span></div>`).join('')||'<div class="recipe-ingredient-line"><span>Yok</span></div>'}</div>
+     </div>
      <div class="recipe-block"><b>Yapılışı</b><ol>${(r.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
      ${r.childNote?`<div class="nutrition-warning"><b>Çocuk için:</b> ${esc(r.childNote)}</div>`:''}
-     <div class="recipe-card-actions"><button class="softbtn share-ai-recipe" data-i="${i}">Tarifi paylaş</button></div>
+     <div class="recipe-card-actions" style="gap:6px">
+       <button class="softbtn share-ai-recipe" data-i="${i}">Tarifi paylaş</button>
+       <button class="primary cook-ai-recipe" data-i="${i}">✓ Bu yemeği yaptık</button>
+     </div>
    </article>`).join(''):'<div class="hint">Öneri üretilemedi.</div>';
  $$('.share-ai-recipe').forEach(b=>b.onclick=()=>sharePantryRecipe(Number(b.dataset.i)));
+ $$('.cook-ai-recipe').forEach(b=>b.onclick=()=>cookAIRecipe(Number(b.dataset.i)));
 }
 async function sharePantryRecipe(i){
  const r=pantryRecipeSuggestions[i];if(!r)return;
- const text=`${r.title}\n\nKilerden: ${(r.ingredientsUsed||[]).join(', ')}\nEksik: ${(r.missingIngredients||[]).join(', ')||'Yok'}\n\n${(r.steps||[]).map((s,n)=>`${n+1}. ${s}`).join('\n')}${r.childNote?`\n\nÇocuk için: ${r.childNote}`:''}`;
+ const used=(r.ingredientsUsed||[]).map(x=>`- ${x.name}: ${measureObjectText(x)}`).join('\n');
+ const missing=(r.missingIngredients||[]).map(x=>`- ${x.name}: ${measureObjectText(x)}`).join('\n')||'- Yok';
+ const text=`${r.title}\n\nKilerden:\n${used}\n\nEksik:\n${missing}\n\n${(r.steps||[]).map((s,n)=>`${n+1}. ${s}`).join('\n')}${r.childNote?`\n\nÇocuk için: ${r.childNote}`:''}`;
  if(navigator.share){try{await navigator.share({title:r.title,text})}catch{}}
  else{try{await navigator.clipboard.writeText(text);alert('Tarif kopyalandı.')}catch{}}
 }
@@ -1521,6 +1853,32 @@ let deferred=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDef
 
 
 
+
+$$('.feedback-star').forEach(b=>b.onclick=()=>{
+ const rating=Number(b.dataset.rating);$('#feedbackRating').value=rating;
+ $$('.feedback-star').forEach(x=>x.classList.toggle('active',Number(x.dataset.rating)<=rating));
+});
+$('#mealFeedbackForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const id=$('#feedbackHistoryId').value,h=(state.mealHistory||[]).find(x=>x.id===id);
+ if(!h)return $('#mealFeedbackDialog').close();
+ const rating=Number($('#feedbackRating').value||0);
+ if(!rating){alert('Lütfen 1–5 arasında bir yıldız seç.');return}
+ h.feedback={rating,portion:$('#feedbackPortion').value,again:$('#feedbackAgain').value,note:$('#feedbackNote').value.trim(),at:new Date().toISOString()};
+ save();$('#mealFeedbackDialog').close();renderAll();logActivity(`${h.title} için geri bildirim kaydedildi`);
+});
+if('serviceWorker' in navigator){
+ navigator.serviceWorker.addEventListener('message',e=>{
+   if(e.data?.type==='OPEN_MEAL_FEEDBACK'&&e.data.feedbackId)setTimeout(()=>openFeedbackDialog(e.data.feedbackId),250);
+ });
+}
+function openFeedbackFromUrl(){
+ const u=new URL(location.href),id=u.searchParams.get('feedback');
+ if(!id)return;
+ setTimeout(()=>openFeedbackDialog(id),1200);
+ u.searchParams.delete('feedback');history.replaceState({},'',u.pathname+u.search+u.hash);
+}
+
 $('#cameraScanBtn').onclick=()=>$('#cameraScanInput').click();
 $('#galleryScanBtn').onclick=()=>$('#galleryScanInput').click();
 $('#cameraScanInput').onchange=e=>{analyzePantryFiles(e.target.files).finally(()=>e.target.value='')};
@@ -1606,7 +1964,7 @@ $('#shareInviteBtn').onclick=async()=>{
   if(navigator.share)await navigator.share({title:'Aile Sofrası daveti',text});else{try{await navigator.clipboard.writeText(text);alert('Davet bağlantısı kopyalandı.')}catch{alert(text)}}
 };
 
-ensureCalendarState({forceToday:true});saveLocal();renderAll();initCloud();setTimeout(()=>{if(location.protocol!=='file:')syncPrices()},700);
+ensureCalendarState({forceToday:true});saveLocal();renderAll();initCloud();openFeedbackFromUrl();setTimeout(()=>{if(location.protocol!=='file:')syncPrices()},700);
 </script>
 
 <script>

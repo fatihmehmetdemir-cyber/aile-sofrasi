@@ -1,4 +1,4 @@
-const CACHE='aile-sofrasi-v035-smart-pantry';
+const CACHE='aile-sofrasi-v036-turkish-smart-consumption';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js','./appcheck-config.js'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
@@ -19,4 +19,21 @@ self.addEventListener('fetch',event=>{
       return resp;
     }).catch(()=>caches.match(event.request).then(r=>r||caches.match('./index.html')))
   );
+});
+
+
+self.addEventListener('notificationclick',event=>{
+  event.notification.close();
+  const feedbackId=event.notification.data?.feedbackId;
+  event.waitUntil((async()=>{
+    const all=await clients.matchAll({type:'window',includeUncontrolled:true});
+    if(all.length){
+      const client=all[0];
+      await client.focus();
+      client.postMessage({type:'OPEN_MEAL_FEEDBACK',feedbackId});
+      return;
+    }
+    const url=feedbackId?`./?feedback=${encodeURIComponent(feedbackId)}`:'./';
+    await clients.openWindow(url);
+  })());
 });
