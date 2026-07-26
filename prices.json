@@ -1,89 +1,9 @@
 {
   "schemaVersion": 2,
   "retailer": "ŞOK / Cepte ŞOK",
-  "generatedAt": "2026-07-26T21:40:36Z",
+  "generatedAt": "2026-07-26T22:01:52Z",
   "locationScope": "cepte-sok-online",
   "quotes": [
-    {
-      "ingredient": "Patates",
-      "unit": "g",
-      "productName": "Patates Kg",
-      "currentPrice": 39.5,
-      "regularPrice": 39.5,
-      "packageAmount": 1000,
-      "packageUnit": "g",
-      "pricingMode": "weight",
-      "sourceUrl": "https://www.sokmarket.com.tr/market-c-10",
-      "provider": "ŞOK / Cepte ŞOK",
-      "retailer": "ŞOK",
-      "price": 39.5,
-      "basisAmount": 1000,
-      "basisUnit": "g",
-      "status": "online-snapshot",
-      "observedAt": "2026-07-26T20:17:43Z",
-      "locationScope": "cepte-sok-online",
-      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
-    },
-    {
-      "ingredient": "Limon",
-      "unit": "g",
-      "productName": "Limon Kg",
-      "currentPrice": 99.0,
-      "regularPrice": 99.0,
-      "packageAmount": 1000,
-      "packageUnit": "g",
-      "pricingMode": "weight",
-      "sourceUrl": "https://www.sokmarket.com.tr/market-c-10",
-      "provider": "ŞOK / Cepte ŞOK",
-      "retailer": "ŞOK",
-      "price": 99.0,
-      "basisAmount": 1000,
-      "basisUnit": "g",
-      "status": "online-snapshot",
-      "observedAt": "2026-07-26T20:17:43Z",
-      "locationScope": "cepte-sok-online",
-      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
-    },
-    {
-      "ingredient": "Kuru soğan",
-      "unit": "g",
-      "productName": "Kuru Soğan Kg",
-      "currentPrice": 54.5,
-      "regularPrice": 54.5,
-      "packageAmount": 1000,
-      "packageUnit": "g",
-      "pricingMode": "weight",
-      "sourceUrl": "https://www.sokmarket.com.tr/market-c-10",
-      "provider": "ŞOK / Cepte ŞOK",
-      "retailer": "ŞOK",
-      "price": 54.5,
-      "basisAmount": 1000,
-      "basisUnit": "g",
-      "status": "online-snapshot",
-      "observedAt": "2026-07-26T20:17:43Z",
-      "locationScope": "cepte-sok-online",
-      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
-    },
-    {
-      "ingredient": "Yoğurt",
-      "unit": "g",
-      "productName": "Mis Yoğurt Tam Yağlı Homojenize 3000 g",
-      "currentPrice": 192.0,
-      "regularPrice": 192.0,
-      "packageAmount": 3000,
-      "packageUnit": "g",
-      "pricingMode": "package",
-      "sourceUrl": "https://www.sokmarket.com.tr/yogurt-c-480",
-      "provider": "ŞOK / Cepte ŞOK",
-      "retailer": "ŞOK",
-      "price": 192.0,
-      "basisAmount": 3000,
-      "basisUnit": "g",
-      "status": "online-snapshot",
-      "observedAt": "2026-07-26T20:17:43Z",
-      "locationScope": "cepte-sok-online",
-      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
-    },
     {
       "ingredient": "Beyaz peynir / lor",
       "unit": "g",
@@ -123,10 +43,311 @@
       "observedAt": "2026-07-26T20:17:43Z",
       "locationScope": "cepte-sok-online",
       "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
+    },
+    {
+      "ingredient": "Kuru soğan",
+      "unit": "g",
+      "productName": "Kuru Soğan Kg",
+      "currentPrice": 54.5,
+      "regularPrice": 54.5,
+      "packageAmount": 1000,
+      "packageUnit": "g",
+      "pricingMode": "weight",
+      "sourceUrl": "https://www.sokmarket.com.tr/market-c-10",
+      "provider": "ŞOK / Cepte ŞOK",
+      "retailer": "ŞOK",
+      "price": 54.5,
+      "basisAmount": 1000,
+      "basisUnit": "g",
+      "status": "online-snapshot",
+      "observedAt": "2026-07-26T20:17:43Z",
+      "locationScope": "cepte-sok-online",
+      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
+    },
+    {
+      "ingredient": "Patates",
+      "unit": "g",
+      "productName": "Patates Kg",
+      "currentPrice": 39.5,
+      "regularPrice": 39.5,
+      "packageAmount": 1000,
+      "packageUnit": "g",
+      "pricingMode": "weight",
+      "sourceUrl": "https://www.sokmarket.com.tr/market-c-10",
+      "provider": "ŞOK / Cepte ŞOK",
+      "retailer": "ŞOK",
+      "price": 39.5,
+      "basisAmount": 1000,
+      "basisUnit": "g",
+      "status": "online-snapshot",
+      "observedAt": "2026-07-26T20:17:43Z",
+      "locationScope": "cepte-sok-online",
+      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
+    },
+    {
+      "ingredient": "Yoğurt",
+      "unit": "g",
+      "productName": "Mis Yoğurt Tam Yağlı Homojenize 3000 g",
+      "currentPrice": 192.0,
+      "regularPrice": 192.0,
+      "packageAmount": 3000,
+      "packageUnit": "g",
+      "pricingMode": "package",
+      "sourceUrl": "https://www.sokmarket.com.tr/yogurt-c-480",
+      "provider": "ŞOK / Cepte ŞOK",
+      "retailer": "ŞOK",
+      "price": 192.0,
+      "basisAmount": 3000,
+      "basisUnit": "g",
+      "status": "online-snapshot",
+      "observedAt": "2026-07-26T20:17:43Z",
+      "locationScope": "cepte-sok-online",
+      "note": "v0.4.2 güvenlik yaması: daha önce resmi Cepte ŞOK sayfasından doğrulanmış başlangıç kaydıdır; otomatik eşleştirici yeniden doğrulanana kadar canlı sayılmaz."
     }
   ],
-  "failed": [],
+  "failed": [
+    {
+      "ingredient": "Ayran",
+      "unit": "ml",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Balık fileto",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Beyaz peynir / lor",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Bulgur",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Ceviz içi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Domates",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Domates salçası",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Havuç",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Haşlanmış mısır",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Hindi / tavuk kıyma",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Karışık sebze",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Karışık yeşillik",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Karışık çorbalık sebze",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Kaşar / beyaz peynir",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Kuru barbunya",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Kuru fasulye",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Kuru nohut",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Kuru soğan",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Kırmızı mercimek",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Limon",
+      "unit": "adet",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Lor / labne",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Mevsim meyvesi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Mevsim sebzesi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Patates",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Pirinç",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Salata malzemesi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Salatalık",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Sarımsak",
+      "unit": "diş",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Somon / uskumru / sardalya fileto",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Tam buğday / çavdar ekmeği",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Tam buğday galeta / ekmek içi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Tavuk göğüs",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Tavuk göğüs / but eti",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Taze fasulye",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yağsız dana kuşbaşı",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yağsız dana kıyma",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yeşil biber",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yeşil mercimek",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yeşillik",
+      "unit": "demet",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Yoğurt",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Yumurta",
+      "unit": "adet",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Zeytin",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Zeytinyağı",
+      "unit": "ml",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Çiğ badem/fındık/ceviz",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: beklenen ürün ailesi bulunamadı"
+    },
+    {
+      "ingredient": "İnce bulgur",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: ürün adı eşleşmesi zayıf (0%)"
+    },
+    {
+      "ingredient": "Kaymak",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Bal",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    },
+    {
+      "ingredient": "Reçel",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: zorunlu ürün kelimesi eksik"
+    }
+  ],
   "source": "https://www.sokmarket.com.tr/",
-  "safetyMode": "strict",
-  "note": "İlk otomatik çalıştırmadaki yanlış eşleşmeler temizlendi."
+  "matchPolicy": "strict-v0.4.2",
+  "policy": "Yanlış eşleşme riskinde fiyat yazılmaz; eski kayıt korunursa observedAt yenilenmez."
 }
