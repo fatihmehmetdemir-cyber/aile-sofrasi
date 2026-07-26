@@ -250,7 +250,7 @@
   {
     "ingredient": "Karışık yeşillik",
     "unit": "g",
-    "query": "karışık yeşillik",
+    "query": "kıvırcık marul roka yeşillik",
     "pricingMode": "package",
     "strict": true,
     "expectedUnitFamily": "mass",
@@ -260,9 +260,21 @@
     "matchGroups": [
       [
         "yeşillik",
-        "yesillik",
-        "salata"
+        "kıvırcık",
+        "kivircik",
+        "marul",
+        "roka",
+        "maydanoz",
+        "tere",
+        "dereotu"
       ]
+    ],
+    "forbidden": [
+      "cikolata",
+      "gofret",
+      "salatalik",
+      "salatalık",
+      "çikolata"
     ]
   },
   {
@@ -932,11 +944,23 @@
       "ceviz"
     ],
     "forbidden": [
+      "bar",
+      "biskuvi",
+      "bisküvi",
+      "cikolata",
       "dondurma",
+      "draje",
+      "ezme",
+      "gofret",
       "icecek",
       "içecek",
+      "kek",
+      "krema",
+      "kremali",
+      "kremalı",
       "sut",
-      "süt"
+      "süt",
+      "çikolata"
     ],
     "catalogUrls": [
       "https://www.sokmarket.com.tr/kahvaltilik-c-890"
