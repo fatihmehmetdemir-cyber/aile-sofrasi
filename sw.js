@@ -1,5 +1,5 @@
-const CACHE='aile-sofrasi-v039-breakfast-measures';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js','./appcheck-config.js'];
+const CACHE='aile-sofrasi-v041-sok-free-prices';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./firebase-config.js','./appcheck-config.js','./prices.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));
   self.skipWaiting();
