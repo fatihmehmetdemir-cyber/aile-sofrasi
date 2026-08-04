@@ -1,7 +1,7 @@
 {
   "schemaVersion": 3,
   "retailer": "ŞOK / Cepte ŞOK",
-  "generatedAt": "2026-08-04T17:23:45Z",
+  "generatedAt": "2026-08-04T22:46:42Z",
   "lastSuccessfulAt": "2026-08-04T17:23:45Z",
   "locationScope": "cepte-sok-online",
   "quotes": [
@@ -920,74 +920,249 @@
   ],
   "failed": [
     {
+      "ingredient": "Ayran",
+      "unit": "ml",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-ayran-tam-yagli-1-5-l-p-7386"
+    },
+    {
       "ingredient": "Balık fileto",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Beyaz peynir / lor",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-tam-yagli-suzme-beyaz-peynir-1"
+    },
+    {
+      "ingredient": "Bulgur",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Ceviz içi",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/amigo-ceviz-ici-150-g-p-7513"
     },
     {
       "ingredient": "Domates",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Domates salçası",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Havuç",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Haşlanmış mısır",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Hindi / tavuk kıyma",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Karışık sebze",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Karışık yeşillik",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: paket/birim bilgisi okunamadı"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Karışık çorbalık sebze",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Kaşar / beyaz peynir",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-tam-yagli-tost-peyniri-1-kg-p-"
+    },
+    {
+      "ingredient": "Kuru barbunya",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Kuru fasulye",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Kuru nohut",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/anadolu-mutfagi-nohut-1-kg-p-9054"
+    },
+    {
+      "ingredient": "Kuru soğan",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Kırmızı mercimek",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Limon",
       "unit": "adet",
-      "reason": "güvenli eşleşme bulunamadı: birim uyumsuz: ürün ml, tarif adet"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Lor / labne",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Mevsim meyvesi",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Mevsim sebzesi",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Patates",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Pirinç",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Salata malzemesi",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Salatalık",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Sarımsak",
+      "unit": "diş",
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Somon / uskumru / sardalya fileto",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Tam buğday / çavdar ekmeği",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Tam buğday galeta / ekmek içi",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Tavuk göğüs",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Tavuk göğüs / but eti",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
     },
     {
       "ingredient": "Taze fasulye",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yağsız dana kuşbaşı",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yağsız dana kıyma",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yeşil biber",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yeşil mercimek",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yeşillik",
+      "unit": "demet",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yoğurt",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Yumurta",
+      "unit": "adet",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/anadolu-ciftligi-l-yumurta-15-li-6"
+    },
+    {
+      "ingredient": "Zeytin",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Zeytinyağı",
+      "unit": "ml",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/lio-riviera-zeytinyagi-1-l-p-8748"
     },
     {
       "ingredient": "Çiğ badem/fındık/ceviz",
       "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: birim uyumsuz: ürün ml, tarif g"
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "İnce bulgur",
+      "unit": "g",
+      "reason": "aday ürün bulunamadı"
+    },
+    {
+      "ingredient": "Kaymak",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-kaymak-200-g-p-7066?vo=1"
+    },
+    {
+      "ingredient": "Bal",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/kovandan-cicek-bali-460-g-p-363689"
+    },
+    {
+      "ingredient": "Reçel",
+      "unit": "g",
+      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/boltane-cilek-receli-380-g-p-6930"
     }
   ],
   "source": "https://www.sokmarket.com.tr/",
   "matchPolicy": "catalog-strict-v0.4.3",
   "liveCount": 38,
-  "failedCount": 13,
+  "failedCount": 48,
   "policy": "Önce resmi ŞOK kategori sayfalarından aday bulur; sonra ürün detay sayfasında ad, paket birimi ve fiyatı doğrular. Emin değilse eski kayıt korunur."
 }
