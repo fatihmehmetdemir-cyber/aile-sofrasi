@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
   "retailer": "ŞOK / Cepte ŞOK",
-  "generatedAt": "2026-09-02T07:55:27Z",
-  "lastSuccessfulAt": "2026-09-02T01:03:33Z",
+  "generatedAt": "2026-09-02T15:08:07Z",
+  "lastSuccessfulAt": "2026-09-02T15:08:06Z",
   "locationScope": "cepte-sok-online",
   "quotes": [
     {
@@ -23,7 +23,7 @@
       "storePackagePrice": 45.9,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:01:58Z",
+      "observedAt": "2026-09-02T15:06:32Z",
       "sourceUrl": "https://www.sokmarket.com.tr/mis-ayran-tam-yagli-eksi-lezzet-1-l-p-524962",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -47,7 +47,7 @@
       "storePackagePrice": 225.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:02Z",
+      "observedAt": "2026-09-02T15:06:36Z",
       "sourceUrl": "https://www.sokmarket.com.tr/mis-tam-yagli-suzme-beyaz-peynir-1-kg-p-5446",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -71,7 +71,7 @@
       "storePackagePrice": 34.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:05Z",
+      "observedAt": "2026-09-02T15:06:38Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-pilavlik-bulgur-1-kg-p-5325",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -95,7 +95,7 @@
       "storePackagePrice": 109.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:08Z",
+      "observedAt": "2026-09-02T15:06:40Z",
       "sourceUrl": "https://www.sokmarket.com.tr/amigo-ceviz-ici-150-g-p-7513",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -119,7 +119,7 @@
       "storePackagePrice": 19.9,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:10Z",
+      "observedAt": "2026-09-02T15:06:45Z",
       "sourceUrl": "https://www.sokmarket.com.tr/domates-rio-tarla-kg-p-33081",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -143,7 +143,7 @@
       "storePackagePrice": 55.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:12Z",
+      "observedAt": "2026-09-02T15:06:47Z",
       "sourceUrl": "https://www.sokmarket.com.tr/domates-salcasi-bizim-vatan-830-g-p-6049",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -167,7 +167,7 @@
       "storePackagePrice": 49.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:14Z",
+      "observedAt": "2026-09-02T15:06:48Z",
       "sourceUrl": "https://www.sokmarket.com.tr/havuc-kg-p-36260",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -191,7 +191,7 @@
       "storePackagePrice": 46.5,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:17Z",
+      "observedAt": "2026-09-02T15:06:51Z",
       "sourceUrl": "https://www.sokmarket.com.tr/misir-konservesi-bizim-vatan-400-g-p-6032",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -239,7 +239,7 @@
       "storePackagePrice": 399.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:27Z",
+      "observedAt": "2026-09-02T15:06:59Z",
       "sourceUrl": "https://www.sokmarket.com.tr/mis-tam-yagli-tost-peyniri-1-kg-p-7384",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -263,7 +263,7 @@
       "storePackagePrice": 99.9,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:29Z",
+      "observedAt": "2026-09-02T15:07:01Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-barbunya-1-kg-p-7173",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -287,7 +287,7 @@
       "storePackagePrice": 77.5,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:31Z",
+      "observedAt": "2026-09-02T15:07:02Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-kuru-fasulye-1-kg-p-6035",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -311,7 +311,7 @@
       "storePackagePrice": 62.5,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:33Z",
+      "observedAt": "2026-09-02T15:07:04Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-nohut-1-kg-p-9054",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -335,7 +335,7 @@
       "storePackagePrice": 35.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:34Z",
+      "observedAt": "2026-09-02T15:07:06Z",
       "sourceUrl": "https://www.sokmarket.com.tr/kuru-sogan-kg-p-32883",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -359,7 +359,7 @@
       "storePackagePrice": 49.5,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:36Z",
+      "observedAt": "2026-09-02T15:07:08Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-kirmizi-mercimek-1000-g-p-9055",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -383,7 +383,7 @@
       "storePackagePrice": 9.9,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:42Z",
+      "observedAt": "2026-09-02T15:07:12Z",
       "sourceUrl": "https://www.sokmarket.com.tr/karpuz-kg-p-35255",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -407,7 +407,7 @@
       "storePackagePrice": 99.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:44Z",
+      "observedAt": "2026-09-02T15:07:14Z",
       "sourceUrl": "https://www.sokmarket.com.tr/carliston-biber-kg-p-34512",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -431,7 +431,7 @@
       "storePackagePrice": 35.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:46Z",
+      "observedAt": "2026-09-02T15:07:16Z",
       "sourceUrl": "https://www.sokmarket.com.tr/patates-kg-p-35919",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -455,7 +455,7 @@
       "storePackagePrice": 95.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:49Z",
+      "observedAt": "2026-09-02T15:07:17Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-basmati-pirinc-1-kg-p-1603",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -479,7 +479,7 @@
       "storePackagePrice": 49.9,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:50Z",
+      "observedAt": "2026-09-02T15:07:19Z",
       "sourceUrl": "https://www.sokmarket.com.tr/salatalik-cengelkoy-500-g-paket-p-32385",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -503,7 +503,7 @@
       "storePackagePrice": 49.9,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:02:52Z",
+      "observedAt": "2026-09-02T15:07:21Z",
       "sourceUrl": "https://www.sokmarket.com.tr/salatalik-cengelkoy-500-g-paket-p-32385",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -551,7 +551,7 @@
       "storePackagePrice": 259.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:00Z",
+      "observedAt": "2026-09-02T15:07:29Z",
       "sourceUrl": "https://www.sokmarket.com.tr/gedik-pilic-parmak-bonfile-kg-p-520630",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -575,7 +575,7 @@
       "storePackagePrice": 259.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:02Z",
+      "observedAt": "2026-09-02T15:07:30Z",
       "sourceUrl": "https://www.sokmarket.com.tr/gedik-pilic-parmak-bonfile-kg-p-520630",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -599,7 +599,7 @@
       "storePackagePrice": 399.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:05Z",
+      "observedAt": "2026-09-02T15:07:34Z",
       "sourceUrl": "https://www.sokmarket.com.tr/lezzetlim-dana-kusbasi-400-g-p-5400",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -623,7 +623,7 @@
       "storePackagePrice": 330.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:07Z",
+      "observedAt": "2026-09-02T15:07:36Z",
       "sourceUrl": "https://www.sokmarket.com.tr/lezzetlim-dana-kiyma-400-g-p-5443",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -647,7 +647,7 @@
       "storePackagePrice": 99.0,
       "pricingMode": "weight",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:09Z",
+      "observedAt": "2026-09-02T15:07:37Z",
       "sourceUrl": "https://www.sokmarket.com.tr/carliston-biber-kg-p-34512",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -671,7 +671,7 @@
       "storePackagePrice": 67.5,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:10Z",
+      "observedAt": "2026-09-02T15:07:40Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-yesil-mercimek-1-kg-p-7172",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -695,7 +695,7 @@
       "storePackagePrice": 25.9,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:12Z",
+      "observedAt": "2026-09-02T15:07:41Z",
       "sourceUrl": "https://www.sokmarket.com.tr/maydanoz-demet-p-35790",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -719,7 +719,7 @@
       "storePackagePrice": 192.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:14Z",
+      "observedAt": "2026-09-02T15:07:43Z",
       "sourceUrl": "https://www.sokmarket.com.tr/mis-yogurt-tam-yagli-homojenize-3000-g-p-8765",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -743,7 +743,7 @@
       "storePackagePrice": 95.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:16Z",
+      "observedAt": "2026-09-02T15:07:45Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-ciftligi-l-yumurta-15-li-63-72-g-p-4821",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -767,7 +767,7 @@
       "storePackagePrice": 115.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:19Z",
+      "observedAt": "2026-09-02T15:07:47Z",
       "sourceUrl": "https://www.sokmarket.com.tr/lio-salamura-siyah-zeytin-321-380-500-g-p-8221",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -791,7 +791,7 @@
       "storePackagePrice": 310.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:22Z",
+      "observedAt": "2026-09-02T15:07:52Z",
       "sourceUrl": "https://www.sokmarket.com.tr/lio-sizma-zeytinyagi-1-l-p-5180",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -839,7 +839,7 @@
       "storePackagePrice": 34.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:25Z",
+      "observedAt": "2026-09-02T15:07:56Z",
       "sourceUrl": "https://www.sokmarket.com.tr/anadolu-mutfagi-koftelik-bulgur-1-kg-p-7644",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -863,7 +863,7 @@
       "storePackagePrice": 99.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:28Z",
+      "observedAt": "2026-09-02T15:07:59Z",
       "sourceUrl": "https://www.sokmarket.com.tr/mis-rulo-kaymak-150-g-p-509831",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -887,7 +887,7 @@
       "storePackagePrice": 315.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:30Z",
+      "observedAt": "2026-09-02T15:08:03Z",
       "sourceUrl": "https://www.sokmarket.com.tr/kovandan-cicek-bali-850-g-p-15824",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -911,7 +911,7 @@
       "storePackagePrice": 237.0,
       "pricingMode": "package",
       "status": "live",
-      "observedAt": "2026-09-02T01:03:33Z",
+      "observedAt": "2026-09-02T15:08:06Z",
       "sourceUrl": "https://www.sokmarket.com.tr/boltane-cilek-receli-2-kg-p-7470",
       "locationScope": "cepte-sok-online",
       "matchPolicy": "catalog-strict-v0.4.3",
@@ -920,249 +920,74 @@
   ],
   "failed": [
     {
-      "ingredient": "Ayran",
-      "unit": "ml",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-ayran-tam-yagli-1-5-l-p-7386"
-    },
-    {
       "ingredient": "Balık fileto",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Beyaz peynir / lor",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-tam-yagli-suzme-beyaz-peynir-1"
-    },
-    {
-      "ingredient": "Bulgur",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Ceviz içi",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/amigo-ceviz-ici-150-g-p-7513"
-    },
-    {
-      "ingredient": "Domates",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Domates salçası",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Havuç",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Haşlanmış mısır",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Hindi / tavuk kıyma",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Karışık sebze",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Karışık yeşillik",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: paket/birim bilgisi okunamadı"
     },
     {
       "ingredient": "Karışık çorbalık sebze",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Kaşar / beyaz peynir",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-tam-yagli-tost-peyniri-1-kg-p-"
-    },
-    {
-      "ingredient": "Kuru barbunya",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Kuru fasulye",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Kuru nohut",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/anadolu-mutfagi-nohut-1-kg-p-9054"
-    },
-    {
-      "ingredient": "Kuru soğan",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Kırmızı mercimek",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Limon",
       "unit": "adet",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: birim uyumsuz: ürün ml, tarif adet"
     },
     {
       "ingredient": "Lor / labne",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Mevsim meyvesi",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Mevsim sebzesi",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Patates",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Pirinç",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Salata malzemesi",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Salatalık",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Sarımsak",
       "unit": "diş",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: paket/birim bilgisi okunamadı"
     },
     {
       "ingredient": "Somon / uskumru / sardalya fileto",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Tam buğday / çavdar ekmeği",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Tam buğday galeta / ekmek içi",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Tavuk göğüs",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Tavuk göğüs / but eti",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Taze fasulye",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yağsız dana kuşbaşı",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yağsız dana kıyma",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yeşil biber",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yeşil mercimek",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yeşillik",
-      "unit": "demet",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yoğurt",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Yumurta",
-      "unit": "adet",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/anadolu-ciftligi-l-yumurta-15-li-6"
-    },
-    {
-      "ingredient": "Zeytin",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Zeytinyağı",
-      "unit": "ml",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/lio-riviera-zeytinyagi-1-l-p-8748"
+      "reason": "güvenli eşleşme bulunamadı: uygun ürün yok"
     },
     {
       "ingredient": "Çiğ badem/fındık/ceviz",
       "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "İnce bulgur",
-      "unit": "g",
-      "reason": "aday ürün bulunamadı"
-    },
-    {
-      "ingredient": "Kaymak",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/mis-kaymak-200-g-p-7066?vo=1"
-    },
-    {
-      "ingredient": "Bal",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/kovandan-cicek-bali-460-g-p-363689"
-    },
-    {
-      "ingredient": "Reçel",
-      "unit": "g",
-      "reason": "güvenli eşleşme bulunamadı: 403 Client Error: Forbidden for url: https://www.sokmarket.com.tr/boltane-cilek-receli-380-g-p-6930"
+      "reason": "güvenli eşleşme bulunamadı: birim uyumsuz: ürün ml, tarif g"
     }
   ],
   "source": "https://www.sokmarket.com.tr/",
   "matchPolicy": "catalog-strict-v0.4.3",
   "liveCount": 38,
-  "failedCount": 48,
+  "failedCount": 13,
   "policy": "Önce resmi ŞOK kategori sayfalarından aday bulur; sonra ürün detay sayfasında ad, paket birimi ve fiyatı doğrular. Emin değilse eski kayıt korunur."
 }
